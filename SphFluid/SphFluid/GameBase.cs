@@ -22,6 +22,7 @@ namespace SphFluid
         protected GameBase(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
+            VSync = VSyncMode.Off;
             Font = new QFont(Path.Combine(Settings.Default.FontDir, "HappySans.ttf"), 16);
             Camera = new Camera(this);
             SimpleShader = new SimpleShader();
