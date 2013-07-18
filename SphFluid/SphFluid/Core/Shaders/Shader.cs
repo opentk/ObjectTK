@@ -62,8 +62,13 @@ namespace SphFluid.Core.Shaders
             {
                 AttachShader(pair.Key, pair.Value);
             }
-            // fire event
-            ShaderCompiled();
+            // bind transform feedback varyings if any
+            TransformFeedbackMode mode;
+            var feedbackVaryings = GetTransformFeedbackVaryings(out mode);
+            if (feedbackVaryings != null)
+            {
+                GL.TransformFeedbackVaryings(Program, feedbackVaryings.Count, feedbackVaryings.ToArray(), mode);
+            }
             // link program
             GL.LinkProgram(Program);
             // assert that no link errors occured
@@ -101,20 +106,23 @@ namespace SphFluid.Core.Shaders
             _shaders.Add(shader);
         }
 
-        protected virtual void ShaderCompiled() { }
+        protected virtual List<string> GetTransformFeedbackVaryings(out TransformFeedbackMode mode)
+        {
+            mode = TransformFeedbackMode.InterleavedAttribs;
+            return null;
+        }
 
-        protected ShaderUniform<T> GetUniform<T>(string name, Action<int, T> setter)
+        protected Uniform<T> GetUniform<T>(string name, Action<int, T> setter)
         {
             var location = GL.GetUniformLocation(Program, name);
             if (location == -1) Trace.TraceWarning(string.Format("Uniform not found or not active: {0}", name));
-            return new ShaderUniform<T>(location, setter);
+            return new Uniform<T>(location, setter);
         }
 
-        public void BindVertexAttribute(string attribute, int components, VertexAttribPointerType type, bool normalized, int stride, int offset)
+        protected VertexAttrib GetVertexAttrib(string name, int component, VertexAttribPointerType type)
         {
-            var index = GL.GetAttribLocation(Program, attribute);
-            GL.EnableVertexAttribArray(index);
-            GL.VertexAttribPointer(index, components, type, normalized, stride, offset);
+            var index = GL.GetAttribLocation(Program, name);
+            return new VertexAttrib(index, component, type);
         }
 
         public void Use()
