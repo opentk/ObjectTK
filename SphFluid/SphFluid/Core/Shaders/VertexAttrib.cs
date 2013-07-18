@@ -1,4 +1,5 @@
 using OpenTK.Graphics.OpenGL;
+using SphFluid.Core.Buffers;
 
 namespace SphFluid.Core.Shaders
 {
@@ -15,11 +16,18 @@ namespace SphFluid.Core.Shaders
             Type = type;
         }
 
-        public void Bind(int stride, int offset, bool normalized = false)
+        public void Bind(Vbo buffer)
         {
+            Bind(buffer, 0, 0, false);
+        }
+
+        public void Bind(Vbo buffer, int stride, int offset, bool normalized)
+        {
+            // bind given buffer
+            GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
             // make sure the vertex attribute is enabled
             GL.EnableVertexAttribArray(Index);
-            // set the vertex attribute pointer
+            // set the vertex attribute pointer to the current buffer
             GL.VertexAttribPointer(Index, Components, Type, normalized, stride, offset);
         }
     }

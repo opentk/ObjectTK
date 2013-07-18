@@ -28,8 +28,9 @@ namespace SphFluid.Core.Buffers
             CheckBufferSize(bufferTarget, fullSize);
         }
 
-        public void AllocateData(BufferTarget bufferTarget, int fullSize, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public void AllocateData(BufferTarget bufferTarget, int elementCount, int elementSize, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
+            var fullSize = elementCount * elementSize;
             // upload data to buffer
             GL.BindBuffer(bufferTarget, VboHandle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);
