@@ -70,6 +70,8 @@ namespace SphFluid.Core.Shaders
             int linkStatus;
             GL.GetProgram(Program, ProgramParameter.LinkStatus, out linkStatus);
             var info = GL.GetProgramInfoLog(Program);
+            Trace.TraceInformation("Link status: {0}", linkStatus);
+            if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
             Utility.Assert(() => linkStatus, 1, string.Format("Error linking program: {0}", info));
         }
 
@@ -90,6 +92,8 @@ namespace SphFluid.Core.Shaders
             int compileStatus;
             GL.GetShader(shader, ShaderParameter.CompileStatus, out compileStatus);
             var info = GL.GetShaderInfoLog(shader);
+            Trace.TraceInformation("Compile status: {0}", compileStatus);
+            if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
             Utility.Assert(() => compileStatus, 1, string.Format("Error compiling shader: {0}\n{1}", filename, info));
             // attach shader to program
             GL.AttachShader(Program, shader);
@@ -104,6 +108,13 @@ namespace SphFluid.Core.Shaders
             var location = GL.GetUniformLocation(Program, name);
             if (location == -1) Trace.TraceWarning(string.Format("Uniform not found or not active: {0}", name));
             return new ShaderUniform<T>(location, setter);
+        }
+
+        public void BindVertexAttribute(string attribute, int components, VertexAttribPointerType type, bool normalized, int stride, int offset)
+        {
+            var index = GL.GetAttribLocation(Program, attribute);
+            GL.EnableVertexAttribArray(index);
+            GL.VertexAttribPointer(index, components, type, normalized, stride, offset);
         }
 
         public void Use()
