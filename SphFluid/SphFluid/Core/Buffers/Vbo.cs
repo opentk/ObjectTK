@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Buffers
 {
-    public class Vbo
+    public class Vbo<T>
         : IReleasable
+        where T : struct
     {
         public int Handle
         {
@@ -12,25 +14,46 @@ namespace SphFluid.Core.Buffers
         }
 
         protected int VboHandle;
+        protected int ElementCount;
+
+        public int ElementSize
+        {
+            get { return Marshal.SizeOf(typeof (T)); }
+        }
+
+#if DEBUG
+    public T[] Content
+        {
+            get
+            {
+                var items = new T[ElementCount];
+                GL.BindBuffer(BufferTarget.ArrayBuffer, Handle);
+                GL.GetBufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(ElementSize * ElementCount), items);
+                return items;
+            }
+        }
+#endif
+
 
         public Vbo()
         {
             GL.GenBuffers(1, out VboHandle);
         }
 
-        public void UploadData<T>(BufferTarget bufferTarget, T[] data, int elementSize, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
-            where T : struct
+        public void UploadData(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
-            var fullSize = data.Length * elementSize;
+            ElementCount = data.Length;
+            var fullSize = data.Length * ElementSize;
             // upload data to buffer
             GL.BindBuffer(bufferTarget, VboHandle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
         }
 
-        public void AllocateData(BufferTarget bufferTarget, int elementCount, int elementSize, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public void AllocateData(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
-            var fullSize = elementCount * elementSize;
+            ElementCount = elementCount;
+            var fullSize = elementCount * ElementSize;
             // upload data to buffer
             GL.BindBuffer(bufferTarget, VboHandle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);

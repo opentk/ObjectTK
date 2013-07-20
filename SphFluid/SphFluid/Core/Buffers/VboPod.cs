@@ -2,29 +2,29 @@
 
 namespace SphFluid.Core.Buffers
 {
-    public class VboPod
+    public class VboPod<T>
         : IReleasable
+        where T : struct
     {
-        public Vbo Ping { private set; get; }
-        public Vbo Pong { private set; get; }
+        public Vbo<T> Ping { private set; get; }
+        public Vbo<T> Pong { private set; get; }
 
         public VboPod()
         {
-            Ping = new Vbo();
-            Pong = new Vbo();
+            Ping = new Vbo<T>();
+            Pong = new Vbo<T>();
         }
 
-        public void Init(int elementCount, int elementSize)
+        public void Init(int elementCount)
         {
-            Ping.AllocateData(BufferTarget.ArrayBuffer, elementCount, elementSize, BufferUsageHint.StreamDraw);
-            Pong.AllocateData(BufferTarget.ArrayBuffer, elementCount, elementSize, BufferUsageHint.StreamDraw);
+            Ping.AllocateData(BufferTarget.ArrayBuffer, elementCount, BufferUsageHint.StreamDraw);
+            Pong.AllocateData(BufferTarget.ArrayBuffer, elementCount, BufferUsageHint.StreamDraw);
         }
 
-        public void Init<T>(T[] data, int elementSize)
-            where T : struct
+        public void Init(T[] data)
         {
-            Ping.UploadData(BufferTarget.ArrayBuffer, data, elementSize, BufferUsageHint.StreamDraw);
-            Pong.AllocateData(BufferTarget.ArrayBuffer, data.Length, elementSize, BufferUsageHint.StreamDraw);
+            Ping.UploadData(BufferTarget.ArrayBuffer, data, BufferUsageHint.StreamDraw);
+            Pong.AllocateData(BufferTarget.ArrayBuffer, data.Length, BufferUsageHint.StreamDraw);
         }
 
         public void Swap()

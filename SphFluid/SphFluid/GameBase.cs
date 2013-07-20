@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using QuickFont;
 using SphFluid.Core;
 using SphFluid.Core.Shaders;
@@ -47,6 +48,23 @@ namespace SphFluid
             ModelView = Matrix4.Identity;
             // apply camera transform
             Camera.ApplyCamera(ref ModelView);
+        }
+
+        /// <summary>
+        /// Unbinds texture 0 to n and resets the active framebuffer to default buffer, i.e. the screen.
+        /// </summary>
+        /// <param name="n">The number of texture to unbind.</param>
+        public static void ResetState(int n)
+        {
+            for (var i = 0; i < n; i++)
+            {
+                GL.ActiveTexture(TextureUnit.Texture0 + i);
+                GL.BindTexture(TextureTarget.TextureBuffer, 0);
+                GL.DisableVertexAttribArray(0);
+            }
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.UseProgram(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
     }
 }

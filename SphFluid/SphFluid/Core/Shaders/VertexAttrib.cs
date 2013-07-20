@@ -16,12 +16,14 @@ namespace SphFluid.Core.Shaders
             Type = type;
         }
 
-        public void Bind(Vbo buffer)
+        public void Bind<T>(Vbo<T> buffer)
+            where T : struct
         {
             Bind(buffer, 0, 0, false);
         }
 
-        public void Bind(Vbo buffer, int stride, int offset, bool normalized)
+        public void Bind<T>(Vbo<T> buffer, int stride, int offset, bool normalized)
+            where T : struct
         {
             // bind given buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);

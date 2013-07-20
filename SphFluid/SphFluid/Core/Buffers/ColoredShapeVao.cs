@@ -7,7 +7,7 @@ namespace SphFluid.Core.Buffers
     public class ColoredShapeVao
         : IndexedShapeVao
     {
-        private readonly Vbo _colorBuffer;
+        private readonly Vbo<int> _colorBuffer;
 
         protected ColoredShapeVao(ColoredShape shape, BeginMode mode, int drawCount)
             : base(shape, mode, drawCount)
@@ -15,8 +15,8 @@ namespace SphFluid.Core.Buffers
             GL.BindVertexArray(VaoHandle);
             // create color buffer
             GL.EnableClientState(ArrayCap.ColorArray);
-            _colorBuffer = new Vbo();
-            _colorBuffer.UploadData(BufferTarget.ArrayBuffer, shape.Colors, sizeof(int));
+            _colorBuffer = new Vbo<int>();
+            _colorBuffer.UploadData(BufferTarget.ArrayBuffer, shape.Colors);
             GL.ColorPointer(4, ColorPointerType.UnsignedByte, 0, IntPtr.Zero);
             // unbind vertex array object
             GL.BindVertexArray(0);

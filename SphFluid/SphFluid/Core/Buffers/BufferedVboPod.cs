@@ -3,8 +3,9 @@ using SphFluid.Core.Shaders;
 
 namespace SphFluid.Core.Buffers
 {
-    public class BufferedVboPod
-        : VboPod
+    public class BufferedVboPod<T>
+        : VboPod<T>
+        where T : struct
     {
         private int _bufferTexture;
 
