@@ -9,9 +9,9 @@ namespace SphFluid.Core.Shaders
         public int Components { get; private set; }
         public VertexAttribPointerType Type { get; private set; }
 
-        public VertexAttrib(int index, int components, VertexAttribPointerType type)
+        public VertexAttrib(int program, string name, int components, VertexAttribPointerType type)
         {
-            Index = index;
+            Index = GL.GetAttribLocation(program, name);
             Components = components;
             Type = type;
         }

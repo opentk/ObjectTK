@@ -15,7 +15,7 @@ namespace SphFluid.Core.Buffers
             GL.BindVertexArray(VaoHandle);
             // create index buffer (elements inside the vertex buffer, not color indices as per the IndexPointer function!)
             _elementBuffer = new Vbo<int>();
-            _elementBuffer.UploadData(BufferTarget.ElementArrayBuffer, shape.Indices);
+            _elementBuffer.Init(BufferTarget.ElementArrayBuffer, shape.Indices);
             // unbind vertex array object
             GL.BindVertexArray(0);
         }

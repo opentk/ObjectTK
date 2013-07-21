@@ -16,7 +16,7 @@ namespace SphFluid.Core.Buffers
             // create color buffer
             GL.EnableClientState(ArrayCap.ColorArray);
             _colorBuffer = new Vbo<int>();
-            _colorBuffer.UploadData(BufferTarget.ArrayBuffer, shape.Colors);
+            _colorBuffer.Init(BufferTarget.ArrayBuffer, shape.Colors);
             GL.ColorPointer(4, ColorPointerType.UnsignedByte, 0, IntPtr.Zero);
             // unbind vertex array object
             GL.BindVertexArray(0);

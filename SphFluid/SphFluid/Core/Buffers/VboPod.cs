@@ -15,16 +15,16 @@ namespace SphFluid.Core.Buffers
             Pong = new Vbo<T>();
         }
 
-        public void Init(int elementCount)
+        public void Init(BufferTarget target, int elementCount)
         {
-            Ping.AllocateData(BufferTarget.ArrayBuffer, elementCount, BufferUsageHint.StreamDraw);
-            Pong.AllocateData(BufferTarget.ArrayBuffer, elementCount, BufferUsageHint.StreamDraw);
+            Ping.Init(target, elementCount, BufferUsageHint.StreamDraw);
+            Pong.Init(target, elementCount, BufferUsageHint.StreamDraw);
         }
 
-        public void Init(T[] data)
+        public void Init(BufferTarget target, T[] data)
         {
-            Ping.UploadData(BufferTarget.ArrayBuffer, data, BufferUsageHint.StreamDraw);
-            Pong.AllocateData(BufferTarget.ArrayBuffer, data.Length, BufferUsageHint.StreamDraw);
+            Ping.Init(target, data, BufferUsageHint.StreamDraw);
+            Pong.Init(target, data.Length, BufferUsageHint.StreamDraw);
         }
 
         public void Swap()

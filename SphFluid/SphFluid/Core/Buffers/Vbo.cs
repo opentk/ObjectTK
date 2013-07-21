@@ -40,7 +40,7 @@ namespace SphFluid.Core.Buffers
             GL.GenBuffers(1, out VboHandle);
         }
 
-        public void UploadData(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             ElementCount = data.Length;
             var fullSize = data.Length * ElementSize;
@@ -50,7 +50,7 @@ namespace SphFluid.Core.Buffers
             CheckBufferSize(bufferTarget, fullSize);
         }
 
-        public void AllocateData(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             ElementCount = elementCount;
             var fullSize = elementCount * ElementSize;

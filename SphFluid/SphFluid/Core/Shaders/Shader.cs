@@ -112,19 +112,6 @@ namespace SphFluid.Core.Shaders
             return null;
         }
 
-        protected Uniform<T> GetUniform<T>(string name, Action<int, T> setter)
-        {
-            var location = GL.GetUniformLocation(Program, name);
-            if (location == -1) Trace.TraceWarning(string.Format("Uniform not found or not active: {0}", name));
-            return new Uniform<T>(location, setter);
-        }
-
-        protected VertexAttrib GetVertexAttrib(string name, int component, VertexAttribPointerType type)
-        {
-            var index = GL.GetAttribLocation(Program, name);
-            return new VertexAttrib(index, component, type);
-        }
-
         public void Use()
         {
             GL.UseProgram(Program);

@@ -17,7 +17,7 @@ namespace SphFluid.Core.Buffers
             // create vertex buffer
             GL.EnableClientState(ArrayCap.VertexArray);
             _vertexBuffer = new Vbo<Vector3>();
-            _vertexBuffer.UploadData(BufferTarget.ArrayBuffer, shape.Vertices);
+            _vertexBuffer.Init(BufferTarget.ArrayBuffer, shape.Vertices);
             GL.VertexPointer(3, VertexPointerType.Float, 0, IntPtr.Zero);
             // unbind vertex array object
             GL.BindVertexArray(0);
