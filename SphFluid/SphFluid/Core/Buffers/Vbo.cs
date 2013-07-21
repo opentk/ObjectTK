@@ -13,6 +13,8 @@ namespace SphFluid.Core.Buffers
             get { return VboHandle; }
         }
 
+        public int TextureHandle { get; protected set; }
+
         protected int VboHandle;
         protected int ElementCount;
 
@@ -33,11 +35,11 @@ namespace SphFluid.Core.Buffers
             }
         }
 #endif
-
-
+        
         public Vbo()
         {
             GL.GenBuffers(1, out VboHandle);
+            TextureHandle = GL.GenTexture();
         }
 
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
@@ -75,6 +77,7 @@ namespace SphFluid.Core.Buffers
         public void Release()
         {
             GL.DeleteBuffers(1, ref VboHandle);
+            GL.DeleteTexture(TextureHandle);
         }
     }
 }
