@@ -6,7 +6,7 @@ namespace SphFluid.Core.Shaders
     public class ShaderSourceAttribute
         : Attribute
     {
-        public readonly string File;
+        public string File { get; protected set; }
 
         public ShaderSourceAttribute(string file)
         {

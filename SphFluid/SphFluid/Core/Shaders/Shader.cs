@@ -10,25 +10,24 @@ using SphFluid.Properties;
 
 namespace SphFluid.Core.Shaders
 {
-    //TODO: refactor default fields to something which can not be publicly set
     public class Shader
         : IReleasable
     {
-        private static readonly Dictionary<Type, Func<int, FieldInfo, object>> TypeMapping = new Dictionary<Type, Func<int, FieldInfo, object>>
+        private static readonly Dictionary<Type, Func<int, MemberInfo, object>> TypeMapping = new Dictionary<Type, Func<int, MemberInfo, object>>
         {
             {
-                typeof(VertexAttrib), (program, field) =>
+                typeof(VertexAttrib), (program, info) =>
                     {
-                        var info = field.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
-                        if (info == null) throw new ApplicationException("VertexAttribAttribute missing!");
-                        return new VertexAttrib(program, field.Name, info.Components, info.Type);
+                        var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
+                        if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
+                        return new VertexAttrib(program, info.Name, attrib.Components, attrib.Type);
                     }
             },
-            { typeof(Uniform<int>), (program, field) => new Uniform<int>(program, field.Name, GL.Uniform1) },
-            { typeof(Uniform<float>), (program, field) => new Uniform<float>(program, field.Name, GL.Uniform1) },
-            { typeof(Uniform<Vector3>), (program, field) => new Uniform<Vector3>(program, field.Name, GL.Uniform3) },
-            { typeof(Uniform<Matrix4>), (program, field) => new Uniform<Matrix4>(program, field.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) },
-            { typeof(TextureUniform), (program, field) => new TextureUniform(program, field.Name) }
+            { typeof(Uniform<int>), (program, info) => new Uniform<int>(program, info.Name, GL.Uniform1) },
+            { typeof(Uniform<float>), (program, info) => new Uniform<float>(program, info.Name, GL.Uniform1) },
+            { typeof(Uniform<Vector3>), (program, info) => new Uniform<Vector3>(program, info.Name, GL.Uniform3) },
+            { typeof(Uniform<Matrix4>), (program, info) => new Uniform<Matrix4>(program, info.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) },
+            { typeof(TextureUniform), (program, info) => new TextureUniform(program, info.Name) }
         };
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace SphFluid.Core.Shaders
             Trace.TraceInformation("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
             Utility.Assert(() => linkStatus, 1, string.Format("Error linking program: {0}", info));
-            // initialize fields
+            // initialize shader properties
             Initialize();
         }
 
@@ -112,21 +111,21 @@ namespace SphFluid.Core.Shaders
         {
             var outs = new List<string>();
             var counter = 0;
-            foreach (var field in GetType().GetFields())
+            foreach (var property in GetType().GetProperties())
             {
-                if (field.FieldType != typeof(TransformOut)) continue;
-                field.SetValue(this, new TransformOut(counter++));
-                outs.Add(field.Name);
+                if (property.PropertyType != typeof(TransformOut)) continue;
+                property.SetValue(this, new TransformOut(counter++), null);
+                outs.Add(property.Name);
             }
             return outs;
         }
 
         private void Initialize()
         {
-            foreach (var field in GetType().GetFields())
+            foreach (var property in GetType().GetProperties())
             {
-                if (!TypeMapping.ContainsKey(field.FieldType)) continue;
-                field.SetValue(this, TypeMapping[field.FieldType].Invoke(Program, field));
+                if (!TypeMapping.ContainsKey(property.PropertyType)) continue;
+                property.SetValue(this, TypeMapping[property.PropertyType].Invoke(Program, property), null);
             }
         }
 

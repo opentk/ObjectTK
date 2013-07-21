@@ -3,12 +3,12 @@ using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Shaders
 {
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class VertexAttribAttribute
         : Attribute
     {
-        public readonly int Components;
-        public readonly VertexAttribPointerType Type;
+        public int Components { get; protected set; }
+        public VertexAttribPointerType Type { get; protected set; }
 
         public VertexAttribAttribute(int components, VertexAttribPointerType type)
         {
