@@ -2,54 +2,55 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Properties;
 
 namespace SphFluid.Core.Shaders
 {
+    //TODO: refactor default fields to something which can not be publicly set
     public class Shader
         : IReleasable
     {
-        private readonly List<int> _shaders;
+        private static readonly Dictionary<Type, Func<int, FieldInfo, object>> TypeMapping = new Dictionary<Type, Func<int, FieldInfo, object>>
+        {
+            {
+                typeof(VertexAttrib), (program, field) =>
+                    {
+                        var info = field.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
+                        if (info == null) throw new ApplicationException("VertexAttribAttribute missing!");
+                        return new VertexAttrib(program, field.Name, info.Components, info.Type);
+                    }
+            },
+            { typeof(Uniform<int>), (program, field) => new Uniform<int>(program, field.Name, GL.Uniform1) },
+            { typeof(Uniform<float>), (program, field) => new Uniform<float>(program, field.Name, GL.Uniform1) },
+            { typeof(Uniform<Vector3>), (program, field) => new Uniform<Vector3>(program, field.Name, GL.Uniform3) },
+            { typeof(Uniform<Matrix4>), (program, field) => new Uniform<Matrix4>(program, field.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) },
+            { typeof(TextureUniform), (program, field) => new TextureUniform(program, field.Name) }
+        };
 
         /// <summary>
         /// Shader program handle
         /// </summary>
         public int Program { get; private set; }
 
-        private Shader()
+        /// <summary>
+        /// Stores all shader handles to properly release them later
+        /// </summary>
+        private readonly List<int> _shaders;
+
+        protected Shader()
         {
             _shaders = new List<int>();
-        }
-
-        protected Shader(string vertexShader)
-            : this()
-        {
-            CreateProgram(new Dictionary<ShaderType, string>
-            {
-                { ShaderType.VertexShader, vertexShader }
-            });
-        }
-
-        protected Shader(string vertexShader, string fragmentShader)
-            : this()
-        {
-            CreateProgram(new Dictionary<ShaderType, string>
-            {
-                { ShaderType.VertexShader, vertexShader },
-                { ShaderType.FragmentShader, fragmentShader }
-            });
-        }
-
-        protected Shader(string vertexShader, string geometryShader, string fragmentShader)
-            : this()
-        {
-            CreateProgram(new Dictionary<ShaderType, string>
-            {
-                { ShaderType.VertexShader, vertexShader },
-                { ShaderType.GeometryShader, geometryShader },
-                { ShaderType.FragmentShader, fragmentShader }
-            });
+            var shaderSources = new Dictionary<ShaderType, string>();
+            var attributes = GetType().GetCustomAttributes<ShaderSourceAttribute>(true).ToList();
+            attributes.Where(_ => _.GetType() == typeof(VertexShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.VertexShader, _.File));
+            attributes.Where(_ => _.GetType() == typeof(GeometryShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.GeometryShader, _.File));
+            attributes.Where(_ => _.GetType() == typeof(FragmentShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.FragmentShader, _.File));
+            if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
+            CreateProgram(shaderSources);
         }
 
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
@@ -63,11 +64,10 @@ namespace SphFluid.Core.Shaders
                 AttachShader(pair.Key, pair.Value);
             }
             // bind transform feedback varyings if any
-            TransformFeedbackMode mode;
-            var feedbackVaryings = GetTransformFeedbackVaryings(out mode);
-            if (feedbackVaryings != null)
+            var outs = InitializeTransformOut();
+            if (outs.Count > 0)
             {
-                GL.TransformFeedbackVaryings(Program, feedbackVaryings.Count, feedbackVaryings.ToArray(), mode);
+                GL.TransformFeedbackVaryings(Program, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
             }
             // link program
             GL.LinkProgram(Program);
@@ -78,6 +78,8 @@ namespace SphFluid.Core.Shaders
             Trace.TraceInformation("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
             Utility.Assert(() => linkStatus, 1, string.Format("Error linking program: {0}", info));
+            // initialize fields
+            Initialize();
         }
 
         private void AttachShader(ShaderType type, string name)
@@ -106,10 +108,26 @@ namespace SphFluid.Core.Shaders
             _shaders.Add(shader);
         }
 
-        protected virtual List<string> GetTransformFeedbackVaryings(out TransformFeedbackMode mode)
+        private List<string> InitializeTransformOut()
         {
-            mode = TransformFeedbackMode.InterleavedAttribs;
-            return null;
+            var outs = new List<string>();
+            var counter = 0;
+            foreach (var field in GetType().GetFields())
+            {
+                if (field.FieldType != typeof(TransformOut)) continue;
+                field.SetValue(this, new TransformOut(counter++));
+                outs.Add(field.Name);
+            }
+            return outs;
+        }
+
+        private void Initialize()
+        {
+            foreach (var field in GetType().GetFields())
+            {
+                if (!TypeMapping.ContainsKey(field.FieldType)) continue;
+                field.SetValue(this, TypeMapping[field.FieldType].Invoke(Program, field));
+            }
         }
 
         public void Use()

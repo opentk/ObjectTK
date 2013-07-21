@@ -4,8 +4,8 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using QuickFont;
 using SphFluid.Core;
-using SphFluid.Core.Shaders;
 using SphFluid.Properties;
+using SphFluid.Simulation.Shaders;
 
 namespace SphFluid
 {
