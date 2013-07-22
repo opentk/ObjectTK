@@ -15,20 +15,20 @@ namespace SphFluid.Core.Shaders
     {
         private static readonly Dictionary<Type, Func<int, MemberInfo, object>> TypeMapping = new Dictionary<Type, Func<int, MemberInfo, object>>
         {
-            {
-                typeof(VertexAttrib), (program, info) =>
-                    {
-                        var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
-                        if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
-                        return new VertexAttrib(program, info.Name, attrib.Components, attrib.Type);
-                    }
-            },
+            { typeof(VertexAttrib), VertexAttribHelper },
+            { typeof(TextureUniform), (program, info) => new TextureUniform(program, info.Name) },
             { typeof(Uniform<int>), (program, info) => new Uniform<int>(program, info.Name, GL.Uniform1) },
             { typeof(Uniform<float>), (program, info) => new Uniform<float>(program, info.Name, GL.Uniform1) },
             { typeof(Uniform<Vector3>), (program, info) => new Uniform<Vector3>(program, info.Name, GL.Uniform3) },
-            { typeof(Uniform<Matrix4>), (program, info) => new Uniform<Matrix4>(program, info.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) },
-            { typeof(TextureUniform), (program, info) => new TextureUniform(program, info.Name) }
+            { typeof(Uniform<Matrix4>), (program, info) => new Uniform<Matrix4>(program, info.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) }
         };
+
+        private static object VertexAttribHelper(int program, MemberInfo info)
+        {
+            var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
+            if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
+            return new VertexAttrib(program, info.Name, attrib.Components, attrib.Type);
+        }
 
         /// <summary>
         /// Shader program handle
@@ -111,9 +111,8 @@ namespace SphFluid.Core.Shaders
         {
             var outs = new List<string>();
             var counter = 0;
-            foreach (var property in GetType().GetProperties())
+            foreach (var property in GetType().GetProperties().Where(_ => _.PropertyType == typeof(TransformOut)))
             {
-                if (property.PropertyType != typeof(TransformOut)) continue;
                 property.SetValue(this, new TransformOut(counter++), null);
                 outs.Add(property.Name);
             }
@@ -122,9 +121,8 @@ namespace SphFluid.Core.Shaders
 
         private void Initialize()
         {
-            foreach (var property in GetType().GetProperties())
+            foreach (var property in GetType().GetProperties().Where(_ => TypeMapping.ContainsKey(_.PropertyType)))
             {
-                if (!TypeMapping.ContainsKey(property.PropertyType)) continue;
                 property.SetValue(this, TypeMapping[property.PropertyType].Invoke(Program, property), null);
             }
         }
