@@ -13,17 +13,34 @@ namespace SphFluid.Core.Shaders
     public class Shader
         : IReleasable
     {
-        private static readonly Dictionary<Type, Func<int, MemberInfo, object>> TypeMapping = new Dictionary<Type, Func<int, MemberInfo, object>>
+        private interface IMapping
         {
-            { typeof(VertexAttrib), VertexAttribHelper },
-            { typeof(TextureUniform), (program, info) => new TextureUniform(program, info.Name) },
-            { typeof(Uniform<int>), (program, info) => new Uniform<int>(program, info.Name, GL.Uniform1) },
-            { typeof(Uniform<float>), (program, info) => new Uniform<float>(program, info.Name, GL.Uniform1) },
-            { typeof(Uniform<Vector3>), (program, info) => new Uniform<Vector3>(program, info.Name, GL.Uniform3) },
-            { typeof(Uniform<Matrix4>), (program, info) => new Uniform<Matrix4>(program, info.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)) }
+            Type MappedType { get; }
+            object Create(int program, MemberInfo info);
+        }
+
+        private class Mapping<T>
+            : IMapping
+        {
+            private readonly Func<int, MemberInfo, T> _creator;
+            public Type MappedType { get { return typeof(T); } }
+            public Mapping(Func<int, MemberInfo, T> creator) { _creator = creator; }
+            public object Create(int program, MemberInfo info) { return _creator(program, info); }
+        }
+
+        private static readonly List<IMapping> TypeMapping = new List<IMapping>
+        {
+            new Mapping<VertexAttrib>(VertexAttribHelper),
+            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
+            new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
+            new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
+            new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix)))
         };
 
-        private static object VertexAttribHelper(int program, MemberInfo info)
+        private static VertexAttrib VertexAttribHelper(int program, MemberInfo info)
         {
             var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
             if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
@@ -43,11 +60,7 @@ namespace SphFluid.Core.Shaders
         protected Shader()
         {
             _shaders = new List<int>();
-            var shaderSources = new Dictionary<ShaderType, string>();
-            var attributes = GetType().GetCustomAttributes<ShaderSourceAttribute>(true).ToList();
-            attributes.Where(_ => _.GetType() == typeof(VertexShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.VertexShader, _.File));
-            attributes.Where(_ => _.GetType() == typeof(GeometryShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.GeometryShader, _.File));
-            attributes.Where(_ => _.GetType() == typeof(FragmentShaderSourceAttribute)).ToList().ForEach(_ => shaderSources.Add(ShaderType.FragmentShader, _.File));
+            var shaderSources = ShaderSourceAttribute.GetShaderSources(this);
             if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
             CreateProgram(shaderSources);
         }
@@ -107,23 +120,34 @@ namespace SphFluid.Core.Shaders
             _shaders.Add(shader);
         }
 
+        /// <summary>
+        /// Initializes all properties of the current shader which are of type TransformOut.
+        /// Is called before linking the shader to initialize transform feedback outputs and store their index to the related property.
+        /// </summary>
+        /// <returns></returns>
         private List<string> InitializeTransformOut()
         {
             var outs = new List<string>();
-            var counter = 0;
+            var index = 0;
             foreach (var property in GetType().GetProperties().Where(_ => _.PropertyType == typeof(TransformOut)))
             {
-                property.SetValue(this, new TransformOut(counter++), null);
+                property.SetValue(this, new TransformOut(index++), null);
                 outs.Add(property.Name);
             }
             return outs;
         }
 
+        /// <summary>
+        /// Initializes all properties of the current shader instance which are of a type contained in the TypeMapping.
+        /// Is called after linking the shader to initialize vertex attributes and uniforms.
+        /// </summary>
         private void Initialize()
         {
-            foreach (var property in GetType().GetProperties().Where(_ => TypeMapping.ContainsKey(_.PropertyType)))
+            foreach (var property in GetType().GetProperties())
             {
-                property.SetValue(this, TypeMapping[property.PropertyType].Invoke(Program, property), null);
+                var mapping = TypeMapping.FirstOrDefault(_ => _.MappedType == property.PropertyType);
+                if (mapping == null) continue;
+                property.SetValue(this, mapping.Create(Program, property), null);
             }
         }
 
