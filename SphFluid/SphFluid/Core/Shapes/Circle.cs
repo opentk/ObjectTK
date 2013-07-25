@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Shapes
 {
@@ -8,6 +9,7 @@ namespace SphFluid.Core.Shapes
     {
         public Circle(float radius)
         {
+            DefaultMode = BeginMode.TriangleFan;
             const int z = 0;
             const int slices = 64;
             const float dtheta = MathHelper.TwoPi / (slices - 1);

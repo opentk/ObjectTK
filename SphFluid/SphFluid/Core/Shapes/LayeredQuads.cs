@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Shapes
 {
@@ -7,6 +8,7 @@ namespace SphFluid.Core.Shapes
     {
         public LayeredQuads(int layers)
         {
+            DefaultMode = BeginMode.Triangles;
             const float size = 1;
             var z = -size / 2f;
             var step = size / (layers-1);

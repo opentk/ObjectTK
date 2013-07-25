@@ -149,7 +149,7 @@ namespace SphFluid.Core
         {
             switch (e.Key)
             {
-                case Key.Space:
+                case Key.R:
                     ResetToDefault();
                     break;
             }

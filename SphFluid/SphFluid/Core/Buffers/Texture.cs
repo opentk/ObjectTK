@@ -11,5 +11,14 @@ namespace SphFluid.Core.Buffers
             // create texture
             TextureHandle = GL.GenTexture();
         }
+
+        protected void SetTexParameters()
+        {
+            GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        }
     }
 }

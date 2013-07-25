@@ -3,10 +3,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Shapes
 {
-    public class Quad
-        : Shape
+    public class TexturedQuad
+        : TexturedShape
     {
-        public Quad()
+        public TexturedQuad()
         {
             DefaultMode = BeginMode.TriangleStrip;
             
@@ -19,6 +19,14 @@ namespace SphFluid.Core.Shapes
                 new Vector3( 1, -1, z),
                 new Vector3(-1,  1, z),
                 new Vector3( 1,  1, z)
+            };
+            
+            TexCoords = new[]
+            {
+                new Vector2(0,0),
+                new Vector2(1,0),
+                new Vector2(0,1),
+                new Vector2(1,1),
             };
         }
     }

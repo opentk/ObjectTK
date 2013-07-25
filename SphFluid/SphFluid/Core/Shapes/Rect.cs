@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Shapes
 {
@@ -12,6 +13,7 @@ namespace SphFluid.Core.Shapes
 
         public Rect(float left, float bottom, float right, float top)
         {
+            DefaultMode = BeginMode.LineLoop;
             const int z = 0;
             Vertices = new[]
             {
