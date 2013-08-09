@@ -30,11 +30,17 @@ namespace SphFluid.Core.Buffers
             GL.FramebufferTexture(FramebufferTarget.Framebuffer, attachment, texture.TextureHandle, 0);
             CheckState();
         }
-
+        
         public void AttachLayer(FramebufferAttachment attachment, Texture texture, int layer)
         {
             // attach a layer of the texture to the framebuffer
             GL.FramebufferTextureLayer(FramebufferTarget.Framebuffer, attachment, texture.TextureHandle, 0, layer);
+            CheckState();
+        }
+
+        public void Detach(FramebufferAttachment attachment)
+        {
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, attachment, 0, 0);
             CheckState();
         }
     }
