@@ -24,7 +24,7 @@ namespace SphFluid
             : base(width, height, mode, title)
         {
             VSync = VSyncMode.Off;
-            Font = new QFont(Path.Combine(Settings.Default.FontDir, "HappySans.ttf"), 16);
+            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16);
             Camera = new Camera(this);
             SimpleShader = new SimpleShader();
             FrameTimer = new FrameTimer();
