@@ -10,7 +10,7 @@ namespace SphFluid.Core.Buffers
     {
         private readonly Vbo<Vector2> _texCoordBuffer;
 
-        protected TexturedShapeVao(TexturedShape shape, BeginMode mode, int drawCount)
+        protected TexturedShapeVao(TexturedShape shape, PrimitiveType mode, int drawCount)
             : base(shape, mode, drawCount)
         {
             GL.BindVertexArray(VaoHandle);
@@ -23,7 +23,7 @@ namespace SphFluid.Core.Buffers
             GL.BindVertexArray(0);
         }
 
-        public TexturedShapeVao(TexturedShape shape, BeginMode mode)
+        public TexturedShapeVao(TexturedShape shape, PrimitiveType mode)
             : this(shape, mode, shape.Vertices.Length) { }
 
         public override void Release()

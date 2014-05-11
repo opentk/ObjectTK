@@ -8,7 +8,7 @@ namespace SphFluid.Core.Shapes
     {
         public Quad()
         {
-            DefaultMode = BeginMode.TriangleStrip;
+            DefaultMode = PrimitiveType.TriangleStrip;
             
             // Source: http://www.opengl.org/archives/resources/faq/technical/transformations.htm (9.090 How do I draw a full-screen quad?)
             // Your rectangle or quad's Z value should be in the range of –1.0 to 1.0, with –1.0 mapping to the zNear clipping plane, and 1.0 to the zFar clipping plane.

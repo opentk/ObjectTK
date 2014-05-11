@@ -9,7 +9,7 @@ namespace SphFluid.Core.Shapes
     {
         public Circle(float radius)
         {
-            DefaultMode = BeginMode.TriangleFan;
+            DefaultMode = PrimitiveType.TriangleFan;
             const int z = 0;
             const int slices = 64;
             const float dtheta = MathHelper.TwoPi / (slices - 1);

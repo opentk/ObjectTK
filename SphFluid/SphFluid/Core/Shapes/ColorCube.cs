@@ -9,7 +9,7 @@ namespace SphFluid.Core.Shapes
     {
         public ColorCube()
         {
-            DefaultMode = BeginMode.Triangles;
+            DefaultMode = PrimitiveType.Triangles;
 
             Vertices = new[]
             {

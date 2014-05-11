@@ -13,7 +13,7 @@ namespace SphFluid.Core.Shapes
 
         public Rect(float left, float bottom, float right, float top)
         {
-            DefaultMode = BeginMode.LineLoop;
+            DefaultMode = PrimitiveType.LineLoop;
             const int z = 0;
             Vertices = new[]
             {

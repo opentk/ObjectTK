@@ -9,7 +9,7 @@ namespace SphFluid.Core.Buffers
     {
         private readonly Vbo<int> _colorBuffer;
 
-        protected ColoredShapeVao(ColoredShape shape, BeginMode mode, int drawCount)
+        protected ColoredShapeVao(ColoredShape shape, PrimitiveType mode, int drawCount)
             : base(shape, mode, drawCount)
         {
             GL.BindVertexArray(VaoHandle);
@@ -22,7 +22,7 @@ namespace SphFluid.Core.Buffers
             GL.BindVertexArray(0);
         }
 
-        public ColoredShapeVao(ColoredShape shape, BeginMode mode)
+        public ColoredShapeVao(ColoredShape shape, PrimitiveType mode)
             : this(shape, mode, shape.Indices.Length) { }
 
         public override void Release()

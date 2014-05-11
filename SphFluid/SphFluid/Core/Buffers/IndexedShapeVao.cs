@@ -9,7 +9,7 @@ namespace SphFluid.Core.Buffers
     {
         private readonly Vbo<int> _elementBuffer;
 
-        protected IndexedShapeVao(IndexedShape shape, BeginMode mode, int drawCount)
+        protected IndexedShapeVao(IndexedShape shape, PrimitiveType mode, int drawCount)
             : base(shape, mode, drawCount)
         {
             GL.BindVertexArray(VaoHandle);
@@ -20,7 +20,7 @@ namespace SphFluid.Core.Buffers
             GL.BindVertexArray(0);
         }
 
-        public IndexedShapeVao(IndexedShape shape, BeginMode mode)
+        public IndexedShapeVao(IndexedShape shape, PrimitiveType mode)
             : this(shape, mode, shape.Indices.Length) { }
 
         public override void Release()

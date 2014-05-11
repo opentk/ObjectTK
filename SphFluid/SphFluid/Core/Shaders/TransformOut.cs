@@ -15,7 +15,7 @@ namespace SphFluid.Core.Shaders
         public void BindBuffer<T>(Vbo<T> buffer)
             where T : struct
         {
-            GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, Index, buffer.Handle);
+            GL.BindBufferBase(BufferRangeTarget.TransformFeedbackBuffer, Index, buffer.Handle);
         }
     }
 }

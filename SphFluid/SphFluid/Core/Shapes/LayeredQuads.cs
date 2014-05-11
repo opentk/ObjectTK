@@ -8,7 +8,7 @@ namespace SphFluid.Core.Shapes
     {
         public LayeredQuads(int layers)
         {
-            DefaultMode = BeginMode.Triangles;
+            DefaultMode = PrimitiveType.Triangles;
             const float size = 1;
             var z = -size / 2f;
             var step = size / (layers-1);

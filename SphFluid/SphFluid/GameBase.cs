@@ -26,7 +26,7 @@ namespace SphFluid
             : base(width, height, mode, title)
         {
             Logger.InfoFormat("Initializing game window: {0}", title);
-            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16f);
+            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16);
             VSync = VSyncMode.Off;
             Camera = new Camera(this);
             FrameTimer = new FrameTimer();

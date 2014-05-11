@@ -6,7 +6,7 @@ namespace SphFluid.Core.Shapes
 {
     public abstract class Shape
     {
-        public BeginMode DefaultMode { get; set; }
+        public PrimitiveType DefaultMode { get; set; }
         public Vector3[] Vertices { get; protected set; }
 
         public Vao CreateVao()
@@ -14,7 +14,7 @@ namespace SphFluid.Core.Shapes
             return CreateVao(DefaultMode);
         }
 
-        public virtual Vao CreateVao(BeginMode mode)
+        public virtual Vao CreateVao(PrimitiveType mode)
         {
             return new ShapeVao(this, mode);
         }
@@ -24,7 +24,7 @@ namespace SphFluid.Core.Shapes
             Render(DefaultMode);
         }
 
-        public virtual void Render(BeginMode mode)
+        public virtual void Render(PrimitiveType mode)
         {
             GL.Begin(mode);
             foreach (var vertex in Vertices)

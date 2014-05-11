@@ -14,7 +14,7 @@ namespace SphFluid.Core.Shapes
             return (c.A << 24) | (c.B << 16) | (c.G << 8) | c.R;
         }
 
-        public override Vao CreateVao(BeginMode mode)
+        public override Vao CreateVao(PrimitiveType mode)
         {
             return new ColoredShapeVao(this, mode);
         }

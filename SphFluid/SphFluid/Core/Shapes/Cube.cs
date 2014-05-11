@@ -8,7 +8,7 @@ namespace SphFluid.Core.Shapes
     {
         public Cube()
         {
-            DefaultMode = BeginMode.Triangles;
+            DefaultMode = PrimitiveType.Triangles;
 
             Vertices = new[]
             {

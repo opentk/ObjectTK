@@ -88,7 +88,7 @@ namespace SphFluid.Core.Shaders
             GL.LinkProgram(Program);
             // assert that no link errors occured
             int linkStatus;
-            GL.GetProgram(Program, ProgramParameter.LinkStatus, out linkStatus);
+            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out linkStatus);
             var info = GL.GetProgramInfoLog(Program);
             Logger.DebugFormat("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
@@ -113,8 +113,8 @@ namespace SphFluid.Core.Shaders
             // assert that no compile error occured
             int compileStatus;
             GL.GetShader(shader, ShaderParameter.CompileStatus, out compileStatus);
-            var info = GL.GetShaderInfoLog(shader);
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
+            var info = GL.GetShaderInfoLog(shader);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
             Utility.Assert(() => compileStatus, 1, string.Format("Error compiling shader: {0}\n{1}", filename, info));
             // attach shader to program

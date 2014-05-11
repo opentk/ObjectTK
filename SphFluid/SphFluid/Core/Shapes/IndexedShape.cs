@@ -8,12 +8,12 @@ namespace SphFluid.Core.Shapes
     {
         public int[] Indices { get; protected set; }
 
-        public override Vao CreateVao(BeginMode mode)
+        public override Vao CreateVao(PrimitiveType mode)
         {
             return new IndexedShapeVao(this, mode);
         }
 
-        public override void Render(BeginMode mode)
+        public override void Render(PrimitiveType mode)
         {
             GL.Begin(mode);
             foreach (var index in Indices)

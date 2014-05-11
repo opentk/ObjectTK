@@ -12,10 +12,10 @@ namespace SphFluid.Core.Buffers
 
         protected int VaoHandle;
 
-        protected readonly BeginMode Mode;
+        protected readonly PrimitiveType Mode;
         protected readonly int DrawCount;
-        
-        protected Vao(BeginMode mode, int drawCount)
+
+        protected Vao(PrimitiveType mode, int drawCount)
         {
             Mode = mode;
             DrawCount = drawCount;
