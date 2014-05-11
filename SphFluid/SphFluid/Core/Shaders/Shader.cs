@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using log4net;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Properties;
@@ -13,6 +13,8 @@ namespace SphFluid.Core.Shaders
     public class Shader
         : IReleasable
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
+
         private interface IMapping
         {
             Type MappedType { get; }
@@ -67,7 +69,7 @@ namespace SphFluid.Core.Shaders
 
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
-            Trace.TraceInformation("Creating shader program:");
+            Logger.InfoFormat("Creating shader program: {0}", GetType().Name);
             // create program
             Program = GL.CreateProgram();
             // load and attach all specified shaders
@@ -82,13 +84,14 @@ namespace SphFluid.Core.Shaders
                 GL.TransformFeedbackVaryings(Program, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
             }
             // link program
+            Logger.InfoFormat("Linking shader program: {0}", GetType().Name);
             GL.LinkProgram(Program);
             // assert that no link errors occured
             int linkStatus;
             GL.GetProgram(Program, ProgramParameter.LinkStatus, out linkStatus);
             var info = GL.GetProgramInfoLog(Program);
-            Trace.TraceInformation("Link status: {0}", linkStatus);
-            if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
+            Logger.DebugFormat("Link status: {0}", linkStatus);
+            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
             Utility.Assert(() => linkStatus, 1, string.Format("Error linking program: {0}", info));
             // initialize shader properties
             Initialize();
@@ -96,7 +99,7 @@ namespace SphFluid.Core.Shaders
 
         private void AttachShader(ShaderType type, string name)
         {
-            Trace.TraceInformation(name);
+            Logger.InfoFormat("Compiling {0}: {1}", type, name);
             // create shader
             var shader = GL.CreateShader(type);
             // load shaders source
@@ -111,8 +114,8 @@ namespace SphFluid.Core.Shaders
             int compileStatus;
             GL.GetShader(shader, ShaderParameter.CompileStatus, out compileStatus);
             var info = GL.GetShaderInfoLog(shader);
-            Trace.TraceInformation("Compile status: {0}", compileStatus);
-            if (!string.IsNullOrEmpty(info)) Trace.TraceInformation("Info:\n{0}", info);
+            Logger.DebugFormat("Compiling status: {0}", compileStatus);
+            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
             Utility.Assert(() => compileStatus, 1, string.Format("Error compiling shader: {0}\n{1}", filename, info));
             // attach shader to program
             GL.AttachShader(Program, shader);
@@ -147,6 +150,7 @@ namespace SphFluid.Core.Shaders
             {
                 var mapping = TypeMapping.FirstOrDefault(_ => _.MappedType == property.PropertyType);
                 if (mapping == null) continue;
+                Logger.DebugFormat("Creating property mapping: {0}", property.Name);
                 property.SetValue(this, mapping.Create(Program, property), null);
             }
         }

@@ -1,20 +1,22 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using log4net;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using QuickFont;
 using SphFluid.Core;
 using SphFluid.Properties;
-using SphFluid.Simulation.Shaders;
 
 namespace SphFluid
 {
     public abstract class GameBase
         : GameWindow
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBase));
+
         protected readonly QFont Font;
         protected readonly Camera Camera;
-        protected readonly SimpleShader SimpleShader;
 
         protected FrameTimer FrameTimer;
         protected Matrix4 ModelView;
@@ -23,12 +25,24 @@ namespace SphFluid
         protected GameBase(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
+            Logger.InfoFormat("Initializing game window: {0}", title);
+            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16f);
             VSync = VSyncMode.Off;
-            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16);
             Camera = new Camera(this);
-            SimpleShader = new SimpleShader();
             FrameTimer = new FrameTimer();
             ResetMatrices();
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            WindowState = WindowState.Maximized;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Logger.InfoFormat("Window resized to: {0}x{1}", Width, Height);
         }
 
         protected void ResetMatrices()

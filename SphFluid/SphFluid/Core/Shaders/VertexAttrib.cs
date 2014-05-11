@@ -1,3 +1,4 @@
+using log4net;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Core.Buffers;
 
@@ -5,6 +6,8 @@ namespace SphFluid.Core.Shaders
 {
     public class VertexAttrib
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
+
         public int Index { get; private set; }
         public int Components { get; private set; }
         public VertexAttribPointerType Type { get; private set; }
@@ -12,6 +15,7 @@ namespace SphFluid.Core.Shaders
         public VertexAttrib(int program, string name, int components, VertexAttribPointerType type)
         {
             Index = GL.GetAttribLocation(program, name);
+            if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", name);
             Components = components;
             Type = type;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using log4net;
 using OpenTK;
 using OpenTK.Input;
 
@@ -7,12 +8,14 @@ namespace SphFluid.Core
 {
     public class Camera
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(Camera));
+
         public Vector3 Position;
         public float Yaw = 0;
         public float Pitch = 0;
         public float Roll;
 
-        public Vector3 DefaultPosition = new Vector3(0, 0, 2.2f);
+        public Vector3 DefaultPosition = new Vector3(0, 0, 3.0f);
         public float DefaultYaw = 44;
         public float DefaultPitch = 27.5f;
         public float DefaultRoll = 0;
@@ -26,6 +29,7 @@ namespace SphFluid.Core
 
         public Camera(GameWindow window)
         {
+            Logger.Info("Initializing camera");
             _window = window;
             _mouseButtonStates = new List<MouseButton>();
             RegisterEvents();
