@@ -21,7 +21,7 @@ namespace SphFluid.Core.Buffers
         private static void CheckState()
         {
             Utility.Assert("Unable to attach texture to framebuffer");
-            Utility.Assert(() => GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer), FramebufferErrorCode.FramebufferComplete, "Unable to create framebuffer");
+            Utility.Assert(GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer), FramebufferErrorCode.FramebufferComplete, "Unable to create framebuffer");
         }
 
         public void Attach(FramebufferAttachment attachment, Texture texture)

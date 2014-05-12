@@ -92,7 +92,7 @@ namespace SphFluid.Core.Shaders
             var info = GL.GetProgramInfoLog(Program);
             Logger.DebugFormat("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
-            Utility.Assert(() => linkStatus, 1, string.Format("Error linking program: {0}", info));
+            Utility.Assert(linkStatus, 1, string.Format("Error linking program: {0}", GetType().Name));
             // initialize shader properties
             Initialize();
         }
@@ -116,7 +116,7 @@ namespace SphFluid.Core.Shaders
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
             var info = GL.GetShaderInfoLog(shader);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
-            Utility.Assert(() => compileStatus, 1, string.Format("Error compiling shader: {0}\n{1}", filename, info));
+            Utility.Assert(compileStatus, 1, string.Format("Error compiling shader: {0}", filename));
             // attach shader to program
             GL.AttachShader(Program, shader);
             // remember shader to be able to properly release it
