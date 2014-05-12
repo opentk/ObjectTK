@@ -50,6 +50,7 @@ namespace SphFluid.Core.Buffers
             GL.BindBuffer(bufferTarget, VboHandle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
+            //TODO: unbind buffer after initialization?
         }
 
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)

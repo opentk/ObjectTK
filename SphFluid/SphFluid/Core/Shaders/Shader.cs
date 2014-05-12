@@ -46,7 +46,7 @@ namespace SphFluid.Core.Shaders
         {
             var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
             if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
-            return new VertexAttrib(program, info.Name, attrib.Components, attrib.Type);
+            return new VertexAttrib(program, info.Name, attrib);
         }
 
         /// <summary>

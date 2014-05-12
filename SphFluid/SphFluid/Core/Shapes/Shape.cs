@@ -8,23 +8,20 @@ namespace SphFluid.Core.Shapes
     {
         public PrimitiveType DefaultMode { get; set; }
         public Vector3[] Vertices { get; protected set; }
+        public Vbo<Vector3> VertexBuffer { get; protected set; }
 
-        public Vao CreateVao()
+        public virtual void UpdateBuffers()
         {
-            return CreateVao(DefaultMode);
+            VertexBuffer = new Vbo<Vector3>();
+            VertexBuffer.Init(BufferTarget.ArrayBuffer, Vertices);
         }
 
-        public virtual Vao CreateVao(PrimitiveType mode)
+        public void RenderImmediate()
         {
-            return new ShapeVao(this, mode);
+            RenderImmediate(DefaultMode);
         }
 
-        public virtual void Render()
-        {
-            Render(DefaultMode);
-        }
-
-        public virtual void Render(PrimitiveType mode)
+        public virtual void RenderImmediate(PrimitiveType mode)
         {
             GL.Begin(mode);
             foreach (var vertex in Vertices)

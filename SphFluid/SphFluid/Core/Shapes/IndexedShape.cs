@@ -6,14 +6,18 @@ namespace SphFluid.Core.Shapes
     public abstract class IndexedShape
         : Shape
     {
+        //TODO: use unsigned ints?
         public int[] Indices { get; protected set; }
+        public Vbo<int> IndexBuffer { get; protected set; }
 
-        public override Vao CreateVao(PrimitiveType mode)
+        public override void UpdateBuffers()
         {
-            return new IndexedShapeVao(this, mode);
+            base.UpdateBuffers();
+            IndexBuffer = new Vbo<int>();
+            IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 
-        public override void Render(PrimitiveType mode)
+        public override void RenderImmediate(PrimitiveType mode)
         {
             GL.Begin(mode);
             foreach (var index in Indices)

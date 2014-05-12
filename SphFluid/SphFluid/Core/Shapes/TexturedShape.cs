@@ -8,10 +8,13 @@ namespace SphFluid.Core.Shapes
         : Shape
     {
         public Vector2[] TexCoords { get; protected set; }
+        public Vbo<Vector2> TexCoordBuffer { get; protected set; }
 
-        public override Vao CreateVao(PrimitiveType mode)
+        public override void UpdateBuffers()
         {
-            return new TexturedShapeVao(this, mode);
+            base.UpdateBuffers();
+            TexCoordBuffer = new Vbo<Vector2>();
+            TexCoordBuffer.Init(BufferTarget.ArrayBuffer, TexCoords);
         }
     }
 }
