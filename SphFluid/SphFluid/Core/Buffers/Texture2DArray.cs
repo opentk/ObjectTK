@@ -10,7 +10,7 @@ namespace SphFluid.Core.Buffers
         {
             GL.BindTexture(TextureTarget.Texture2DArray, TextureHandle);
             GL.TexImage3D(TextureTarget.Texture2DArray, 0, format, width, height, slices, 0, pixelFormat, pixelType, IntPtr.Zero);
-            Utility.Assert("Unable to create texture");
+            CheckError();
         }
     }
 }

@@ -15,6 +15,12 @@ namespace SphFluid.Core.Buffers
             Pong = new Vbo<T>();
         }
 
+        public virtual void Release()
+        {
+            Ping.Release();
+            Pong.Release();
+        }
+
         public void Init(BufferTarget target, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             Ping.Init(target, elementCount, usageHint);
@@ -32,12 +38,6 @@ namespace SphFluid.Core.Buffers
             var tmp = Ping;
             Ping = Pong;
             Pong = tmp;
-        }
-
-        public virtual void Release()
-        {
-            Ping.Release();
-            Pong.Release();
         }
     }
 }

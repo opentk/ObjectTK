@@ -8,14 +8,9 @@ namespace SphFluid.Core.Buffers
         : IReleasable
         where T : struct
     {
-        public int Handle
-        {
-            get { return VboHandle; }
-        }
+        public int Handle { get; private set; }
+        public int TextureHandle { get; private set; }
 
-        public int TextureHandle { get; protected set; }
-
-        protected int VboHandle;
         protected int ElementCount;
 
         public int ElementSize
@@ -24,7 +19,10 @@ namespace SphFluid.Core.Buffers
         }
 
 #if DEBUG
-    public T[] Content
+        /// <summary>
+        /// Retrieves data back from vram for debugging purposes.
+        /// </summary>
+        public T[] Content
         {
             get
             {
@@ -38,8 +36,14 @@ namespace SphFluid.Core.Buffers
         
         public Vbo()
         {
-            GL.GenBuffers(1, out VboHandle);
+            Handle = GL.GenBuffer();
             TextureHandle = GL.GenTexture();
+        }
+
+        public void Release()
+        {
+            GL.DeleteBuffer(Handle);
+            GL.DeleteTexture(TextureHandle);
         }
 
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
@@ -47,10 +51,9 @@ namespace SphFluid.Core.Buffers
             ElementCount = data.Length;
             var fullSize = data.Length * ElementSize;
             // upload data to buffer
-            GL.BindBuffer(bufferTarget, VboHandle);
+            GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
-            //TODO: unbind buffer after initialization?
         }
 
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
@@ -58,7 +61,7 @@ namespace SphFluid.Core.Buffers
             ElementCount = elementCount;
             var fullSize = elementCount * ElementSize;
             // upload data to buffer
-            GL.BindBuffer(bufferTarget, VboHandle);
+            GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
         }
@@ -73,12 +76,6 @@ namespace SphFluid.Core.Buffers
                 throw new ApplicationException(string.Format(
                     "Problem uploading data to buffer object. Tried to upload {0} bytes, but uploaded {1}.", size, uploadedSize));
             }
-        }
-
-        public void Release()
-        {
-            GL.DeleteBuffers(1, ref VboHandle);
-            GL.DeleteTexture(TextureHandle);
         }
     }
 }
