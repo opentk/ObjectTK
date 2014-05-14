@@ -46,24 +46,48 @@ namespace SphFluid.Core.Buffers
             GL.DeleteTexture(TextureHandle);
         }
 
+        /// <summary>
+        /// Allocates buffer memory and uploads given data to it.
+        /// </summary>
+        /// <param name="bufferTarget"></param>
+        /// <param name="data"></param>
+        /// <param name="usageHint"></param>
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             ElementCount = data.Length;
             var fullSize = data.Length * ElementSize;
-            // upload data to buffer
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
         }
 
+        /// <summary>
+        /// Allocates buffer memory and initializes it to zero.
+        /// </summary>
+        /// <param name="bufferTarget"></param>
+        /// <param name="elementCount"></param>
+        /// <param name="usageHint"></param>
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             ElementCount = elementCount;
             var fullSize = elementCount * ElementSize;
-            // upload data to buffer
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
+        }
+
+        /// <summary>
+        /// Overwrite part of the buffer memory.
+        /// </summary>
+        /// <param name="bufferTarget"></param>
+        /// <param name="elementOffset"></param>
+        /// <param name="data"></param>
+        public void SubData(BufferTarget bufferTarget, int elementOffset, T[] data)
+        {
+            var offset = elementOffset * ElementSize;
+            var subSize = data.Length * ElementSize;
+            GL.BindBuffer(bufferTarget, Handle);
+            GL.BufferSubData(bufferTarget, (IntPtr)offset, (IntPtr)subSize, data);
         }
 
         protected void CheckBufferSize(BufferTarget bufferTarget, int size)

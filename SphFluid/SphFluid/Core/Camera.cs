@@ -15,7 +15,7 @@ namespace SphFluid.Core
         public float Pitch = 0;
         public float Roll;
 
-        public Vector3 DefaultPosition = new Vector3(0, 0, 3.0f);
+        public Vector3 DefaultPosition = new Vector3(0, 0, 2.2f);
         public float DefaultYaw = 55;
         public float DefaultPitch = 17;
         public float DefaultRoll = 0;
