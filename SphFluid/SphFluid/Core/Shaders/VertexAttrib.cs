@@ -35,6 +35,7 @@ namespace SphFluid.Core.Shaders
             GL.EnableVertexAttribArray(Index);
             // set the vertex attribute pointer to the current buffer
             GL.VertexAttribPointer(Index, Parameters.Components, Parameters.Type, normalized, stride, offset);
+            //TODO: VertexAttribArrays currently never get disabled again, maybe improve performance by doing so
         }
     }
 }
