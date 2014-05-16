@@ -29,6 +29,7 @@ namespace SphFluid.Core.Shaders
         public void Bind<T>(Vbo<T> buffer, int stride, int offset, bool normalized)
             where T : struct
         {
+            if (Index == -1) return;
             // bind given buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
             // make sure the vertex attribute is enabled

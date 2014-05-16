@@ -18,9 +18,11 @@ namespace SphFluid.Core.Shaders
             _setter = setter;
         }
 
-        public void Set(T value)
+        public bool Set(T value)
         {
+            if (Location == -1) return false;
             _setter(Location, value);
+            return true;
         }
     }
 }

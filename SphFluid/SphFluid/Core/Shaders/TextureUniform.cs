@@ -14,7 +14,7 @@ namespace SphFluid.Core.Shaders
         public void BindTexture(TextureTarget target, TextureUnit unit, Texture texture)
         {
             const int zero = (int)TextureUnit.Texture0;
-            Set((int)unit - zero);
+            if (!Set((int)unit - zero)) return;
             GL.ActiveTexture(unit);
             GL.BindTexture(target, texture.TextureHandle);
         }
@@ -23,7 +23,7 @@ namespace SphFluid.Core.Shaders
             where T : struct
         {
             const int zero = (int)TextureUnit.Texture0;
-            Set((int)unit - zero);
+            if (!Set((int)unit - zero)) return;
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.TextureBuffer, buffer.TextureHandle);
             GL.TexBuffer(TextureBufferTarget.TextureBuffer, format, buffer.Handle);
