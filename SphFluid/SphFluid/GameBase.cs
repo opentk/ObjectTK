@@ -70,6 +70,7 @@ namespace SphFluid
         /// <param name="n">The number of textures to unbind.</param>
         public static void ResetState(int n)
         {
+#if DEBUG
             for (var i = 0; i < n; i++)
             {
                 GL.ActiveTexture(TextureUnit.Texture0 + i);
@@ -80,6 +81,7 @@ namespace SphFluid
             GL.UseProgram(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+#endif
         }
     }
 }

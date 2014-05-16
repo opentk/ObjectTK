@@ -8,9 +8,9 @@ namespace SphFluid.Core.Shaders
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
 
-        public string Name { get; private set; }
-        public int Index { get; private set; }
-        public VertexAttribAttribute Parameters { get; private set; }
+        public readonly string Name;
+        public readonly int Index;
+        protected readonly VertexAttribAttribute Parameters;
 
         public VertexAttrib(int program, string name, VertexAttribAttribute parameters)
         {
