@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 using QuickFont;
 using SphFluid.Core;
 using SphFluid.Properties;
@@ -22,6 +24,8 @@ namespace SphFluid
         protected Matrix4 ModelView;
         protected Matrix4 Projection;
 
+        protected readonly List<MouseButton> MouseButtons;
+
         protected GameBase(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
@@ -31,6 +35,9 @@ namespace SphFluid
             Camera = new Camera(this);
             FrameTimer = new FrameTimer();
             ResetMatrices();
+            MouseButtons = new List<MouseButton>();
+            Mouse.ButtonDown += OnMouseDown;
+            Mouse.ButtonUp += OnMouseUp;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -82,6 +89,16 @@ namespace SphFluid
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 #endif
+        }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!MouseButtons.Contains(e.Button)) MouseButtons.Add(e.Button);
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (MouseButtons.Contains(e.Button)) MouseButtons.Remove(e.Button);
         }
     }
 }

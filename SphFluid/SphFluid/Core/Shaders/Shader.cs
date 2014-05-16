@@ -34,6 +34,7 @@ namespace SphFluid.Core.Shaders
         {
             new Mapping<VertexAttrib>(VertexAttribHelper),
             new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
             new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),

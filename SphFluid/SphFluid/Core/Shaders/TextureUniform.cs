@@ -26,7 +26,6 @@ namespace SphFluid.Core.Shaders
             if (!Set((int)unit - zero)) return;
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.TextureBuffer, buffer.TextureHandle);
-            GL.TexBuffer(TextureBufferTarget.TextureBuffer, format, buffer.Handle);
         }
     }
 }

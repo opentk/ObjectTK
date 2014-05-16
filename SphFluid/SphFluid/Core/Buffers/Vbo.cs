@@ -10,12 +10,20 @@ namespace SphFluid.Core.Buffers
     {
         public int Handle { get; private set; }
         public int TextureHandle { get; private set; }
-
-        protected int ElementCount;
-
-        public int ElementSize
+        public int ElementCount { get; private set; }
+        public int ElementSize { get { return Marshal.SizeOf(typeof (T)); } }
+        private SizedInternalFormat _bufferTextureFormat;
+        public SizedInternalFormat BufferTextureFormat
         {
-            get { return Marshal.SizeOf(typeof (T)); }
+            get
+            {
+                return _bufferTextureFormat;
+            }
+            set
+            {
+                _bufferTextureFormat = value;
+                BindBufferToTexture();
+            }
         }
 
 #if DEBUG
@@ -38,6 +46,8 @@ namespace SphFluid.Core.Buffers
         {
             Handle = GL.GenBuffer();
             TextureHandle = GL.GenTexture();
+            // default internal buffer texture format
+            _bufferTextureFormat = SizedInternalFormat.R32f;
         }
 
         public void Release()
@@ -59,6 +69,7 @@ namespace SphFluid.Core.Buffers
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
+            BindBufferToTexture();
         }
 
         /// <summary>
@@ -74,6 +85,7 @@ namespace SphFluid.Core.Buffers
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
+            BindBufferToTexture();
         }
 
         /// <summary>
@@ -88,6 +100,12 @@ namespace SphFluid.Core.Buffers
             var subSize = data.Length * ElementSize;
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferSubData(bufferTarget, (IntPtr)offset, (IntPtr)subSize, data);
+        }
+
+        protected void BindBufferToTexture()
+        {
+            GL.BindTexture(TextureTarget.TextureBuffer, TextureHandle);
+            GL.TexBuffer(TextureBufferTarget.TextureBuffer, BufferTextureFormat, Handle);
         }
 
         protected void CheckBufferSize(BufferTarget bufferTarget, int size)

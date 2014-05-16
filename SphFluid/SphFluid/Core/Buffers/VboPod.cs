@@ -9,6 +9,19 @@ namespace SphFluid.Core.Buffers
         public Vbo<T> Ping { private set; get; }
         public Vbo<T> Pong { private set; get; }
 
+        public SizedInternalFormat BufferTextureFormat
+        {
+            get
+            {
+                return Ping.BufferTextureFormat;
+            }
+            set
+            {
+                Ping.BufferTextureFormat = value;
+                Pong.BufferTextureFormat = value;
+            }
+        }
+
         public VboPod()
         {
             Ping = new Vbo<T>();
