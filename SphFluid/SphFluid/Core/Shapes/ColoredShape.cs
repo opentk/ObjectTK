@@ -23,6 +23,12 @@ namespace SphFluid.Core.Shapes
             ColorBuffer.Init(BufferTarget.ArrayBuffer, Colors);
         }
 
+        protected override void OnRelease()
+        {
+            base.OnRelease();
+            if (ColorBuffer != null) ColorBuffer.Release();
+        }
+
         public override void RenderImmediate(PrimitiveType mode)
         {
             throw new NotImplementedException();

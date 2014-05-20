@@ -11,7 +11,7 @@ using SphFluid.Properties;
 namespace SphFluid.Core.Shaders
 {
     public class Shader
-        : IReleasable
+        : ContextResource
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
@@ -162,7 +162,7 @@ namespace SphFluid.Core.Shaders
             GL.UseProgram(Program);
         }
 
-        public void Release()
+        protected override void OnRelease()
         {
             GL.DeleteProgram(Program);
             foreach (var shader in _shaders)

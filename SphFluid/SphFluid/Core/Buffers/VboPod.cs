@@ -3,7 +3,7 @@
 namespace SphFluid.Core.Buffers
 {
     public class VboPod<T>
-        : IReleasable
+        : ContextResource
         where T : struct
     {
         public Vbo<T> Ping { private set; get; }
@@ -28,7 +28,7 @@ namespace SphFluid.Core.Buffers
             Pong = new Vbo<T>();
         }
 
-        public virtual void Release()
+        protected override void OnRelease()
         {
             Ping.Release();
             Pong.Release();

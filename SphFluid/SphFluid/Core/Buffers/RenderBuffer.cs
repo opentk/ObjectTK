@@ -3,7 +3,7 @@
 namespace SphFluid.Core.Buffers
 {
     public class RenderBuffer
-        : IReleasable
+        : ContextResource
     {
         public int Handle { get; private set; }
 
@@ -12,7 +12,7 @@ namespace SphFluid.Core.Buffers
             Handle = GL.GenRenderbuffer();
         }
 
-        public void Release()
+        protected override void OnRelease()
         {
             GL.DeleteRenderbuffer(Handle);
         }

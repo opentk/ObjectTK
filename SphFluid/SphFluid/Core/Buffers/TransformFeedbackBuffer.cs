@@ -3,7 +3,7 @@
 namespace SphFluid.Core.Buffers
 {
     public class TransformFeedbackBuffer
-        : IReleasable
+        : ContextResource
     {
         public int Handle { get; private set; }
 
@@ -12,7 +12,7 @@ namespace SphFluid.Core.Buffers
             Handle = GL.GenTransformFeedback();
         }
 
-        public void Release()
+        protected override void OnRelease()
         {
             GL.DeleteTransformFeedback(Handle);
         }

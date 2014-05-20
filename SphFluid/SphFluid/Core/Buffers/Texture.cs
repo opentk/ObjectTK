@@ -3,13 +3,18 @@
 namespace SphFluid.Core.Buffers
 {
     public class Texture
+        : ContextResource
     {
         public int TextureHandle { get; private set; }
 
         public Texture()
         {
-            // create texture
             TextureHandle = GL.GenTexture();
+        }
+
+        protected override void OnRelease()
+        {
+            GL.DeleteTexture(TextureHandle);
         }
 
         protected void SetTexParameters()

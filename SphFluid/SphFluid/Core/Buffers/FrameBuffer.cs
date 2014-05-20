@@ -3,7 +3,7 @@
 namespace SphFluid.Core.Buffers
 {
     public class FrameBuffer
-        : IReleasable
+        : ContextResource
     {
         public int FramebufferHandle { get; private set; }
 
@@ -13,7 +13,7 @@ namespace SphFluid.Core.Buffers
             FramebufferHandle = GL.GenFramebuffer();
         }
 
-        public void Release()
+        protected override void OnRelease()
         {
             GL.DeleteFramebuffer(FramebufferHandle);
         }

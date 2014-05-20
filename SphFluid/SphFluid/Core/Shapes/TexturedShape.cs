@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Core.Buffers;
 
@@ -15,6 +16,17 @@ namespace SphFluid.Core.Shapes
             base.UpdateBuffers();
             TexCoordBuffer = new Vbo<Vector2>();
             TexCoordBuffer.Init(BufferTarget.ArrayBuffer, TexCoords);
+        }
+
+        protected override void OnRelease()
+        {
+            base.OnRelease();
+            if (TexCoordBuffer != null) TexCoordBuffer.Release();
+        }
+
+        public override void RenderImmediate(PrimitiveType mode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

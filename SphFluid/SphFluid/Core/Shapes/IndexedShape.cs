@@ -17,6 +17,12 @@ namespace SphFluid.Core.Shapes
             IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 
+        protected override void OnRelease()
+        {
+            base.OnRelease();
+            if (IndexBuffer != null) IndexBuffer.Release();
+        }
+
         public override void RenderImmediate(PrimitiveType mode)
         {
             GL.Begin(mode);

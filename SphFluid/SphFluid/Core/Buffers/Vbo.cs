@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 namespace SphFluid.Core.Buffers
 {
     public class Vbo<T>
-        : IReleasable
+        : ContextResource
         where T : struct
     {
         public int Handle { get; private set; }
@@ -50,7 +50,7 @@ namespace SphFluid.Core.Buffers
             _bufferTextureFormat = SizedInternalFormat.R32f;
         }
 
-        public void Release()
+        protected override void OnRelease()
         {
             GL.DeleteBuffer(Handle);
             GL.DeleteTexture(TextureHandle);
