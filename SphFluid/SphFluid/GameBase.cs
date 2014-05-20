@@ -107,5 +107,17 @@ namespace SphFluid
         {
             if (MouseButtons.Contains(e.Button)) MouseButtons.Remove(e.Button);
         }
+
+        protected Vector3 CalculateMousePosition()
+        {
+            // intersect ray with Z = 0 plane
+            var eye = Camera.Position;
+            var ray = Camera.GetPickingRay(Mouse.X, Mouse.Y);
+            var t = -eye.Z / ray.Z;
+            var position = eye + t * ray;
+            // apply camera rotation
+            Camera.ApplyRotation(ref position);
+            return position;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Core.Buffers;
@@ -23,10 +24,34 @@ namespace SphFluid.Core.Shaders
         public void Bind<T>(Vbo<T> buffer)
             where T : struct
         {
-            Bind(buffer, 0, 0, Parameters.Normalized);
+            Bind(buffer, Parameters.Components, Parameters.Type, 0, 0, Parameters.Normalized);
+        }
+
+        public void Bind<T>(Vbo<T> buffer, int stride, int offset)
+            where T : struct
+        {
+            Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, Parameters.Normalized);
         }
 
         public void Bind<T>(Vbo<T> buffer, int stride, int offset, bool normalized)
+            where T : struct
+        {
+            Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, normalized);
+        }
+
+        public void Bind<T>(Vbo<T> buffer, int components, int stride, int offset)
+            where T : struct
+        {
+            Bind(buffer, components, Parameters.Type, stride, offset, Parameters.Normalized);
+        }
+
+        public void Bind<T>(Vbo<T> buffer, int components, int stride, int offset, bool normalized)
+            where T : struct
+        {
+            Bind(buffer, components, Parameters.Type, stride, offset, normalized);
+        }
+
+        public void Bind<T>(Vbo<T> buffer, int components, VertexAttribPointerType type, int stride, int offset, bool normalized)
             where T : struct
         {
             if (Index == -1) return;
@@ -35,7 +60,7 @@ namespace SphFluid.Core.Shaders
             // make sure the vertex attribute is enabled
             GL.EnableVertexAttribArray(Index);
             // set the vertex attribute pointer to the current buffer
-            GL.VertexAttribPointer(Index, Parameters.Components, Parameters.Type, normalized, stride, offset);
+            GL.VertexAttribPointer(Index, components, type, normalized, stride, offset);
             //TODO: VertexAttribArrays currently never get disabled again, maybe improve performance by doing so
         }
     }
