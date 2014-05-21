@@ -12,6 +12,7 @@ namespace SphFluid.Core.Buffers
         public int TextureHandle { get; private set; }
         public int ElementCount { get; private set; }
         public int ElementSize { get { return Marshal.SizeOf(typeof (T)); } }
+        public bool Initialized { get; private set; }
         private SizedInternalFormat _bufferTextureFormat;
         public SizedInternalFormat BufferTextureFormat
         {
@@ -48,6 +49,7 @@ namespace SphFluid.Core.Buffers
             TextureHandle = GL.GenTexture();
             // default internal buffer texture format
             _bufferTextureFormat = SizedInternalFormat.R32f;
+            Initialized = false;
         }
 
         protected override void OnRelease()
@@ -59,32 +61,27 @@ namespace SphFluid.Core.Buffers
         /// <summary>
         /// Allocates buffer memory and uploads given data to it.
         /// </summary>
-        /// <param name="bufferTarget"></param>
-        /// <param name="data"></param>
-        /// <param name="usageHint"></param>
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
-            ElementCount = data.Length;
-            var fullSize = data.Length * ElementSize;
-            GL.BindBuffer(bufferTarget, Handle);
-            GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
-            CheckBufferSize(bufferTarget, fullSize);
-            BindBufferToTexture();
+            Init(bufferTarget, data.Length, data, usageHint);
         }
 
         /// <summary>
         /// Allocates buffer memory and initializes it to zero.
         /// </summary>
-        /// <param name="bufferTarget"></param>
-        /// <param name="elementCount"></param>
-        /// <param name="usageHint"></param>
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        {
+            Init(bufferTarget, elementCount, null, usageHint);
+        }
+
+        protected void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
         {
             ElementCount = elementCount;
             var fullSize = elementCount * ElementSize;
             GL.BindBuffer(bufferTarget, Handle);
-            GL.BufferData(bufferTarget, (IntPtr)fullSize, IntPtr.Zero, usageHint);
+            GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
+            Initialized = true;
             BindBufferToTexture();
         }
 
@@ -104,6 +101,7 @@ namespace SphFluid.Core.Buffers
 
         protected void BindBufferToTexture()
         {
+            if (!Initialized) return;
             GL.BindTexture(TextureTarget.TextureBuffer, TextureHandle);
             GL.TexBuffer(TextureBufferTarget.TextureBuffer, BufferTextureFormat, Handle);
         }
