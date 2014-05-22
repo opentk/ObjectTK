@@ -1,4 +1,3 @@
-using System;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 using SphFluid.Core.Buffers;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics;
@@ -29,8 +30,18 @@ namespace SphFluid
         protected GameBase(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
+            // get open gl information
+            Logger.Info("OpenGL context information:");
+            Logger.InfoFormat("{0}: {1}", StringName.Vendor, GL.GetString(StringName.Vendor));
+            Logger.InfoFormat("{0}: {1}", StringName.Renderer, GL.GetString(StringName.Renderer));
+            Logger.InfoFormat("{0}: {1}", StringName.Version, GL.GetString(StringName.Version));
+            Logger.InfoFormat("{0}: {1}", StringName.ShadingLanguageVersion, GL.GetString(StringName.ShadingLanguageVersion));
+            Logger.DebugFormat("{0}:\n{1}", StringName.Extensions, string.Join("",
+                GL.GetString(StringName.Extensions).Split(' ').Select((_,i) => string.Format("{0}{1}", _, i%4==3?"\n":"\t"))));
             Logger.InfoFormat("Initializing game window: {0}", title);
-            Font = new QFont(Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf"), 16);
+            var fontPath = Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf");
+            Logger.InfoFormat("Loading font: {0}", fontPath);
+            Font = new QFont(fontPath, 16);
             VSync = VSyncMode.Off;
             Camera = new Camera(this);
             FrameTimer = new FrameTimer();

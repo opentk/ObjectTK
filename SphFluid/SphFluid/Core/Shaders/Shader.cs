@@ -86,7 +86,7 @@ namespace SphFluid.Core.Shaders
                 GL.TransformFeedbackVaryings(Program, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
             }
             // link program
-            Logger.InfoFormat("Linking shader program: {0}", GetType().Name);
+            Logger.DebugFormat("Linking shader program: {0}", GetType().Name);
             GL.LinkProgram(Program);
             // assert that no link errors occured
             int linkStatus;
@@ -101,7 +101,7 @@ namespace SphFluid.Core.Shaders
 
         private void AttachShader(ShaderType type, string name)
         {
-            Logger.InfoFormat("Compiling {0}: {1}", type, name);
+            Logger.DebugFormat("Compiling {0}: {1}", type, name);
             // create shader
             var shader = GL.CreateShader(type);
             // load shaders source
@@ -117,7 +117,7 @@ namespace SphFluid.Core.Shaders
             GL.GetShader(shader, ShaderParameter.CompileStatus, out compileStatus);
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
             var info = GL.GetShaderInfoLog(shader);
-            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
+            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log for {0}:\n{1}", name, info);
             Utility.Assert(compileStatus, 1, string.Format("Error compiling shader: {0}", filename));
             // attach shader to program
             GL.AttachShader(Program, shader);
