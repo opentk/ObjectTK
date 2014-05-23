@@ -8,12 +8,44 @@ namespace SphFluid.Core.Buffers
         : ContextResource
         where T : struct
     {
-        public int Handle { get; private set; }
-        public int TextureHandle { get; private set; }
-        public int ElementCount { get; private set; }
-        public int ElementSize { get { return Marshal.SizeOf(typeof (T)); } }
+        /// <summary>
+        /// A value indicating whether the buffer has been initialized and thus has access to allocated memory.
+        /// </summary>
         public bool Initialized { get; private set; }
-        private SizedInternalFormat _bufferTextureFormat;
+
+        /// <summary>
+        /// The OpenGL handle to the buffer object.
+        /// </summary>
+        public int Handle { get; private set; }
+
+        /// <summary>
+        /// The OpenGL handle to the texture;
+        /// </summary>
+        public int TextureHandle { get; private set; }
+
+        /// <summary>
+        /// The size in bytes of one element within the buffer.
+        /// </summary>
+        public int ElementSize { get { return Marshal.SizeOf(typeof(T)); } }
+        
+        /// <summary>
+        /// The number of elements for which buffer memory was allocated.
+        /// </summary>
+        public int ElementCount { get; private set; }
+
+        /// <summary>
+        /// The index to the element which will be written to on the next usage of SubData().
+        /// </summary>
+        public int CurrentElementIndex { get; set; }
+
+        /// <summary>
+        /// The number of elements with data explicitly written.
+        /// </summary>
+        public int ActiveElementCount { get; set; }
+
+        /// <summary>
+        /// The format to be used when accessing this buffer via the buffer texture.
+        /// </summary>
         public SizedInternalFormat BufferTextureFormat
         {
             get
@@ -26,6 +58,8 @@ namespace SphFluid.Core.Buffers
                 BindBufferToTexture();
             }
         }
+
+        private SizedInternalFormat _bufferTextureFormat;
 
 #if DEBUG
         /// <summary>
@@ -64,6 +98,8 @@ namespace SphFluid.Core.Buffers
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             Init(bufferTarget, data.Length, data, usageHint);
+            ActiveElementCount = data.Length;
+            CurrentElementIndex = 0;
         }
 
         /// <summary>
@@ -72,6 +108,8 @@ namespace SphFluid.Core.Buffers
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             Init(bufferTarget, elementCount, null, usageHint);
+            ActiveElementCount = 0;
+            CurrentElementIndex = 0;
         }
 
         protected void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
@@ -86,17 +124,70 @@ namespace SphFluid.Core.Buffers
         }
 
         /// <summary>
-        /// Overwrite part of the buffer memory.
+        /// Overwrites part of the buffer with the given data and automatically indexes forward through the available memory.
+        /// Skips back to the beginning automatically once the end was reached.
         /// </summary>
-        /// <param name="bufferTarget"></param>
-        /// <param name="elementOffset"></param>
-        /// <param name="data"></param>
-        public void SubData(BufferTarget bufferTarget, int elementOffset, T[] data)
+        public void SubData(BufferTarget bufferTarget, T[] data)
         {
-            var offset = elementOffset * ElementSize;
-            var subSize = data.Length * ElementSize;
+            if (data.Length > ElementCount) throw new ApplicationException(
+                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Elements to write: {1}.", ElementCount, data.Length));
+            // check if data does not fit at the end of the buffer
+            var rest = ElementCount - CurrentElementIndex;
+            //TODO: can be simplified..
+            if (rest >= data.Length)
+            {
+                // add the elements of data to the buffer at the current index
+                SubData(bufferTarget, data, CurrentElementIndex);
+                // skip forward through the buffer
+                CurrentElementIndex += data.Length;
+                // remember the total number of elements with data
+                if (ActiveElementCount < CurrentElementIndex) ActiveElementCount = CurrentElementIndex;
+                // skip back if the end was reached
+                if (CurrentElementIndex >= ElementCount) CurrentElementIndex = 0;
+            }
+            else
+            {
+                // first fill the end of the buffer
+                SubData(bufferTarget, data, CurrentElementIndex, rest);
+                // proceed to add the remaining elements at the beginning
+                rest = data.Length - rest;
+                SubData(bufferTarget, data, 0, rest);
+                CurrentElementIndex = rest;
+                // remember that the full buffer was already written to
+                ActiveElementCount = ElementCount;
+            }
+        }
+
+        /// <summary>
+        /// Overwrites part of the buffer with the given data at the given offset.
+        /// Writes all data available in data.
+        /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="data">The data to be transfered into the buffer.</param>
+        /// <param name="offset">The index to the first element of the buffer to be overwritten.</param>
+        public void SubData(BufferTarget bufferTarget, T[] data, int offset)
+        {
+            if (data.Length > ElementCount - offset) throw new ApplicationException(
+                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Offset: {1}. Elements to write: {2}.", ElementCount, offset, data.Length));
+            SubData(bufferTarget, data, offset, data.Length);
+        }
+
+        /// <summary>
+        /// Overwrites part of the buffer with the given data at the given offset.
+        /// Writes <paramref name="count">count</paramref> elements of data.
+        /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="data">The data to be transfered into the buffer.</param>
+        /// <param name="offset">The index to the first element of the buffer to be overwritten.</param>
+        /// <param name="count">The number of element from data to write.</param>
+        public void SubData(BufferTarget bufferTarget, T[] data, int offset, int count)
+        {
+            if (count > ElementCount - offset) throw new ApplicationException(
+                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Offset: {1}. Elements to write: {2}.", ElementCount, offset, data.Length));
+            if (count > data.Length) throw new ApplicationException(
+                string.Format("Not enough data to write to buffer. Data length: {0}. Elements to write: {1}.", data.Length, count));
             GL.BindBuffer(bufferTarget, Handle);
-            GL.BufferSubData(bufferTarget, (IntPtr)offset, (IntPtr)subSize, data);
+            GL.BufferSubData(bufferTarget, (IntPtr)(ElementSize * offset), (IntPtr)(ElementSize * count), data);
         }
 
         protected void BindBufferToTexture()

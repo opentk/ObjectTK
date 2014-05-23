@@ -2,6 +2,7 @@
 
 namespace SphFluid.Core.Buffers
 {
+    //TODO: refactor to be derived from Vbo<T> and containing an additional Vbo<T> instead of containing two Vbo<T>?
     public class VboPod<T>
         : ContextResource
         where T : struct
@@ -48,6 +49,10 @@ namespace SphFluid.Core.Buffers
 
         public void Swap()
         {
+            // copy over current "state"
+            Pong.CurrentElementIndex = Ping.CurrentElementIndex;
+            Pong.ActiveElementCount = Ping.ActiveElementCount;
+            // swap buffers
             var tmp = Ping;
             Ping = Pong;
             Pong = tmp;
