@@ -2,12 +2,13 @@
 
 namespace SphFluid.Core.Buffers
 {
-    public class Texture
+    public abstract class Texture
         : ContextResource
     {
         public int TextureHandle { get; private set; }
+        public PixelInternalFormat PixelInternalFormat { get; protected set; }
 
-        public Texture()
+        protected Texture()
         {
             TextureHandle = GL.GenTexture();
         }

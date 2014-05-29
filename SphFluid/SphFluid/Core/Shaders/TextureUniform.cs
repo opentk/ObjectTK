@@ -11,21 +11,23 @@ namespace SphFluid.Core.Shaders
         {
         }
 
-        public void BindTexture(TextureTarget target, TextureUnit unit, Texture texture)
+        protected void BindTexture(TextureTarget target, TextureUnit unit, int textureHandle)
         {
             const int zero = (int)TextureUnit.Texture0;
             if (!Set((int)unit - zero)) return;
             GL.ActiveTexture(unit);
-            GL.BindTexture(target, texture.TextureHandle);
+            GL.BindTexture(target, textureHandle);
         }
 
-        public void BindBuffer<T>(TextureUnit unit, Vbo<T> buffer, SizedInternalFormat format = SizedInternalFormat.R32f)
+        public void BindTexture(TextureTarget target, TextureUnit unit, Texture texture)
+        {
+            BindTexture(target, unit, texture.TextureHandle);
+        }
+
+        public void BindBuffer<T>(TextureUnit unit, Vbo<T> buffer)
             where T : struct
         {
-            const int zero = (int)TextureUnit.Texture0;
-            if (!Set((int)unit - zero)) return;
-            GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.TextureBuffer, buffer.TextureHandle);
+            BindTexture(TextureTarget.TextureBuffer, unit, buffer.TextureHandle);
         }
     }
 }

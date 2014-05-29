@@ -30,10 +30,12 @@ namespace SphFluid.Core.Shaders
             public object Create(int program, MemberInfo info) { return _creator(program, info); }
         }
 
+        //TODO: refactor to use GL.ProgramUniform* (check out EXT_direct_state_access)
         private static readonly List<IMapping> TypeMapping = new List<IMapping>
         {
             new Mapping<VertexAttrib>(VertexAttribHelper),
             new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
             new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
             new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),

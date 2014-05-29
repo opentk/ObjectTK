@@ -16,32 +16,28 @@ namespace SphFluid.Core.Buffers
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public PixelFormat PixelFormat { get; private set; }
-        public PixelType PixelType { get; private set; }
         
-        public void Initialize(PixelInternalFormat format, int width, int height, PixelFormat pixelFormat, PixelType pixelType)
+        public void Initialize(PixelInternalFormat internalFormat, int width, int height, PixelFormat pixelFormat, PixelType pixelType)
         {
+            PixelInternalFormat = internalFormat;
             Width = width;
             Height = height;
-            PixelFormat = pixelFormat;
-            PixelType = pixelType;
             GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, format, width, height, 0, pixelFormat, pixelType, IntPtr.Zero);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, internalFormat, width, height, 0, pixelFormat, pixelType, IntPtr.Zero);
             CheckError();
         }
 
         public void SaveImageToStream(Stream stream)
         {
             GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
-            var data = new float[Width*Height];
-            GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat, PixelType, data);
+            var data = new int[Width*Height*3];
+            GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgb, PixelType.UnsignedByte, data);
             var bitmap = new Bitmap(Width, Height);
             for (var j = 0; j < Height; j++)
             {
                 for (var i = 0; i < Width; i++)
                 {
-                    var c = (int) (data[i+j*Width] / 32f * 255);
-                    var newColor = Color.FromArgb(c,c,c);
+                    var newColor = Color.FromArgb(data[i + j*Width + 0], data[i + j*Width + 1], data[i + j*Width + 2]);
                     bitmap.SetPixel(i, j, newColor);
                 }
             }
