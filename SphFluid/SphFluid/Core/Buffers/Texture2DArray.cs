@@ -1,16 +1,22 @@
-﻿using System;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Buffers
 {
     public class Texture2DArray
         : Texture
     {
-        public void Initialize(PixelInternalFormat internalFormat, int width, int height, int layers, PixelFormat pixelFormat, PixelType pixelType)
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public int Layers { get; private set; }
+
+        public void Initialize(SizedInternalFormat internalFormat, int width, int height, int layers)
         {
-            PixelInternalFormat = internalFormat;
+            SizedInternalFormat = internalFormat;
+            Width = width;
+            Height = height;
+            Layers = layers;
             GL.BindTexture(TextureTarget.Texture2DArray, TextureHandle);
-            GL.TexImage3D(TextureTarget.Texture2DArray, 0, internalFormat, width, height, layers, 0, pixelFormat, pixelType, IntPtr.Zero);
+            GL.TexStorage3D(TextureTarget3d.Texture2DArray, 1, internalFormat, width, height, layers);
             CheckError();
         }
     }

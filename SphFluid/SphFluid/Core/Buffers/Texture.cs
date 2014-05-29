@@ -6,7 +6,7 @@ namespace SphFluid.Core.Buffers
         : ContextResource
     {
         public int TextureHandle { get; private set; }
-        public PixelInternalFormat PixelInternalFormat { get; protected set; }
+        public SizedInternalFormat SizedInternalFormat { get; protected set; }
 
         protected Texture()
         {
