@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using log4net;
 
 namespace SphFluid.Core
 {
     public abstract class ContextResource
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ContextResource));
+
         /// <summary>
         /// Specifies whether leaks should be ignored.
         /// </summary>
@@ -38,6 +41,7 @@ namespace SphFluid.Core
 #if DEBUG
             Trace.WriteLine(string.Format("Releasing a context resource: {0}", this));
 #endif
+            Logger.DebugFormat("Releasing a context resource: {0}", this);
             OnRelease();
             _isReleased = true;
         }
