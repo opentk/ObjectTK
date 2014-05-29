@@ -19,17 +19,17 @@ namespace SphFluid.Core.Shaders
 
         public void BindImage(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access)
         {
-            BindImage(imageUnit, texture, layered, layer, access, texture.SizedInternalFormat);
+            BindImage(imageUnit, texture, layered, layer, access, texture.InternalFormat);
         }
 
         public void BindImage(int imageUnit, Texture2D texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture, false, 0, access, texture.SizedInternalFormat);
+            BindImage(imageUnit, texture, false, 0, access, texture.InternalFormat);
         }
 
         public void BindImage(int imageUnit, Texture2DArray texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture, true, 0, access, texture.SizedInternalFormat);
+            BindImage(imageUnit, texture, true, 0, access, texture.InternalFormat);
         }
     }
 }

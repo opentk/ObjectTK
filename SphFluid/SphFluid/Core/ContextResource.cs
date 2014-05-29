@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace SphFluid.Core
@@ -34,6 +35,9 @@ namespace SphFluid.Core
         /// </summary>
         public void Release()
         {
+#if DEBUG
+            Trace.WriteLine(string.Format("Releasing a context resource: {0}", this));
+#endif
             OnRelease();
             _isReleased = true;
         }

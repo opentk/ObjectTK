@@ -9,9 +9,9 @@ namespace SphFluid.Core.Buffers
         public int Height { get; private set; }
         public int Layers { get; private set; }
 
-        public void Initialize(SizedInternalFormat internalFormat, int width, int height, int layers)
+        public Texture2DArray(SizedInternalFormat internalFormat, int width, int height, int layers)
+            : base(internalFormat)
         {
-            SizedInternalFormat = internalFormat;
             Width = width;
             Height = height;
             Layers = layers;

@@ -6,10 +6,11 @@ namespace SphFluid.Core.Buffers
         : ContextResource
     {
         public int TextureHandle { get; private set; }
-        public SizedInternalFormat SizedInternalFormat { get; protected set; }
+        public SizedInternalFormat InternalFormat { get; private set; }
 
-        protected Texture()
+        protected Texture(SizedInternalFormat internalFormat)
         {
+            InternalFormat = internalFormat;
             TextureHandle = GL.GenTexture();
         }
 

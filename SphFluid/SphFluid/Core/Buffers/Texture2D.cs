@@ -7,10 +7,10 @@ namespace SphFluid.Core.Buffers
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
-        
-        public void Initialize(SizedInternalFormat internalFormat, int width, int height)
+
+        public Texture2D(SizedInternalFormat internalFormat, int width, int height)
+            : base(internalFormat)
         {
-            SizedInternalFormat = internalFormat;
             Width = width;
             Height = height;
             GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
