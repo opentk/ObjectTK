@@ -71,6 +71,9 @@ namespace SphFluid.Core.Shaders
             CreateProgram(shaderSources);
         }
 
+        /// <summary>
+        /// TODO: Add some kind of #include schtring replace or something (possible alternatives: multiple shader sources, or multiple shaders objects of the same type)
+        /// </summary>
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
             Logger.InfoFormat("Creating shader program: {0}", GetType().Name);

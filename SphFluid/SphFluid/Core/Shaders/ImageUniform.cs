@@ -11,25 +11,31 @@ namespace SphFluid.Core.Shaders
         {
         }
 
-        public void BindImage(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
+        public void BindImage(int imageUnit, int textureHandle, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
         {
             if (!Set(imageUnit)) return;
-            GL.BindImageTexture(imageUnit, texture.TextureHandle, 0, layered, layer, access, format);
+            GL.BindImageTexture(imageUnit, textureHandle, 0, layered, layer, access, format);
         }
 
-        public void BindImage(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access)
+        public void BindTexture(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access)
         {
-            BindImage(imageUnit, texture, layered, layer, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.TextureHandle, layered, layer, access, texture.InternalFormat);
         }
 
-        public void BindImage(int imageUnit, Texture2D texture, TextureAccess access)
+        public void BindTexture(int imageUnit, Texture2D texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture, false, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.TextureHandle, false, 0, access, texture.InternalFormat);
         }
 
-        public void BindImage(int imageUnit, Texture2DArray texture, TextureAccess access)
+        public void BindTexture(int imageUnit, Texture2DArray texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture, true, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.TextureHandle, true, 0, access, texture.InternalFormat);
+        }
+
+        public void BindBuffer<T>(int imageUnit, Vbo<T> buffer, TextureAccess access)
+            where T : struct
+        {
+            BindImage(imageUnit, buffer.TextureHandle, false, 0, access, buffer.BufferTextureFormat);
         }
     }
 }
