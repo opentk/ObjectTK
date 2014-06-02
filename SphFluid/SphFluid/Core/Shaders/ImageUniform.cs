@@ -11,6 +11,9 @@ namespace SphFluid.Core.Shaders
         {
         }
 
+        //TODO: refactor somehow to automatically increment the used imageUnit, and reset that counter on Shader.Use()
+        // preventing bugs from accidentally using the same imageUnit multiple times
+        // the same may apply to textures
         public void BindImage(int imageUnit, int textureHandle, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
         {
             if (!Set(imageUnit)) return;

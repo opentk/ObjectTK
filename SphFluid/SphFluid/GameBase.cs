@@ -90,7 +90,7 @@ namespace SphFluid
         }
 
         /// <summary>
-        /// Unbinds texture 0 to n and resets the active framebuffer to default buffer, i.e. the screen.
+        /// Unbinds the first n textures and resets the active framebuffer to default buffer, i.e. the screen.
         /// </summary>
         /// <param name="n">The number of textures to unbind.</param>
         public static void ResetState(int n)
@@ -99,12 +99,16 @@ namespace SphFluid
             for (var i = 0; i < n; i++)
             {
                 GL.ActiveTexture(TextureUnit.Texture0 + i);
+                GL.BindTexture(TextureTarget.Texture2D, 0);
+                GL.BindTexture(TextureTarget.Texture2DArray, 0);
                 GL.BindTexture(TextureTarget.TextureBuffer, 0);
                 GL.DisableVertexAttribArray(i);
             }
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.UseProgram(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.TransformFeedbackBuffer, 0);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 #endif
         }
