@@ -73,9 +73,6 @@ namespace SphFluid.Core.Shaders
             CreateProgram(shaderSources);
         }
 
-        /// <summary>
-        /// TODO: Add some kind of #include schtring replace or something (possible alternatives: multiple shader sources, or multiple shaders objects of the same type)
-        /// </summary>
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
             Logger.InfoFormat("Creating shader program: {0}", GetType().Name);
@@ -103,7 +100,7 @@ namespace SphFluid.Core.Shaders
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
             Utility.Assert(linkStatus, 1, string.Format("Error linking program: {0}", GetType().Name));
             // initialize shader properties
-            Initialize();
+            InitializePropertyMapping();
         }
 
         private void AttachShader(ShaderType type, string name)
@@ -195,7 +192,7 @@ namespace SphFluid.Core.Shaders
         /// Initializes all properties of the current shader instance which are of a type contained in the TypeMapping.
         /// Is called after linking the shader to initialize vertex attributes and uniforms.
         /// </summary>
-        private void Initialize()
+        private void InitializePropertyMapping()
         {
             foreach (var property in GetType().GetProperties())
             {

@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Microsoft.VisualStudio.DebuggerVisualizers;
 using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Buffers
 {
-    [DebuggerVisualizer(typeof(VboVisualizer), typeof(VboObjectSource), Description = "Vbo Visualizer")]
+    //TODO: refactor to make the buffer texture optional
     public class Vbo<T>
         : ContextResource
-        , IVbo
         where T : struct
     {
         /// <summary>
@@ -228,47 +223,6 @@ namespace SphFluid.Core.Buffers
                 throw new ApplicationException(string.Format(
                     "Problem uploading data to buffer object. Tried to upload {0} bytes, but uploaded {1}.", size, uploadedSize));
             }
-        }
-    }
-
-    public interface IVbo
-    {
-        void SaveToStream(Stream stream);
-    }
-
-    public class VboObjectSource
-        : VisualizerObjectSource
-    {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            ((IVbo)target).SaveToStream(outgoingData);
-        }
-    }
-
-    public class VboVisualizer
-        : DialogDebuggerVisualizer
-    {
-        protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider)
-        {
-            var form = new Form
-            {
-                Text = "Vbo halt dein Maul",
-                ClientSize = new Size(800, 600)
-            };
-
-            var box = new RichTextBox();
-
-            var reader = new BinaryReader(objectProvider.GetData());
-            var count = reader.ReadInt32();
-            for (var i = 0; i < count; i++)
-            {
-                box.AppendText(reader.ReadString() + "\n");
-            }
-
-            box.Parent = form;
-            box.Dock = DockStyle.Fill;
-            form.Controls.Add(box);
-            windowService.ShowDialog(form);
         }
     }
 }
