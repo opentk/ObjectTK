@@ -20,6 +20,7 @@ namespace SphFluid.Core.Shaders
             if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", name);
         }
 
+        //TODO: take the stride from the buffer.ElementSize?
         public void Bind<T>(Vbo<T> buffer)
             where T : struct
         {
