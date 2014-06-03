@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -111,11 +112,7 @@ namespace SphFluid.Core.Shaders
             // create shader
             var shader = GL.CreateShader(type);
             // load shaders source
-            var filename = Path.Combine(Settings.Default.ShaderDir, name + ".glsl");
-            using (var reader = new StreamReader(filename))
-            {
-                GL.ShaderSource(shader, reader.ReadToEnd());
-            }
+            GL.ShaderSource(shader, RetrieveShaderSource(name));
             // compile shader
             GL.CompileShader(shader);
             // assert that no compile error occured
@@ -124,11 +121,57 @@ namespace SphFluid.Core.Shaders
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
             var info = GL.GetShaderInfoLog(shader);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log for {0}:\n{1}", name, info);
-            Utility.Assert(compileStatus, 1, string.Format("Error compiling shader: {0}", filename));
+            Utility.Assert(compileStatus, 1, string.Format("Error compiling shader: {0}", name));
             // attach shader to program
             GL.AttachShader(Program, shader);
             // remember shader to be able to properly release it
             _shaders.Add(shader);
+        }
+
+        private static string RetrieveShaderSource(string name, List<string> includedNames = null)
+        {
+            const string includeKeyword = "#include";
+            if (includedNames == null) includedNames = new List<string>();
+            // check for multiple includes of the same file
+            if (includedNames.Contains(name))
+            {
+                Logger.WarnFormat("File already included: {0} (included files: {1})", name, string.Join(", ", includedNames));
+                return "";
+            }
+            includedNames.Add(name);
+            // load shaders source
+            var filename = Path.Combine(Settings.Default.ShaderDir, name + ".glsl");
+            var source = new StringBuilder();
+            // parse this file
+            using (var reader = new StreamReader(filename))
+            {
+                var fileNumber = includedNames.Count - 1;
+                var lineNumber = 1;
+                while (!reader.EndOfStream)
+                {
+                    // read the file line by line
+                    var code = reader.ReadLine();
+                    if (code == null) break;
+                    // check if it is an include statement
+                    if (!code.StartsWith(includeKeyword))
+                    {
+                        source.AppendLine(code);
+                    }
+                    else
+                    {
+                        // parse the included filename
+                        var includedFile = code.Remove(0, includeKeyword.Length).Trim();
+                        // insert #line statement to correct line numbers
+                        source.AppendLine(string.Format("#line 1 {0}", includedNames.Count));
+                        // replace current line with the source of that file
+                        source.Append(RetrieveShaderSource(includedFile, includedNames));
+                        // the #line statement defines the line number of the *next* line
+                        source.AppendLine(string.Format("#line {0} {1}", lineNumber+1, fileNumber));
+                    }
+                    lineNumber++;
+                }
+            }
+            return source.ToString();
         }
 
         /// <summary>
