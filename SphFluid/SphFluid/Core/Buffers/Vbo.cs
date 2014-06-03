@@ -135,12 +135,12 @@ namespace SphFluid.Core.Buffers
 
         protected void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
         {
+            Initialized = true;
             ElementCount = elementCount;
             var fullSize = elementCount * ElementSize;
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
-            Initialized = true;
             BindBufferToTexture();
         }
 

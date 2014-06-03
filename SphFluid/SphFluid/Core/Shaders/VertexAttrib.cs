@@ -5,16 +5,16 @@ using SphFluid.Core.Buffers;
 namespace SphFluid.Core.Shaders
 {
     public class VertexAttrib
+        : ShaderVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
 
-        public readonly string Name;
         public readonly int Index;
         protected readonly VertexAttribAttribute Parameters;
 
         public VertexAttrib(int program, string name, VertexAttribAttribute parameters)
+            : base(program, name)
         {
-            Name = name;
             Parameters = parameters;
             Index = GL.GetAttribLocation(program, name);
             if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", name);

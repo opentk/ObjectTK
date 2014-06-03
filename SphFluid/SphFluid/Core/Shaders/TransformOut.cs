@@ -4,6 +4,7 @@ using SphFluid.Core.Buffers;
 
 namespace SphFluid.Core.Shaders
 {
+    //TODO: Implemented in a completely strange way ..
     public class TransformOut
     {
         public readonly int Index;
