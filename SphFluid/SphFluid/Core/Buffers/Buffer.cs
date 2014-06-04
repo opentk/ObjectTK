@@ -38,7 +38,6 @@ namespace SphFluid.Core.Buffers
         /// </summary>
         public int ActiveElementCount { get; set; }
 
-#if DEBUG
         /// <summary>
         /// Retrieves data back from vram for debugging purposes.
         /// </summary>
@@ -52,7 +51,6 @@ namespace SphFluid.Core.Buffers
                 return items;
             }
         }
-#endif
 
         public Buffer()
         {
