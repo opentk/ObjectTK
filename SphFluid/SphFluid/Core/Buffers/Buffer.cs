@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 
 namespace SphFluid.Core.Buffers
 {
-    //TODO: refactor to make the buffer texture optional
-    public class Vbo<T>
+    public class Buffer<T>
         : ContextResource
         where T : struct
     {
@@ -19,11 +17,6 @@ namespace SphFluid.Core.Buffers
         /// The OpenGL handle to the buffer object.
         /// </summary>
         public int Handle { get; private set; }
-
-        /// <summary>
-        /// The OpenGL handle to the texture;
-        /// </summary>
-        public int TextureHandle { get; private set; }
 
         /// <summary>
         /// The size in bytes of one element within the buffer.
@@ -45,24 +38,6 @@ namespace SphFluid.Core.Buffers
         /// </summary>
         public int ActiveElementCount { get; set; }
 
-        /// <summary>
-        /// The format to be used when accessing this buffer via the buffer texture.
-        /// </summary>
-        public SizedInternalFormat BufferTextureFormat
-        {
-            get
-            {
-                return _bufferTextureFormat;
-            }
-            set
-            {
-                _bufferTextureFormat = value;
-                BindBufferToTexture();
-            }
-        }
-
-        private SizedInternalFormat _bufferTextureFormat;
-
 #if DEBUG
         /// <summary>
         /// Retrieves data back from vram for debugging purposes.
@@ -79,33 +54,15 @@ namespace SphFluid.Core.Buffers
         }
 #endif
 
-        public void SaveToStream(Stream stream)
-        {
-            var writer = new BinaryWriter(stream);
-            var items = new T[ElementCount];
-            GL.BindBuffer(BufferTarget.ArrayBuffer, Handle);
-            GL.GetBufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (ElementSize*ElementCount), items);
-            writer.Write(ElementCount);
-            foreach (var item in items)
-            {
-                writer.Write(item.ToString());
-            }
-            writer.Flush();
-        }
-
-        public Vbo()
+        public Buffer()
         {
             Handle = GL.GenBuffer();
-            TextureHandle = GL.GenTexture();
-            // default internal buffer texture format
-            _bufferTextureFormat = SizedInternalFormat.R32f;
             Initialized = false;
         }
 
         protected override void OnRelease()
         {
             GL.DeleteBuffer(Handle);
-            GL.DeleteTexture(TextureHandle);
         }
 
         /// <summary>
@@ -128,7 +85,7 @@ namespace SphFluid.Core.Buffers
             CurrentElementIndex = 0;
         }
 
-        protected void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
+        protected virtual void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
         {
             Initialized = true;
             ElementCount = elementCount;
@@ -136,7 +93,6 @@ namespace SphFluid.Core.Buffers
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferData(bufferTarget, (IntPtr)fullSize, data, usageHint);
             CheckBufferSize(bufferTarget, fullSize);
-            BindBufferToTexture();
         }
 
         /// <summary>
@@ -204,13 +160,6 @@ namespace SphFluid.Core.Buffers
                 string.Format("Not enough data to write to buffer. Data length: {0}. Elements to write: {1}.", data.Length, count));
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferSubData(bufferTarget, (IntPtr)(ElementSize * offset), (IntPtr)(ElementSize * count), data);
-        }
-
-        protected void BindBufferToTexture()
-        {
-            if (!Initialized) return;
-            GL.BindTexture(TextureTarget.TextureBuffer, TextureHandle);
-            GL.TexBuffer(TextureBufferTarget.TextureBuffer, BufferTextureFormat, Handle);
         }
 
         protected void CheckBufferSize(BufferTarget bufferTarget, int size)

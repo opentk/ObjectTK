@@ -2,31 +2,18 @@
 
 namespace SphFluid.Core.Buffers
 {
-    //TODO: refactor to be derived from Vbo<T> and containing an additional Vbo<T> instead of containing two Vbo<T>?
-    public class VboPod<T>
+    //TODO: refactor to be derived from Buffer<T> and containing an additional Buffer<T> instead of containing two Buffer<T>?
+    public class BufferPod<T>
         : ContextResource
         where T : struct
     {
-        public Vbo<T> Ping { private set; get; }
-        public Vbo<T> Pong { private set; get; }
+        public Buffer<T> Ping { private set; get; }
+        public Buffer<T> Pong { private set; get; }
 
-        public SizedInternalFormat BufferTextureFormat
+        public BufferPod()
         {
-            get
-            {
-                return Ping.BufferTextureFormat;
-            }
-            set
-            {
-                Ping.BufferTextureFormat = value;
-                Pong.BufferTextureFormat = value;
-            }
-        }
-
-        public VboPod()
-        {
-            Ping = new Vbo<T>();
-            Pong = new Vbo<T>();
+            Ping = new Buffer<T>();
+            Pong = new Buffer<T>();
         }
 
         protected override void OnRelease()

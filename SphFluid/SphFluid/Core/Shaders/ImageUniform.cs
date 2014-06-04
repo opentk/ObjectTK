@@ -35,7 +35,7 @@ namespace SphFluid.Core.Shaders
             BindImage(imageUnit, texture.TextureHandle, true, 0, access, texture.InternalFormat);
         }
 
-        public void BindBuffer<T>(int imageUnit, Vbo<T> buffer, TextureAccess access)
+        public void BindBuffer<T>(int imageUnit, BufferTexture<T> buffer, TextureAccess access)
             where T : struct
         {
             BindImage(imageUnit, buffer.TextureHandle, false, 0, access, buffer.BufferTextureFormat);

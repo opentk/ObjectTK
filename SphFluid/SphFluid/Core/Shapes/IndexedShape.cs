@@ -8,12 +8,12 @@ namespace SphFluid.Core.Shapes
     {
         //TODO: use unsigned ints?
         public int[] Indices { get; protected set; }
-        public Vbo<int> IndexBuffer { get; protected set; }
+        public Buffer<int> IndexBuffer { get; protected set; }
 
         public override void UpdateBuffers()
         {
             base.UpdateBuffers();
-            IndexBuffer = new Vbo<int>();
+            IndexBuffer = new Buffer<int>();
             IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 

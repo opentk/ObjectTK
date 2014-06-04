@@ -27,13 +27,13 @@ namespace SphFluid.Core.Shaders
             GL.ShaderStorageBlockBinding(Program, Index, binding);
         }
 
-        public void BindBuffer<T>(Vbo<T> buffer)
+        public void BindBuffer<T>(Buffer<T> buffer)
             where T : struct
         {
             GL.BindBufferBase(BufferRangeTarget.ShaderStorageBuffer, Index, buffer.Handle);
         }
 
-        public void BindBuffer<T>(Vbo<T> buffer, int offset, int size)
+        public void BindBuffer<T>(Buffer<T> buffer, int offset, int size)
             where T : struct
         {
             GL.BindBufferRange(BufferRangeTarget.ShaderStorageBuffer, Index, buffer.Handle, (IntPtr)offset, (IntPtr)size);

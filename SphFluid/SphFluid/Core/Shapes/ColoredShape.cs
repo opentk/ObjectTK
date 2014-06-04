@@ -9,7 +9,7 @@ namespace SphFluid.Core.Shapes
         : IndexedShape
     {
         public uint[] Colors { get; protected set; }
-        public Vbo<uint> ColorBuffer { get; protected set; }
+        public Buffer<uint> ColorBuffer { get; protected set; }
 
         public static uint ColorToRgba32(Color c)
         {
@@ -19,7 +19,7 @@ namespace SphFluid.Core.Shapes
         public override void UpdateBuffers()
         {
             base.UpdateBuffers();
-            ColorBuffer = new Vbo<uint>();
+            ColorBuffer = new Buffer<uint>();
             ColorBuffer.Init(BufferTarget.ArrayBuffer, Colors);
         }
 

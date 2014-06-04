@@ -9,12 +9,12 @@ namespace SphFluid.Core.Shapes
         : Shape
     {
         public Vector2[] TexCoords { get; protected set; }
-        public Vbo<Vector2> TexCoordBuffer { get; protected set; }
+        public Buffer<Vector2> TexCoordBuffer { get; protected set; }
 
         public override void UpdateBuffers()
         {
             base.UpdateBuffers();
-            TexCoordBuffer = new Vbo<Vector2>();
+            TexCoordBuffer = new Buffer<Vector2>();
             TexCoordBuffer.Init(BufferTarget.ArrayBuffer, TexCoords);
         }
 

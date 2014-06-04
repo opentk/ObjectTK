@@ -24,7 +24,7 @@ namespace SphFluid.Core.Shaders
             BindTexture(target, unit, texture.TextureHandle);
         }
 
-        public void BindBuffer<T>(TextureUnit unit, Vbo<T> buffer)
+        public void BindBuffer<T>(TextureUnit unit, BufferTexture<T> buffer)
             where T : struct
         {
             BindTexture(TextureTarget.TextureBuffer, unit, buffer.TextureHandle);

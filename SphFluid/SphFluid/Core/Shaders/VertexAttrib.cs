@@ -21,37 +21,37 @@ namespace SphFluid.Core.Shaders
         }
 
         //TODO: take the stride from the buffer.ElementSize?
-        public void Bind<T>(Vbo<T> buffer)
+        public void Bind<T>(Buffer<T> buffer)
             where T : struct
         {
             Bind(buffer, Parameters.Components, Parameters.Type, 0, 0, Parameters.Normalized);
         }
 
-        public void Bind<T>(Vbo<T> buffer, int stride, int offset)
+        public void Bind<T>(Buffer<T> buffer, int stride, int offset)
             where T : struct
         {
             Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, Parameters.Normalized);
         }
 
-        public void Bind<T>(Vbo<T> buffer, int stride, int offset, bool normalized)
+        public void Bind<T>(Buffer<T> buffer, int stride, int offset, bool normalized)
             where T : struct
         {
             Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, normalized);
         }
 
-        public void Bind<T>(Vbo<T> buffer, int components, int stride, int offset)
+        public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset)
             where T : struct
         {
             Bind(buffer, components, Parameters.Type, stride, offset, Parameters.Normalized);
         }
 
-        public void Bind<T>(Vbo<T> buffer, int components, int stride, int offset, bool normalized)
+        public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset, bool normalized)
             where T : struct
         {
             Bind(buffer, components, Parameters.Type, stride, offset, normalized);
         }
 
-        public void Bind<T>(Vbo<T> buffer, int components, VertexAttribPointerType type, int stride, int offset, bool normalized)
+        public void Bind<T>(Buffer<T> buffer, int components, VertexAttribPointerType type, int stride, int offset, bool normalized)
             where T : struct
         {
             if (Index == -1) return;
