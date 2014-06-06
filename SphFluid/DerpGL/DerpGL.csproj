@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0EE3347B-1BBE-44CA-8295-22DA13AE914A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DerpGL</RootNamespace>
+    <AssemblyName>DerpGL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Release'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Release\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Release'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Release\QuickFont.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Debug'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Debug\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Debug'">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Debug\QuickFont.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Buffers\Buffer.cs" />
+    <Compile Include="Core\Buffers\BufferPod.cs" />
+    <Compile Include="Core\Buffers\BufferTexture.cs" />
+    <Compile Include="Core\Buffers\FrameBuffer.cs" />
+    <Compile Include="Core\Buffers\RenderBuffer.cs" />
+    <Compile Include="Core\Buffers\Texture.cs" />
+    <Compile Include="Core\Buffers\Texture2D.cs" />
+    <Compile Include="Core\Buffers\Texture2DArray.cs" />
+    <Compile Include="Core\Buffers\TransformFeedbackBuffer.cs" />
+    <Compile Include="Core\Camera.cs" />
+    <Compile Include="Core\ContextResource.cs" />
+    <Compile Include="Core\FrameTimer.cs" />
+    <Compile Include="Core\Shaders\FragData.cs" />
+    <Compile Include="Core\Shaders\ImageUniform.cs" />
+    <Compile Include="Core\Shaders\Shader.cs" />
+    <Compile Include="Core\Shaders\ShaderSourceAttribute.cs" />
+    <Compile Include="Core\Shaders\ShaderStorage.cs" />
+    <Compile Include="Core\Shaders\ShaderVariable.cs" />
+    <Compile Include="Core\Shaders\TextureUniform.cs" />
+    <Compile Include="Core\Shaders\TransformOut.cs" />
+    <Compile Include="Core\Shaders\Uniform.cs" />
+    <Compile Include="Core\Shaders\VertexAttrib.cs" />
+    <Compile Include="Core\Shaders\VertexAttribAttribute.cs" />
+    <Compile Include="Core\Shapes\Circle.cs" />
+    <Compile Include="Core\Shapes\ColorCube.cs" />
+    <Compile Include="Core\Shapes\ColoredShape.cs" />
+    <Compile Include="Core\Shapes\Cube.cs" />
+    <Compile Include="Core\Shapes\IndexedShape.cs" />
+    <Compile Include="Core\Shapes\LayeredQuads.cs" />
+    <Compile Include="Core\Shapes\Quad.cs" />
+    <Compile Include="Core\Shapes\Rect.cs" />
+    <Compile Include="Core\Shapes\Shape.cs" />
+    <Compile Include="Core\Shapes\TexturedQuad.cs" />
+    <Compile Include="Core\Shapes\TexturedShape.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GameBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
