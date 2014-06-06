@@ -4,6 +4,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Buffers
 {
+    /// <summary>
+    /// Handles initialization and access to a collection of elements of type T in a buffer object.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the buffer object.</typeparam>
     public class Buffer<T>
         : ContextResource
         where T : struct
@@ -39,7 +43,8 @@ namespace DerpGL.Buffers
         public int ActiveElementCount { get; set; }
 
         /// <summary>
-        /// Retrieves data back from vram for debugging purposes.
+        /// Retrieves data back from vram.
+        /// Mainly for debugging purposes.
         /// </summary>
         public T[] Content
         {
@@ -52,6 +57,9 @@ namespace DerpGL.Buffers
             }
         }
 
+        /// <summary>
+        /// Requests a new, uninitialized buffer object.
+        /// </summary>
         public Buffer()
         {
             Handle = GL.GenBuffer();
@@ -66,6 +74,9 @@ namespace DerpGL.Buffers
         /// <summary>
         /// Allocates buffer memory and uploads given data to it.
         /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="data">The data to be transfered into the buffer.</param>
+        /// <param name="usageHint">The usage hint of the buffer object.</param>
         public void Init(BufferTarget bufferTarget, T[] data, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             Init(bufferTarget, data.Length, data, usageHint);
@@ -74,8 +85,11 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Allocates buffer memory and initializes it to zero.
+        /// Allocates buffer memory without initializing it.
         /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="elementCount">The number of elements to allocate memory for.</param>
+        /// <param name="usageHint">The usage hint of the buffer object.</param>
         public void Init(BufferTarget bufferTarget, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             Init(bufferTarget, elementCount, null, usageHint);
@@ -97,13 +111,14 @@ namespace DerpGL.Buffers
         /// Overwrites part of the buffer with the given data and automatically indexes forward through the available memory.
         /// Skips back to the beginning automatically once the end was reached.
         /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="data">The data to be transfered into the buffer.</param>
         public void SubData(BufferTarget bufferTarget, T[] data)
         {
             if (data.Length > ElementCount) throw new ApplicationException(
                 string.Format("Buffer not large enough to hold data. Buffer size: {0}. Elements to write: {1}.", ElementCount, data.Length));
             // check if data does not fit at the end of the buffer
             var rest = ElementCount - CurrentElementIndex;
-            //TODO: can be simplified..
             if (rest >= data.Length)
             {
                 // add the elements of data to the buffer at the current index
@@ -113,6 +128,7 @@ namespace DerpGL.Buffers
                 // remember the total number of elements with data
                 if (ActiveElementCount < CurrentElementIndex) ActiveElementCount = CurrentElementIndex;
                 // skip back if the end was reached
+                // in this case it can only be reached exactly because otherwise it would be handled by the else-case
                 if (CurrentElementIndex >= ElementCount) CurrentElementIndex = 0;
             }
             else
@@ -144,12 +160,12 @@ namespace DerpGL.Buffers
 
         /// <summary>
         /// Overwrites part of the buffer with the given data at the given offset.
-        /// Writes <paramref name="count">count</paramref> elements of data.
+        /// Writes <paramref name="count" /> elements of data.
         /// </summary>
         /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
         /// <param name="data">The data to be transfered into the buffer.</param>
         /// <param name="offset">The index to the first element of the buffer to be overwritten.</param>
-        /// <param name="count">The number of element from data to write.</param>
+        /// <param name="count">The number of elements from data to write.</param>
         public void SubData(BufferTarget bufferTarget, T[] data, int offset, int count)
         {
             if (count > ElementCount - offset) throw new ApplicationException(
@@ -160,9 +176,11 @@ namespace DerpGL.Buffers
             GL.BufferSubData(bufferTarget, (IntPtr)(ElementSize * offset), (IntPtr)(ElementSize * count), data);
         }
 
+        /// <summary>
+        /// Checks if uploaded size matches the expected size.
+        /// </summary>
         protected void CheckBufferSize(BufferTarget bufferTarget, int size)
         {
-            // check if uploaded size is correct
             int uploadedSize;
             GL.GetBufferParameter(bufferTarget, BufferParameterName.BufferSize, out uploadedSize);
             if (uploadedSize != size)

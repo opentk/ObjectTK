@@ -6,7 +6,6 @@ namespace DerpGL.Shapes
     public abstract class IndexedShape
         : Shape
     {
-        //TODO: use unsigned ints?
         public int[] Indices { get; protected set; }
         public Buffer<int> IndexBuffer { get; protected set; }
 
