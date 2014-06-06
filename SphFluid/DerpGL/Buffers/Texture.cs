@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Buffers
+namespace DerpGL.Buffers
 {
     public abstract class Texture
         : ContextResource

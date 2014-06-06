@@ -1,7 +1,7 @@
-using DerpGL.Core.Buffers;
+using DerpGL.Buffers;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     public class TextureUniform
         : Uniform<int>

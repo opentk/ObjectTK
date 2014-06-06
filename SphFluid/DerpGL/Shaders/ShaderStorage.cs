@@ -1,9 +1,9 @@
 using System;
-using DerpGL.Core.Buffers;
+using DerpGL.Buffers;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     public class ShaderStorage
         : ShaderVariable

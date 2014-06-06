@@ -1,8 +1,8 @@
 using System;
-using DerpGL.Core.Buffers;
+using DerpGL.Buffers;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     //TODO: Implemented in a completely strange way ..
     public class TransformOut

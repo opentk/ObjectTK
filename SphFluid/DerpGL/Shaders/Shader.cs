@@ -9,7 +9,7 @@ using log4net;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     public class Shader
         : ContextResource

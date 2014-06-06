@@ -1,4 +1,4 @@
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     public class ShaderVariable
     {

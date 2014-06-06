@@ -55,41 +55,19 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Buffers\Buffer.cs" />
-    <Compile Include="Core\Buffers\BufferPod.cs" />
-    <Compile Include="Core\Buffers\BufferTexture.cs" />
-    <Compile Include="Core\Buffers\FrameBuffer.cs" />
-    <Compile Include="Core\Buffers\RenderBuffer.cs" />
-    <Compile Include="Core\Buffers\Texture.cs" />
-    <Compile Include="Core\Buffers\Texture2D.cs" />
-    <Compile Include="Core\Buffers\Texture2DArray.cs" />
-    <Compile Include="Core\Buffers\TransformFeedbackBuffer.cs" />
-    <Compile Include="Core\Camera.cs" />
-    <Compile Include="Core\ContextResource.cs" />
-    <Compile Include="Core\FrameTimer.cs" />
-    <Compile Include="Core\Shaders\FragData.cs" />
-    <Compile Include="Core\Shaders\ImageUniform.cs" />
-    <Compile Include="Core\Shaders\Shader.cs" />
-    <Compile Include="Core\Shaders\ShaderSourceAttribute.cs" />
-    <Compile Include="Core\Shaders\ShaderStorage.cs" />
-    <Compile Include="Core\Shaders\ShaderVariable.cs" />
-    <Compile Include="Core\Shaders\TextureUniform.cs" />
-    <Compile Include="Core\Shaders\TransformOut.cs" />
-    <Compile Include="Core\Shaders\Uniform.cs" />
-    <Compile Include="Core\Shaders\VertexAttrib.cs" />
-    <Compile Include="Core\Shaders\VertexAttribAttribute.cs" />
-    <Compile Include="Core\Shapes\Circle.cs" />
-    <Compile Include="Core\Shapes\ColorCube.cs" />
-    <Compile Include="Core\Shapes\ColoredShape.cs" />
-    <Compile Include="Core\Shapes\Cube.cs" />
-    <Compile Include="Core\Shapes\IndexedShape.cs" />
-    <Compile Include="Core\Shapes\LayeredQuads.cs" />
-    <Compile Include="Core\Shapes\Quad.cs" />
-    <Compile Include="Core\Shapes\Rect.cs" />
-    <Compile Include="Core\Shapes\Shape.cs" />
-    <Compile Include="Core\Shapes\TexturedQuad.cs" />
-    <Compile Include="Core\Shapes\TexturedShape.cs" />
+    <Compile Include="Buffers\Buffer.cs" />
+    <Compile Include="Buffers\BufferPod.cs" />
+    <Compile Include="Buffers\BufferTexture.cs" />
+    <Compile Include="Buffers\FrameBuffer.cs" />
+    <Compile Include="Buffers\RenderBuffer.cs" />
+    <Compile Include="Buffers\Texture.cs" />
+    <Compile Include="Buffers\Texture2D.cs" />
+    <Compile Include="Buffers\Texture2DArray.cs" />
+    <Compile Include="Buffers\TransformFeedbackBuffer.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="ContextResource.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FrameTimer.cs" />
     <Compile Include="GameBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -97,6 +75,28 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Shaders\FragData.cs" />
+    <Compile Include="Shaders\ImageUniform.cs" />
+    <Compile Include="Shaders\Shader.cs" />
+    <Compile Include="Shaders\ShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\ShaderStorage.cs" />
+    <Compile Include="Shaders\ShaderVariable.cs" />
+    <Compile Include="Shaders\TextureUniform.cs" />
+    <Compile Include="Shaders\TransformOut.cs" />
+    <Compile Include="Shaders\Uniform.cs" />
+    <Compile Include="Shaders\VertexAttrib.cs" />
+    <Compile Include="Shaders\VertexAttribAttribute.cs" />
+    <Compile Include="Shapes\Circle.cs" />
+    <Compile Include="Shapes\ColorCube.cs" />
+    <Compile Include="Shapes\ColoredShape.cs" />
+    <Compile Include="Shapes\Cube.cs" />
+    <Compile Include="Shapes\IndexedShape.cs" />
+    <Compile Include="Shapes\LayeredQuads.cs" />
+    <Compile Include="Shapes\Quad.cs" />
+    <Compile Include="Shapes\Rect.cs" />
+    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\TexturedQuad.cs" />
+    <Compile Include="Shapes\TexturedShape.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

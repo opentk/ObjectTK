@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Buffers
+namespace DerpGL.Buffers
 {
     public class Buffer<T>
         : ContextResource

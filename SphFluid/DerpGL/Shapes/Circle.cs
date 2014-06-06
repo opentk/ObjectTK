@@ -2,7 +2,7 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shapes
+namespace DerpGL.Shapes
 {
     public class Circle
         : Shape

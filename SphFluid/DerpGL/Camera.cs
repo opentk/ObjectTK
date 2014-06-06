@@ -4,7 +4,7 @@ using log4net;
 using OpenTK;
 using OpenTK.Input;
 
-namespace DerpGL.Core
+namespace DerpGL
 {
     public class Camera
     {

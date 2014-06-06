@@ -2,7 +2,7 @@ using System;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     public class Uniform<T>
         : ShaderVariable

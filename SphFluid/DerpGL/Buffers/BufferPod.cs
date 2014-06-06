@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Buffers
+namespace DerpGL.Buffers
 {
     //TODO: refactor to be derived from Buffer<T> and containing an additional Buffer<T> instead of containing two Buffer<T>?
     public class BufferPod<T>

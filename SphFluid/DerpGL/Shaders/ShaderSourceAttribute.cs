@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class ShaderSourceAttribute

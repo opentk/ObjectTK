@@ -1,9 +1,9 @@
 ﻿using System;
-using DerpGL.Core.Buffers;
+using DerpGL.Buffers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shapes
+namespace DerpGL.Shapes
 {
     public abstract class TexturedShape
         : Shape

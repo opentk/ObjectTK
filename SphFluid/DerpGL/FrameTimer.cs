@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DerpGL.Core
+namespace DerpGL
 {
     public class FrameTimer
     {

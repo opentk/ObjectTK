@@ -1,7 +1,7 @@
 using System;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Core.Shaders
+namespace DerpGL.Shaders
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class VertexAttribAttribute

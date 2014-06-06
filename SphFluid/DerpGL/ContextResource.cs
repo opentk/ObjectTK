@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using log4net;
 
-namespace DerpGL.Core
+namespace DerpGL
 {
     public abstract class ContextResource
     {

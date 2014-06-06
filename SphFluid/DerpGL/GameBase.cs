@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DerpGL.Core;
 using DerpGL.Properties;
 using log4net;
 using OpenTK;
