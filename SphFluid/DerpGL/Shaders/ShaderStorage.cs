@@ -18,7 +18,7 @@ namespace DerpGL.Shaders
             Index = GL.GetProgramResourceIndex(program, ProgramInterface.ShaderStorageBlock, name);
             if (Index == (int)ArbUniformBufferObject.InvalidIndex) Logger.WarnFormat("Shader storage buffer binding not found or not active: {0}", name);
             // set the binding point to the blocks index
-            ChangeBinding(Index);
+            if (Index > -1) ChangeBinding(Index);
         }
 
         public void ChangeBinding(int binding)
