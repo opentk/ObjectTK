@@ -18,14 +18,14 @@ namespace DerpGL.Shapes
             // add color to the vertices
             Colors = new[]
             {
-                ColorToRgba32(Color.DarkRed),
-                ColorToRgba32(Color.DarkRed),
-                ColorToRgba32(Color.Gold),
-                ColorToRgba32(Color.Gold),
-                ColorToRgba32(Color.DarkRed),
-                ColorToRgba32(Color.DarkRed),
-                ColorToRgba32(Color.Gold),
-                ColorToRgba32(Color.Gold)
+                Color.DarkRed.ToRgba32(),
+                Color.DarkRed.ToRgba32(),
+                Color.Gold.ToRgba32(),
+                Color.Gold.ToRgba32(),
+                Color.DarkRed.ToRgba32(),
+                Color.DarkRed.ToRgba32(),
+                Color.Gold.ToRgba32(),
+                Color.Gold.ToRgba32()
             };
         }
     }
