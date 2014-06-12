@@ -59,6 +59,8 @@
     <Compile Include="Buffers\BufferPod.cs" />
     <Compile Include="Buffers\BufferTexture.cs" />
     <Compile Include="Buffers\FrameBuffer.cs" />
+    <Compile Include="Buffers\QueryMapping.cs" />
+    <Compile Include="Buffers\QueryIndexer.cs" />
     <Compile Include="Buffers\RenderBuffer.cs" />
     <Compile Include="Buffers\Texture.cs" />
     <Compile Include="Buffers\Texture2D.cs" />
