@@ -9,7 +9,7 @@ namespace DerpGL.Buffers
         : QueryIndexer
         where T : struct, IConvertible
     {
-        public class QueryMap
+        private class QueryMap
         {
             internal readonly int Handle;
 
@@ -26,16 +26,17 @@ namespace DerpGL.Buffers
             }
         }
 
-        public QueryMap this[T key]
+        public float this[T key]
         {
             get
             {
-                return _queries[key];
+                return _queries[key].Average;
             }
         }
 
         private readonly Dictionary<T, QueryMap> _queries;
         private const float AveragingFactor = 0.05f;
+        private const int ElapsedTimeFactor = 1000;
 
         public QueryMapping()
         {
@@ -68,6 +69,8 @@ namespace DerpGL.Buffers
             {
                 // get current value
                 GL.GetQueryObject(map.Handle, GetQueryObjectParam.QueryResult, out map.Value);
+                // scale elapsed time
+                if (map.Target == QueryTarget.TimeElapsed) map.Value /= ElapsedTimeFactor;
                 // calculate averaged value
                 map.Average = (int)(map.Value * AveragingFactor + map.Average * (1 - AveragingFactor));
             }
