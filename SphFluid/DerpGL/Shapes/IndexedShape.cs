@@ -6,13 +6,13 @@ namespace DerpGL.Shapes
     public abstract class IndexedShape
         : Shape
     {
-        public int[] Indices { get; protected set; }
-        public Buffer<int> IndexBuffer { get; protected set; }
+        public uint[] Indices { get; protected set; }
+        public Buffer<uint> IndexBuffer { get; protected set; }
 
         public override void UpdateBuffers()
         {
             base.UpdateBuffers();
-            IndexBuffer = new Buffer<int>();
+            IndexBuffer = new Buffer<uint>();
             IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 

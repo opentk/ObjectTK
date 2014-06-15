@@ -22,7 +22,7 @@ namespace DerpGL.Shapes
                 new Vector3(-1.0f,  1.0f, -1.0f)
             };
             
-            Indices = new[]
+            Indices = new uint[]
             {
                 // front face
                 0, 1, 2, 2, 3, 0,
