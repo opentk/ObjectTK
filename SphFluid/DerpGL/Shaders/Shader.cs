@@ -26,9 +26,18 @@ namespace DerpGL.Shaders
             : IMapping
         {
             private readonly Func<int, MemberInfo, T> _creator;
+
             public Type MappedType { get { return typeof(T); } }
-            public Mapping(Func<int, MemberInfo, T> creator) { _creator = creator; }
-            public object Create(int program, MemberInfo info) { return _creator(program, info); }
+
+            public Mapping(Func<int, MemberInfo, T> creator)
+            {
+                _creator = creator;
+            }
+
+            public object Create(int program, MemberInfo info)
+            {
+                return _creator(program, info);
+            }
         }
 
         //TODO: refactor to use GL.ProgramUniform* (check out EXT_direct_state_access)
@@ -60,14 +69,8 @@ namespace DerpGL.Shaders
         /// </summary>
         public int Program { get; private set; }
 
-        /// <summary>
-        /// Stores all shader handles to properly release them later
-        /// </summary>
-        private readonly List<int> _shaders;
-
         protected Shader()
         {
-            _shaders = new List<int>();
             var shaderSources = ShaderSourceAttribute.GetShaderSources(this);
             if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
             CreateProgram(shaderSources);
@@ -79,10 +82,7 @@ namespace DerpGL.Shaders
             // create program
             Program = GL.CreateProgram();
             // load and attach all specified shaders
-            foreach (var pair in shaders)
-            {
-                AttachShader(pair.Key, pair.Value);
-            }
+            var shaderObjects = shaders.Select(_ => AttachShader(_.Key, _.Value)).ToList();
             // bind transform feedback varyings if any
             var outs = InitializeTransformOut();
             if (outs.Count > 0)
@@ -92,18 +92,25 @@ namespace DerpGL.Shaders
             // link program
             Logger.DebugFormat("Linking shader program: {0}", GetType().Name);
             GL.LinkProgram(Program);
+            // release shader objects, after they are linked into the program
+            shaderObjects.ForEach(GL.DeleteShader);
             // assert that no link errors occured
             int linkStatus;
             GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out linkStatus);
             var info = GL.GetProgramInfoLog(Program);
             Logger.DebugFormat("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
-            Utility.Assert(linkStatus, 1, string.Format("Error linking program: {0}", GetType().Name));
+            if (linkStatus != 1)
+            {
+                var msg = string.Format("Error linking program: {0}", GetType().Name);
+                Logger.Error(msg);
+                throw new ApplicationException(msg);
+            }
             // initialize shader properties
             InitializePropertyMapping();
         }
 
-        private void AttachShader(ShaderType type, string name)
+        private int AttachShader(ShaderType type, string name)
         {
             Logger.DebugFormat("Compiling {0}: {1}", type, name);
             // create shader
@@ -118,11 +125,15 @@ namespace DerpGL.Shaders
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
             var info = GL.GetShaderInfoLog(shader);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log for {0}:\n{1}", name, info);
-            Utility.Assert(compileStatus, 1, string.Format("Error compiling shader: {0}", name));
+            if (compileStatus != 1)
+            {
+                var msg = string.Format("Error compiling shader: {0}", name);
+                Logger.Error(msg);
+                throw new ApplicationException(msg);
+            }
             // attach shader to program
             GL.AttachShader(Program, shader);
-            // remember shader to be able to properly release it
-            _shaders.Add(shader);
+            return shader;
         }
 
         private static string RetrieveShaderSource(string name, List<string> includedNames = null)
@@ -211,10 +222,6 @@ namespace DerpGL.Shaders
         protected override void OnRelease()
         {
             GL.DeleteProgram(Program);
-            foreach (var shader in _shaders)
-            {
-                GL.DeleteShader(shader);
-            }
         }
     }
 }

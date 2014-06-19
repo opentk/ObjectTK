@@ -8,6 +8,20 @@ namespace DerpGL.Buffers
         public int Width { get; private set; }
         public int Height { get; private set; }
 
+        /// <summary>
+        /// DEBUG: Retrieves the texture data interpreted as R32ui
+        /// </summary>
+        public uint[,] ContentR32Ui
+        {
+            get
+            {
+                var data = new uint[Width,Height];
+                GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
+                GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.RedInteger, PixelType.UnsignedInt, data);
+                return data;
+            }
+        }
+
         public Texture2D(SizedInternalFormat internalFormat, int width, int height)
             : base(internalFormat)
         {
