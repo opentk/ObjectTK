@@ -177,6 +177,22 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
+        /// Fills this buffer with data from another data.
+        /// Copied on server-side only, no synchronization or transfer of data to host required.
+        /// </summary>
+        /// <param name="source">The source buffer to copy data from.</param>
+        /// <param name="readOffset">Element offset into the source buffer.</param>
+        /// <param name="writeOffset">Element offset into this buffer</param>
+        /// <param name="count">The Number of elements to copy.</param>
+        public void CopyFrom(Buffer<T> source, int readOffset, int writeOffset, int count)
+        {
+            GL.BindBuffer(BufferTarget.CopyReadBuffer, source.Handle);
+            GL.BindBuffer(BufferTarget.CopyWriteBuffer, Handle);
+            GL.CopyBufferSubData(BufferTarget.CopyReadBuffer, BufferTarget.CopyWriteBuffer,
+                (IntPtr)(ElementSize * readOffset), (IntPtr)(ElementSize * writeOffset), (IntPtr)(ElementSize * count));
+        }
+
+        /// <summary>
         /// Checks if uploaded size matches the expected size.
         /// </summary>
         protected void CheckBufferSize(BufferTarget bufferTarget, int size)

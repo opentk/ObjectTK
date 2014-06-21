@@ -33,10 +33,10 @@ namespace DerpGL.Buffers
                 return _queries[key].Average;
             }
         }
-
+        
+        public float AveragingFactor = 0.05f;
+        public int ElapsedTimeFactor = 1000;
         private readonly Dictionary<T, QueryMap> _queries;
-        private const float AveragingFactor = 0.05f;
-        private const int ElapsedTimeFactor = 1000;
 
         public QueryMapping()
         {
@@ -58,6 +58,7 @@ namespace DerpGL.Buffers
         public void End(T mapping)
         {
             var map = _queries[mapping];
+            if (!map.Active) throw new ApplicationException(string.Format("Query not active: {0}", mapping));
             GL.EndQueryIndexed(map.Target, map.Index);
             ReleaseIndex(map.Target, map.Index);
             map.Active = false;
@@ -74,6 +75,16 @@ namespace DerpGL.Buffers
                 // calculate averaged value
                 map.Average = (int)(map.Value * AveragingFactor + map.Average * (1 - AveragingFactor));
             }
+        }
+
+        public IEnumerable<KeyValuePair<T, int>> GetValues()
+        {
+            return _queries.Select(map => new KeyValuePair<T, int>(map.Key, map.Value.Value));
+        }
+
+        public IEnumerable<KeyValuePair<T, int>> GetAverages()
+        {
+            return _queries.Select(map => new KeyValuePair<T, int>(map.Key, map.Value.Average));
         }
     }
 }
