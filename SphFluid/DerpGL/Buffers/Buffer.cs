@@ -177,6 +177,15 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
+        /// Clear the buffer to default values.
+        /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        public void Clear(BufferTarget bufferTarget)
+        {
+            SubData(bufferTarget, new T[ElementCount], 0, ElementCount);
+        }
+        
+        /// <summary>
         /// Fills this buffer with data from another data.
         /// Copied on server-side only, no synchronization or transfer of data to host required.
         /// </summary>
