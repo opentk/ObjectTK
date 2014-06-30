@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Buffers
 {
@@ -32,6 +33,24 @@ namespace DerpGL.Buffers
         {
             Ping.Init(target, data, usageHint);
             Pong.Init(target, data.Length, usageHint);
+        }
+
+        /// <summary>
+        /// Changes the size of the buffer objects.
+        /// </summary>
+        public void Resize(BufferTarget target, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        {
+            // wrap current element index into the new buffer size if it is smaller than before
+            Ping.CurrentElementIndex %= elementCount;
+            // prevent active element count from exceeding the new buffer size
+            Ping.ActiveElementCount = Math.Min(Ping.ActiveElementCount, elementCount);
+            // copy data into resized buffer
+            Pong.Init(target, elementCount, usageHint);
+            if (Ping.Initialized) Pong.CopyFrom(Ping);
+            // swap buffers
+            Swap();
+            // resize the other buffer
+            Pong.Init(target, elementCount, usageHint);
         }
 
         public void Swap()
