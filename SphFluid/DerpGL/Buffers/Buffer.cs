@@ -25,7 +25,7 @@ namespace DerpGL.Buffers
         /// <summary>
         /// The size in bytes of one element within the buffer.
         /// </summary>
-        public int ElementSize { get { return Marshal.SizeOf(typeof(T)); } }
+        public int ElementSize { get; protected set; }
         
         /// <summary>
         /// The number of elements for which buffer memory was allocated.
@@ -58,12 +58,21 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Requests a new, uninitialized buffer object.
+        /// Requests a new, uninitialized buffer object using an explicitly given element size in bytes.
         /// </summary>
-        public Buffer()
+        public Buffer(int elementSize)
         {
             Handle = GL.GenBuffer();
             Initialized = false;
+            ElementSize = elementSize;
+        }
+
+        /// <summary>
+        /// Requests a new, uninitialized buffer object using the element size determined by Marshal.SizeOf().
+        /// </summary>
+        public Buffer()
+            : this(Marshal.SizeOf(typeof(T)))
+        {
         }
 
         protected override void OnRelease()

@@ -77,6 +77,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Shaders\BufferBinding.cs" />
     <Compile Include="Shaders\ComputeShader.cs" />
     <Compile Include="Shaders\FragData.cs" />
     <Compile Include="Shaders\ImageUniform.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Shaders\TextureUniform.cs" />
     <Compile Include="Shaders\TransformOut.cs" />
     <Compile Include="Shaders\Uniform.cs" />
+    <Compile Include="Shaders\UniformBuffer.cs" />
     <Compile Include="Shaders\VertexAttrib.cs" />
     <Compile Include="Shaders\VertexAttribAttribute.cs" />
     <Compile Include="Shapes\Circle.cs" />

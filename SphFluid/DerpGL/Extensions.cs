@@ -15,7 +15,13 @@ namespace DerpGL
 
         public static uint ToRgba32(this Color color)
         {
-            return (uint)((color.A << 24) | (color.B << 16) | (color.G << 8) | color.R);
+            return (uint)(color.A << 24 | color.B << 16 | color.G << 8 | color.R);
+        }
+
+        public static Color Rgba32ToColor(this uint color)
+        {
+            const uint mask = 0x000000FF;
+            return Color.FromArgb((int)(color >> 24 & mask), (int)(color & mask), (int)(color >> 8 & mask), (int)(color >> 16 & mask));
         }
 
         public static IEnumerable<T> GetCustomAttributes<T>(this MemberInfo type, bool inherit)

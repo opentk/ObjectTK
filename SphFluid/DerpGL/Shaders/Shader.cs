@@ -53,6 +53,7 @@ namespace DerpGL.Shaders
             new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
             new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
             new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
+            new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
             new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
             new Mapping<FragData>((p,i) => new FragData(p, i.Name))
         };
