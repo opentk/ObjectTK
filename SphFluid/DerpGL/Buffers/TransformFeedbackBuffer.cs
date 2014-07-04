@@ -3,17 +3,17 @@
 namespace DerpGL.Buffers
 {
     public class TransformFeedbackBuffer
-        : ContextResource
+        : GLResource
     {
-        public int Handle { get; private set; }
-
         public TransformFeedbackBuffer()
+            : base(GL.GenTransformFeedback())
         {
-            Handle = GL.GenTransformFeedback();
+            
         }
 
-        protected override void OnRelease()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             GL.DeleteTransformFeedback(Handle);
         }
 

@@ -1,58 +1,33 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Buffers
 {
     public class BufferTexture<T>
-        : Buffer<T>
+        : Texture
         where T : struct
     {
-        /// <summary>
-        /// The OpenGL handle to the texture;
-        /// </summary>
-        public int TextureHandle { get; private set; }
-
-        /// <summary>
-        /// The format to be used when accessing this buffer via the buffer texture.
-        /// </summary>
-        public SizedInternalFormat BufferTextureFormat
+        public BufferTexture(SizedInternalFormat internalFormat)
+            : base(internalFormat)
         {
-            get
-            {
-                return _bufferTextureFormat;
-            }
-            set
-            {
-                _bufferTextureFormat = value;
-                BindBufferToTexture();
-            }
         }
-
-        private SizedInternalFormat _bufferTextureFormat;
 
         public BufferTexture()
+            : this(SizedInternalFormat.R32f)
         {
-            TextureHandle = GL.GenTexture();
-            // default internal buffer texture format
-            _bufferTextureFormat = SizedInternalFormat.R32f;
         }
 
-        protected override void OnRelease()
+        public void BindBufferToTexture(Buffer<T> buffer)
         {
-            base.OnRelease();
-            GL.DeleteTexture(TextureHandle);
+            BindBufferToTexture(buffer, InternalFormat);
         }
 
-        protected override void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
+        public void BindBufferToTexture(Buffer<T> buffer, SizedInternalFormat internalFormat)
         {
-            base.Init(bufferTarget, elementCount, data, usageHint);
-            BindBufferToTexture();
-        }
-
-        protected void BindBufferToTexture()
-        {
-            if (!Initialized) return;
-            GL.BindTexture(TextureTarget.TextureBuffer, TextureHandle);
-            GL.TexBuffer(TextureBufferTarget.TextureBuffer, BufferTextureFormat, Handle);
+            if (!buffer.Initialized) throw new ApplicationException("Can not bind uninitialized buffer to buffer texture.");
+            InternalFormat = internalFormat;
+            GL.BindTexture(TextureTarget.TextureBuffer, Handle);
+            GL.TexBuffer(TextureBufferTarget.TextureBuffer, InternalFormat, Handle);
         }
     }
 }

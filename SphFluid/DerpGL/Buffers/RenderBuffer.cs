@@ -3,17 +3,16 @@
 namespace DerpGL.Buffers
 {
     public class RenderBuffer
-        : ContextResource
+        : GLResource
     {
-        public int Handle { get; private set; }
-
         public RenderBuffer()
+            : base(GL.GenRenderbuffer())
         {
-            Handle = GL.GenRenderbuffer();
         }
 
-        protected override void OnRelease()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             GL.DeleteRenderbuffer(Handle);
         }
 

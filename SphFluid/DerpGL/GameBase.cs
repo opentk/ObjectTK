@@ -56,13 +56,6 @@ namespace DerpGL
             WindowState = WindowState.Maximized;
         }
 
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            // ignore missing glDelete* calls when closing the application, the OS will clean up anyway..
-            ContextResource.IgnoreLeaks = true;
-        }
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

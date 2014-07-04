@@ -9,18 +9,13 @@ namespace DerpGL.Buffers
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer object.</typeparam>
     public class Buffer<T>
-        : ContextResource
+        : GLResource
         where T : struct
     {
         /// <summary>
         /// A value indicating whether the buffer has been initialized and thus has access to allocated memory.
         /// </summary>
         public bool Initialized { get; private set; }
-
-        /// <summary>
-        /// The OpenGL handle to the buffer object.
-        /// </summary>
-        public int Handle { get; private set; }
 
         /// <summary>
         /// The size in bytes of one element within the buffer.
@@ -61,8 +56,8 @@ namespace DerpGL.Buffers
         /// Requests a new, uninitialized buffer object using an explicitly given element size in bytes.
         /// </summary>
         public Buffer(int elementSize)
+            : base(GL.GenBuffer())
         {
-            Handle = GL.GenBuffer();
             Initialized = false;
             ElementSize = elementSize;
         }
@@ -75,8 +70,9 @@ namespace DerpGL.Buffers
         {
         }
 
-        protected override void OnRelease()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             GL.DeleteBuffer(Handle);
         }
 

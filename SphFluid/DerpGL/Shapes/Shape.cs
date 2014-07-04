@@ -1,31 +1,26 @@
-﻿using DerpGL.Buffers;
+﻿using System;
+using DerpGL.Buffers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shapes
 {
     public abstract class Shape
-        : ContextResource
+        : IDisposable
     {
         public PrimitiveType DefaultMode { get; set; }
         public Vector3[] Vertices { get; protected set; }
         public Buffer<Vector3> VertexBuffer { get; protected set; }
 
-        protected Shape()
-        {
-            ReleaseRequired = false;
-        }
-
         public virtual void UpdateBuffers()
         {
-            ReleaseRequired = true;
             VertexBuffer = new Buffer<Vector3>();
             VertexBuffer.Init(BufferTarget.ArrayBuffer, Vertices);
         }
 
-        protected override void OnRelease()
+        public virtual void Dispose()
         {
-            if (VertexBuffer != null) VertexBuffer.Release();
+            if (VertexBuffer != null) VertexBuffer.Dispose();
         }
 
         public void RenderImmediate()

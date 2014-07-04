@@ -5,7 +5,7 @@ namespace DerpGL.Buffers
 {
     //TODO: refactor to be derived from Buffer<T> and containing an additional Buffer<T> instead of containing two Buffer<T>?
     public class BufferPod<T>
-        : ContextResource
+        : IDisposable
         where T : struct
     {
         public Buffer<T> Ping { private set; get; }
@@ -17,10 +17,10 @@ namespace DerpGL.Buffers
             Pong = new Buffer<T>();
         }
 
-        protected override void OnRelease()
+        public void Dispose()
         {
-            Ping.Release();
-            Pong.Release();
+            Ping.Dispose();
+            Pong.Dispose();
         }
 
         public void Init(BufferTarget target, int elementCount, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)

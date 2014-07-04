@@ -21,13 +21,13 @@ namespace DerpGL.Shaders
 
         public void BindTexture(TextureTarget target, TextureUnit unit, Texture texture)
         {
-            BindTexture(target, unit, texture.TextureHandle);
+            BindTexture(target, unit, texture.Handle);
         }
 
         public void BindBuffer<T>(TextureUnit unit, BufferTexture<T> buffer)
             where T : struct
         {
-            BindTexture(TextureTarget.TextureBuffer, unit, buffer.TextureHandle);
+            BindTexture(TextureTarget.TextureBuffer, unit, buffer.Handle);
         }
     }
 }

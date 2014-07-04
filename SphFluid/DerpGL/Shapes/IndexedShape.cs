@@ -16,10 +16,10 @@ namespace DerpGL.Shapes
             IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 
-        protected override void OnRelease()
+        public override void Dispose()
         {
-            base.OnRelease();
-            if (IndexBuffer != null) IndexBuffer.Release();
+            base.Dispose();
+            if (IndexBuffer != null) IndexBuffer.Dispose();
         }
 
         public override void RenderImmediate(PrimitiveType mode)

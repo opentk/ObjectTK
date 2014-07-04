@@ -16,7 +16,7 @@ namespace DerpGL.Buffers
             get
             {
                 var data = new uint[Width,Height];
-                GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
+                GL.BindTexture(TextureTarget.Texture2D, Handle);
                 GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.RedInteger, PixelType.UnsignedInt, data);
                 return data;
             }
@@ -27,7 +27,7 @@ namespace DerpGL.Buffers
         {
             Width = width;
             Height = height;
-            GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
+            GL.BindTexture(TextureTarget.Texture2D, Handle);
             GL.TexStorage2D(TextureTarget2d.Texture2D, 1, internalFormat, width, height);
             CheckError();
         }

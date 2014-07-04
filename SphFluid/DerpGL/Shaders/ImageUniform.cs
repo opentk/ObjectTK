@@ -22,23 +22,23 @@ namespace DerpGL.Shaders
 
         public void BindTexture(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access)
         {
-            BindImage(imageUnit, texture.TextureHandle, layered, layer, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.Handle, layered, layer, access, texture.InternalFormat);
         }
 
         public void BindTexture(int imageUnit, Texture2D texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture.TextureHandle, false, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.Handle, false, 0, access, texture.InternalFormat);
         }
 
         public void BindTexture(int imageUnit, Texture2DArray texture, TextureAccess access)
         {
-            BindImage(imageUnit, texture.TextureHandle, true, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.Handle, true, 0, access, texture.InternalFormat);
         }
 
         public void BindBuffer<T>(int imageUnit, BufferTexture<T> buffer, TextureAccess access)
             where T : struct
         {
-            BindImage(imageUnit, buffer.TextureHandle, false, 0, access, buffer.BufferTextureFormat);
+            BindImage(imageUnit, buffer.Handle, false, 0, access, buffer.InternalFormat);
         }
     }
 }

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Buffers
+namespace DerpGL
 {
     public class QueryMapping<T>
         : QueryIndexer
+        , IDisposable
         where T : struct, IConvertible
     {
         private class QueryMap
+            : GLResource
         {
-            internal readonly int Handle;
-
             internal bool Active;
             internal QueryTarget Target;
             internal int Index;
@@ -20,9 +20,15 @@ namespace DerpGL.Buffers
             public int Value;
             public int Average;
 
-            public QueryMap(int handle)
+            public QueryMap()
+                : base(GL.GenQuery())
             {
-                Handle = handle;
+            }
+
+            protected override void Dispose(bool manual)
+            {
+                if (!manual) return;
+                GL.DeleteQuery(Handle);
             }
         }
 
@@ -42,7 +48,15 @@ namespace DerpGL.Buffers
         {
             if (!typeof(T).IsEnum) throw new ArgumentException("T must be an enumerated type");
             // create a query object for each enum entry
-            _queries = Enum.GetValues(typeof (T)).Cast<T>().ToDictionary(_ => _, _ => new QueryMap(GL.GenQuery()));
+            _queries = Enum.GetValues(typeof (T)).Cast<T>().ToDictionary(_ => _, _ => new QueryMap());
+        }
+
+        public void Dispose()
+        {
+            foreach (var queryMap in _queries.Values)
+            {
+                queryMap.Dispose();
+            }
         }
 
         public void Begin(T mapping, QueryTarget target)

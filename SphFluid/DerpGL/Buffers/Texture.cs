@@ -3,25 +3,25 @@
 namespace DerpGL.Buffers
 {
     public abstract class Texture
-        : ContextResource
+        : GLResource
     {
-        public int TextureHandle { get; private set; }
-        public SizedInternalFormat InternalFormat { get; private set; }
+        public SizedInternalFormat InternalFormat { get; protected set; }
 
         protected Texture(SizedInternalFormat internalFormat)
+            : base(GL.GenTexture())
         {
             InternalFormat = internalFormat;
-            TextureHandle = GL.GenTexture();
         }
 
-        protected override void OnRelease()
+        protected override void Dispose(bool manual)
         {
-            GL.DeleteTexture(TextureHandle);
+            if (!manual) return;
+            GL.DeleteTexture(Handle);
         }
 
         protected void SetTexParameters()
         {
-            GL.BindTexture(TextureTarget.Texture2D, TextureHandle);
+            GL.BindTexture(TextureTarget.Texture2D, Handle);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);

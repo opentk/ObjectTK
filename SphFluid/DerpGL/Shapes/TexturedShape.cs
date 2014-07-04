@@ -18,10 +18,10 @@ namespace DerpGL.Shapes
             TexCoordBuffer.Init(BufferTarget.ArrayBuffer, TexCoords);
         }
 
-        protected override void OnRelease()
+        public override void Dispose()
         {
-            base.OnRelease();
-            if (TexCoordBuffer != null) TexCoordBuffer.Release();
+            base.Dispose();
+            if (TexCoordBuffer != null) TexCoordBuffer.Dispose();
         }
 
         public override void RenderImmediate(PrimitiveType mode)

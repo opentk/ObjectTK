@@ -15,7 +15,7 @@ namespace DerpGL.Buffers
             Width = width;
             Height = height;
             Layers = layers;
-            GL.BindTexture(TextureTarget.Texture2DArray, TextureHandle);
+            GL.BindTexture(TextureTarget.Texture2DArray, Handle);
             GL.TexStorage3D(TextureTarget3d.Texture2DArray, 1, internalFormat, width, height, layers);
             CheckError();
         }

@@ -17,10 +17,10 @@ namespace DerpGL.Shapes
             ColorBuffer.Init(BufferTarget.ArrayBuffer, Colors);
         }
 
-        protected override void OnRelease()
+        public override void Dispose()
         {
-            base.OnRelease();
-            if (ColorBuffer != null) ColorBuffer.Release();
+            base.Dispose();
+            if (ColorBuffer != null) ColorBuffer.Dispose();
         }
 
         public override void RenderImmediate(PrimitiveType mode)

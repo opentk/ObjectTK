@@ -12,7 +12,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders
 {
     public class Shader
-        : ContextResource
+        : GLResource
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
@@ -48,6 +48,7 @@ namespace DerpGL.Shaders
             new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
             new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
             new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
             new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
@@ -65,12 +66,8 @@ namespace DerpGL.Shaders
             return new VertexAttrib(program, info.Name, attrib);
         }
 
-        /// <summary>
-        /// Shader program handle
-        /// </summary>
-        public int Program { get; private set; }
-
         protected Shader()
+            : base(GL.CreateProgram())
         {
             var shaderSources = ShaderSourceAttribute.GetShaderSources(this);
             if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
@@ -88,25 +85,23 @@ namespace DerpGL.Shaders
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
             Logger.InfoFormat("Creating shader program: {0}", GetType().Name);
-            // create program
-            Program = GL.CreateProgram();
             // load and attach all specified shaders
             var shaderObjects = shaders.Select(_ => AttachShader(_.Key, _.Value)).ToList();
             // bind transform feedback varyings if any
             var outs = InitializeTransformOut();
             if (outs.Count > 0)
             {
-                GL.TransformFeedbackVaryings(Program, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
+                GL.TransformFeedbackVaryings(Handle, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
             }
             // link program
             Logger.DebugFormat("Linking shader program: {0}", GetType().Name);
-            GL.LinkProgram(Program);
+            GL.LinkProgram(Handle);
             // release shader objects, after they are linked into the program
             shaderObjects.ForEach(GL.DeleteShader);
             // assert that no link errors occured
             int linkStatus;
-            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out linkStatus);
-            var info = GL.GetProgramInfoLog(Program);
+            GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out linkStatus);
+            var info = GL.GetProgramInfoLog(Handle);
             Logger.DebugFormat("Link status: {0}", linkStatus);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
             if (linkStatus != 1)
@@ -141,7 +136,7 @@ namespace DerpGL.Shaders
                 throw new ApplicationException(msg);
             }
             // attach shader to program
-            GL.AttachShader(Program, shader);
+            GL.AttachShader(Handle, shader);
             return shader;
         }
 
@@ -219,18 +214,19 @@ namespace DerpGL.Shaders
                 var mapping = TypeMapping.FirstOrDefault(_ => _.MappedType == property.PropertyType);
                 if (mapping == null) continue;
                 Logger.DebugFormat("Creating property mapping: {0}", property.Name);
-                property.SetValue(this, mapping.Create(Program, property), null);
+                property.SetValue(this, mapping.Create(Handle, property), null);
             }
         }
 
         public void Use()
         {
-            GL.UseProgram(Program);
+            GL.UseProgram(Handle);
         }
 
-        protected override void OnRelease()
+        protected override void Dispose(bool manual)
         {
-            GL.DeleteProgram(Program);
+            if (!manual) return;
+            GL.DeleteProgram(Handle);
         }
     }
 }
