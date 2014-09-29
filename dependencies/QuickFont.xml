@@ -1,0 +1,627 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuickFont</name>
+    </assembly>
+    <members>
+        <member name="F:QuickFont.QFontConfiguration.TransformToCurrentOrthogProjection">
+            <summary>
+            Render the font pixel-prefectly at a size in units of the current orthogonal projection, independent of the viewport pixel size.
+            </summary>
+        </member>
+        <member name="F:QuickFont.CharacterKerningRule.Normal">
+            <summary>
+            Ordinary kerning
+            </summary>
+        </member>
+        <member name="F:QuickFont.CharacterKerningRule.Zero">
+            <summary>
+            All kerning pairs involving this character will kern by 0. This will
+            override both Normal and NotMoreThanHalf for any pair.
+            </summary>
+        </member>
+        <member name="F:QuickFont.CharacterKerningRule.NotMoreThanHalf">
+            <summary>
+            Any kerning pairs involving this character will not kern
+            by more than half the minimum width of the two characters 
+            involved. This will override Normal for any pair.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontKerningConfiguration.CharacterKerningRules">
+            <summary>
+            Kerning rules for particular characters
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontKerningConfiguration.alphaEmptyPixelTolerance">
+            <summary>
+            When measuring the bounds of glyphs, and performing kerning calculations, 
+            this is the minimum alpha level that is necessray for a pixel to be considered
+            non-empty. This should be set to a value on the range [0,255]
+            </summary>
+        </member>
+        <member name="M:QuickFont.QFontKerningConfiguration.BatchSetCharacterKerningRule(System.String,QuickFont.CharacterKerningRule)">
+            <summary>
+            Sets all characters in the given string to the specified kerning rule.
+            </summary>
+            <param name="chars"></param>
+            <param name="rule"></param>
+        </member>
+        <member name="M:QuickFont.QFontKerningConfiguration.SetCharacterKerningRule(System.Char,QuickFont.CharacterKerningRule)">
+            <summary>
+            Sets the specified character kerning rule.
+            </summary>
+            <param name="c"></param>
+            <param name="rule"></param>
+        </member>
+        <member name="M:QuickFont.QFontKerningConfiguration.GetOverridingCharacterKerningRuleForPair(System.String)">
+            <summary>
+            Given a pair of characters, this will return the overriding 
+            CharacterKerningRule.
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickFont.QFontLoaderConfiguration">
+            <summary>
+            The configuraiton used when loading a font from a qfont file.
+            </summary>
+        </member>
+        <member name="M:QuickFont.Helper.SafeGLBegin(OpenTK.Graphics.OpenGL.BeginMode,System.Action)">
+            <summary>
+            Ensures GL.End() is called
+            </summary>
+            <param name="mode"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:QuickFont.Helper.SafeGLEnable(OpenTK.Graphics.OpenGL.EnableCap,System.Action)">
+            <summary>
+            Ensures that state is disabled
+            </summary>
+            <param name="cap"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:QuickFont.Helper.SafeGLEnable(OpenTK.Graphics.OpenGL.EnableCap[],System.Action)">
+            <summary>
+            Ensures that multiple states are disabled
+            </summary>
+            <param name="cap"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:QuickFont.QBitmap.EmptyPixel(System.Drawing.Imaging.BitmapData,System.Int32,System.Int32)">
+            <summary>
+            Returns try if the given pixel is empty (i.e. black)
+            </summary>
+        </member>
+        <member name="M:QuickFont.QBitmap.EmptyAlphaPixel(System.Drawing.Imaging.BitmapData,System.Int32,System.Int32,System.Byte)">
+            <summary>
+            Returns try if the given pixel is empty (i.e. alpha is zero)
+            </summary>
+        </member>
+        <member name="M:QuickFont.QBitmap.BlitMask(System.Drawing.Imaging.BitmapData,System.Drawing.Imaging.BitmapData,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Blits a block of a bitmap data from source to destination, using the luminance of the source to determine the 
+            alpha of the target. Source must be 24-bit, target must be 32-bit.
+            </summary>
+        </member>
+        <member name="M:QuickFont.QBitmap.Blit(System.Drawing.Imaging.BitmapData,System.Drawing.Imaging.BitmapData,System.Drawing.Rectangle,System.Int32,System.Int32)">
+            <summary>
+            Blits from source to target. Both source and target must be 32-bit
+            </summary>
+        </member>
+        <member name="M:QuickFont.QBitmap.Blit(System.Drawing.Imaging.BitmapData,System.Drawing.Imaging.BitmapData,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Blits from source to target. Both source and target must be 32-bit
+            </summary>
+        </member>
+        <member name="M:QuickFont.QBitmap.Colour32(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Sets colour without touching alpha values
+            </summary>
+            <param name="r"></param>
+            <param name="g"></param>
+            <param name="b"></param>
+        </member>
+        <member name="M:QuickFont.QFont.OrthogonalTransform(System.Single@)">
+            <summary>
+            When TransformToOrthogProjection is enabled, we need to get the current orthogonal transformation,
+            the font scale, and ensure that the projection is actually orthogonal
+            </summary>
+            <param name="fontScale"></param>
+            <param name="viewportTransform"></param>
+        </member>
+        <member name="M:QuickFont.QFont.PushOptions(QuickFont.QFontRenderOptions)">
+            <summary>
+            Pushes the specified QFont options onto the options stack
+            </summary>
+            <param name="newOptions"></param>
+        </member>
+        <member name="M:QuickFont.QFont.PushOptions">
+            <summary>
+            Creates a clone of the current font options and pushes
+            it onto the stack
+            </summary>
+        </member>
+        <member name="M:QuickFont.QFont.Measure(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
+            <summary>
+            Measures the actual width and height of the block of text.
+            </summary>
+            <param name="text"></param>
+            <param name="bounds"></param>
+            <param name="alignment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.QFont.Measure(QuickFont.ProcessedText)">
+            <summary>
+            Measures the actual width and height of the block of text
+            </summary>
+            <param name="processedText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.QFont.TextNodeLineLength(QuickFont.TextNode,System.Single)">
+            <summary>
+            Computes the length of the next line, and whether the line is valid for
+            justification.
+            </summary>
+            <param name="node"></param>
+            <param name="maxLength"></param>
+            <param name="justifable"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.QFont.JustifyLine(QuickFont.TextNode,System.Single)">
+            <summary>
+            Computes the length of the next line, and whether the line is valid for
+            justification.
+            </summary>
+        </member>
+        <member name="M:QuickFont.QFont.SkipTrailingSpace(QuickFont.TextNode,System.Single,System.Single)">
+            <summary>
+            Checks whether to skip trailing space on line because the next word does not
+            fit.
+            
+            We only check one space - the assumption is that if there is more than one,
+            it is a deliberate attempt to insert spaces.
+            </summary>
+            <param name="node"></param>
+            <param name="lengthSoFar"></param>
+            <param name="boundWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.QFont.Print(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
+            <summary>
+            Prints text inside the given bounds.
+            </summary>
+            <param name="text"></param>
+            <param name="bounds"></param>
+            <param name="alignment"></param>
+        </member>
+        <member name="M:QuickFont.QFont.ProcessText(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
+            <summary>
+            Creates node list object associated with the text.
+            </summary>
+            <param name="text"></param>
+            <param name="bounds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.QFont.Print(QuickFont.ProcessedText)">
+            <summary>
+            Prints text as previously processed with a boundary and alignment.
+            </summary>
+            <param name="processedText"></param>
+        </member>
+        <member name="M:QuickFont.QFont.RefreshViewport">
+            <summary>
+            Invalidates the internally cached viewport, causing it to be 
+            reread the next time it is required. This should be called
+            if the viewport and text is to be rendered to the new 
+            viewport.
+            </summary>
+        </member>
+        <member name="T:QuickFont.Builder">
+            <summary>
+            Class for building a Quick Font, given a Font
+            and a configuration object.
+            </summary>
+        </member>
+        <member name="M:QuickFont.Builder.IsMonospaced(System.Collections.Generic.List{System.Drawing.SizeF})">
+            <summary>
+            Returns true if all glyph widths are within 5% of each other
+            </summary>
+            <param name="sizes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickFont.Builder.PowerOfTwo(System.Int32)">
+            <summary>
+            Returns the power of 2 that is closest to x, but not smaller than x.
+            </summary>
+        </member>
+        <member name="F:QuickFont.TextGenerationRenderHint.AntiAliasGridFit">
+            <summary>
+            Use AntiAliasGridFit when rendering the ttf character set to create the QFont texture
+            </summary>
+        </member>
+        <member name="F:QuickFont.TextGenerationRenderHint.AntiAlias">
+            <summary>
+            Use AntiAlias when rendering the ttf character set to create the QFont texture
+            </summary>
+        </member>
+        <member name="F:QuickFont.TextGenerationRenderHint.SizeDependent">
+            <summary>
+            Use ClearTypeGridFit if the font is smaller than 12, otherwise use AntiAlias
+            </summary>
+        </member>
+        <member name="F:QuickFont.TextGenerationRenderHint.ClearTypeGridFit">
+            <summary>
+            Use ClearTypeGridFit when rendering the ttf character set to create the QFont texture
+            </summary>
+        </member>
+        <member name="F:QuickFont.TextGenerationRenderHint.SystemDefault">
+            <summary>
+            Use SystemDefault when rendering the ttf character set to create the QFont texture
+            </summary>
+        </member>
+        <member name="T:QuickFont.QFontBuilderConfiguration">
+            <summary>
+            What settings to use when building the font
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.SuperSampleLevels">
+            <summary>
+            Whether to use super sampling when building font texture pages
+            
+            
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.PageWidth">
+            <summary>
+            The standard width of texture pages (the page will
+            automatically be cropped if there is extra space)
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.PageHeight">
+            <summary>
+            The standard height of texture pages (the page will
+            automatically be cropped if there is extra space)
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.ForcePowerOfTwo">
+            <summary>
+            Whether to force texture pages to use a power of two.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.GlyphMargin">
+            <summary>
+            The margin (on all sides) around glyphs when rendered to
+            their texture page
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.charSet">
+            <summary>
+            Set of characters to support
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontBuilderConfiguration.TextGenerationRenderHint">
+            <summary>
+            Which render hint to use when rendering the ttf character set to create the QFont texture
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.KerningPairs">
+            <summary>
+            Mapping from a pair of characters to a pixel offset
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.Pages">
+            <summary>
+            List of texture pages
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.CharSetMapping">
+            <summary>
+            Mapping from character to glyph index
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.meanGlyphWidth">
+            <summary>
+            The average glyph width
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.maxGlyphHeight">
+            <summary>
+            The maximum glyph height
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.dropShadow">
+            <summary>
+            Null if no dropShadow is available
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontData.naturallyMonospaced">
+            <summary>
+            Whether the original font (from ttf) was detected to be monospaced
+            </summary>
+        </member>
+        <member name="M:QuickFont.QFontData.GetKerningPairCorrection(System.Int32,System.String,QuickFont.TextNode)">
+            <summary>
+            Returns the kerning length correction for the character at the given index in the given string.
+            Also, if the text is part of a textNode list, the nextNode is given so that the following 
+            node can be checked incase of two adjacent word nodes.
+            </summary>
+            <param name="index"></param>
+            <param name="text"></param>
+            <param name="textNode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickFont.QFontShadowConfiguration">
+            <summary>
+            The configuration used when building a font drop shadow.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.Scale">
+            <summary>
+            Scale in relation to the actual font glyphs
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.blurRadius">
+            <summary>
+            The blur radius. Caution: high values will greatly impact the 
+            time it takes to build a font shadow
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.blurPasses">
+            <summary>
+            Number of blur passes. Caution: high values will greatly impact the 
+            time it takes to build a font shadow
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.PageWidth">
+            <summary>
+            The standard width of texture pages (the page will
+            automatically be cropped if there is extra space)
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.PageHeight">
+            <summary>
+            The standard height of texture pages (the page will
+            automatically be cropped if there is extra space)
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.ForcePowerOfTwo">
+            <summary>
+            Whether to force texture pages to use a power of two.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontShadowConfiguration.GlyphMargin">
+            <summary>
+            The margin (on all sides) around glyphs when rendered to
+            their texture page. Note this is in addition to 3xblurRadius margin
+            which is automatically added.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontGlyph.page">
+            <summary>
+            Which texture page the glyph is on
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontGlyph.rect">
+            <summary>
+            The rectangle defining the glyphs position on the page
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontGlyph.yOffset">
+            <summary>
+            How far the glyph would need to be vertically offset to be vertically in line with the tallest glyph in the set of all glyphs
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontGlyph.character">
+            <summary>
+            Which character this glyph represents
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.Colour">
+            <summary>
+            The font colour
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.CharacterSpacing">
+            <summary>
+            Spacing between characters in units of average glyph width
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.WordSpacing">
+            <summary>
+            Spacing between words in units of average glyph width
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.LineSpacing">
+            <summary>
+            Line spacing in units of max glyph width
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.DropShadowActive">
+            <summary>
+            Whether to draw a drop-shadow. Note: this requires
+            the QFont to have been loaded with a drop shadow to
+            take effect.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.DropShadowOffset">
+            <summary>
+            Offset of the shadow from the font glyphs in units of average glyph width
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.DropShadowOpacity">
+            <summary>
+            Opacity of drop shadows
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.Monospacing">
+            <summary>
+            Whether to render the font in monospaced mode. If set to "Natural", then 
+            monospacing will be used if the font loaded font was detected to be monospaced.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.TransformToViewport">
+             <summary>
+             This is intended as a means of rendering text pixel-perfectly at a 
+             fixed display size (size on screen) independent of the screen resolution.
+             
+             Ordinarily it is possible to render pixel-perfect text by calling 
+             QFont.Begin() / QFont.End(); however, this means working in a coordinate 
+             system corresponding to the current screen resolution. If the screen 
+             resolution changes, then the display size of the font will change 
+             accordingly which may not be desirable. Many games/applications prefer 
+             to use a fixed orthog coordinate system that is independent of screen 
+             resolution (e.g. 1000x1000) so that when the screen resolution changes,
+             everything is still the same size on screen, it simply has higher
+             definition - which is what this setting supports.
+             
+             One option is simply not to call QFont.Begin() / QFont.End(). This
+             works; however, it becomes impossible to assure that glyphs are
+             rendered pixel-perfectly. Instead they will be scaled in hardware.
+             In most cases this looks fine; however, if you are a perfectionist, 
+             you may prefer to use this option to assure pixel perfection.
+             
+             Setting this option does two things:
+             
+             Rendering to a specified position is transformed
+             Measurements are transformed
+             
+             So for example, suppose the screen resolution is 1024x768, but you 
+             wish to run orthog mode at 1000x1000.  If you set:
+             
+             myFont.Options.TransformToViewport = new Viewport(0,0,1000,1000);
+            
+             Then, if you render at position 500,500:
+             
+             QFont.Begin();
+             myFont.Options.LockToPixel = true;
+             myFont.Print("Hello",new Vector2(500,500));
+             QFont.End();
+            
+             This will be printed pixel-pefectly at pixel position 512, 384.
+             
+             Additionally the font will be measured in terms of your 500x500 
+             coordinate system.
+             
+             The only issue is that if you change the resolution, the size of your
+             font will change. You can get around this by loading a font size
+             that is proportional to the screen resolution. This makes sense:
+             if you want a font to be rendered pixel-perfectly at a higher
+             resolution, it will need to be a larger font. At present this 
+             needs to be doen manually. E.g:
+             
+                float fontScale = (float)Height / 800;
+                compyFontSmall = new QFont("Data/comfy.ttf", 14 * fontScale);
+             
+             
+             </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.LockToPixel">
+            <summary>
+            Locks the position to a particular pixel, allowing the text to be rendered pixel-perfectly.
+            You need to turn this off if you wish to move text around the screen smoothly by fractions 
+            of a pixel.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.LockToPixelRatio">
+            <summary>
+            Only applies when LockToPixel is true:
+            This is used to transition smoothly between being locked to pixels and not
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.UseDefaultBlendFunction">
+            <summary>
+            Whether to always set :
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.DstAlpha);
+            before rendering text.
+            
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.WordWrap">
+            <summary>
+            Wrap word to next line if max width hit
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.JustifyCapExpand">
+            <summary>
+            Total justification cap as a fraction of the boundary width.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.JustifyCapContract">
+            <summary>
+            Total justification cap as a fraction of the boundary width.
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.JustifyContractionPenalty">
+            <summary>
+            By what factor justification is penalized for being negative.
+            
+            (e.g. if this is set to 3, then a contraction will only happen
+            over an expansion if it is 3 of fewer times smaller than the
+            expansion).
+            
+            
+            </summary>
+        </member>
+        <member name="P:QuickFont.QFontRenderOptions.JustifyCharacterWeightForExpand">
+            <summary>
+            When a line of text is justified, space may be inserted between
+            characters, and between words. 
+            
+            This parameter determines how this choice is weighted:
+            
+            0.0f => word spacing only
+            1.0f => "fairly" distributed between both
+            > 1.0 => in favour of character spacing
+            
+            This applies to expansions only.
+            
+            </summary>
+        </member>
+        <member name="P:QuickFont.QFontRenderOptions.JustifyCharacterWeightForContract">
+            <summary>
+            When a line of text is justified, space may be removed between
+            characters, and between words. 
+            
+            This parameter determines how this choice is weighted:
+            
+            0.0f => word spacing only
+            1.0f => "fairly" distributed between both
+            > 1.0 => in favour of character spacing
+            
+            This applies to contractions only.
+            
+            </summary>
+        </member>
+        <member name="T:QuickFont.ProcessedText">
+            <summary>
+            Class to hide TextNodeList and related classes from 
+            user whilst allowing a textNodeList to be passed around.
+            </summary>
+        </member>
+        <member name="T:QuickFont.TextNodeList">
+            <summary>
+            A doubly linked list of text nodes
+            </summary>
+        </member>
+        <member name="M:QuickFont.TextNodeList.#ctor(System.String)">
+            <summary>
+            Builds a doubly linked list of text nodes from the given input string
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="M:QuickFont.TextNodeList.Crumble(QuickFont.TextNode,System.Int32)">
+            <summary>
+            Splits a word into sub-words of size less than or equal to baseCaseSize 
+            </summary>
+            <param name="node"></param>
+            <param name="baseCaseSize"></param>
+        </member>
+        <member name="M:QuickFont.TextNodeList.SplitNode(QuickFont.TextNode)">
+            <summary>
+            Splits a word node in two, adding both new nodes to the list in sequence.
+            </summary>
+            <param name="node"></param>
+            <returns>The first new node</returns>
+        </member>
+    </members>
+</doc>
