@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents an OpenGL buffer object.<br/>
+    /// Represents an OpenGL buffer object.
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer object.</typeparam>
     public class Buffer<T>

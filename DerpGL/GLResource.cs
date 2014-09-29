@@ -6,7 +6,7 @@ namespace DerpGL
 {
     /// <summary>
     /// Represents an OpenGL resource.<br/>
-    /// Must be explicitly disposed, otherwise there will be a memory leak an a warning will be logged.
+    /// Must be explicitly disposed, otherwise there will be a memory leak which will be logged as a warning.
     /// </summary>
     public abstract class GLResource
         : GLObject
