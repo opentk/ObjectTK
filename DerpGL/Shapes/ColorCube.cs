@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shapes
@@ -16,17 +18,17 @@ namespace DerpGL.Shapes
             Indices = cube.Indices;
 
             // add color to the vertices
-            Colors = new[]
+            Colors = new List<Color>
             {
-                Color.DarkRed.ToRgba32(),
-                Color.DarkRed.ToRgba32(),
-                Color.Gold.ToRgba32(),
-                Color.Gold.ToRgba32(),
-                Color.DarkRed.ToRgba32(),
-                Color.DarkRed.ToRgba32(),
-                Color.Gold.ToRgba32(),
-                Color.Gold.ToRgba32()
-            };
+                Color.DarkRed,
+                Color.DarkRed,
+                Color.Gold,
+                Color.Gold,
+                Color.DarkRed,
+                Color.DarkRed,
+                Color.Gold,
+                Color.Gold
+            }.Select(_ => _.ToRgba32()).ToArray();
         }
     }
 }

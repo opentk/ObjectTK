@@ -5,6 +5,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Specifies a shader type and the path to its source.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class ShaderSourceAttribute
         : Attribute
@@ -28,9 +31,4 @@ namespace DerpGL.Shaders
             return shader.GetType().GetCustomAttributes<ShaderSourceAttribute>(true).ToDictionary(_ => _.Type, _ => _.File);
         }
     }
-
-    public class VertexShaderSourceAttribute : ShaderSourceAttribute { public VertexShaderSourceAttribute(string file) : base(ShaderType.VertexShader, file) { } }
-    public class GeometryShaderSourceAttribute : ShaderSourceAttribute { public GeometryShaderSourceAttribute(string file) : base(ShaderType.GeometryShader, file) { } }
-    public class FragmentShaderSourceAttribute : ShaderSourceAttribute { public FragmentShaderSourceAttribute(string file) : base(ShaderType.FragmentShader, file) { } }
-    public class ComputeShaderSourceAttribute : ShaderSourceAttribute { public ComputeShaderSourceAttribute(string file) : base(ShaderType.ComputeShader, file) { } }
 }

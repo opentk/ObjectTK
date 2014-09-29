@@ -2,9 +2,15 @@
 
 namespace DerpGL
 {
+    /// <summary>
+    /// Represents an OpenGL handle.
+    /// </summary>
     public class GLObject
         : IEquatable<GLObject>
     {
+        /// <summary>
+        /// The OpenGL handle.
+        /// </summary>
         public readonly int Handle;
 
         public GLObject(int handle)

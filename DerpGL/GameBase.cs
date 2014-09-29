@@ -75,7 +75,7 @@ namespace DerpGL
         {
             // setup perspective projection
             var aspectRatio = Width / (float)Height;
-            Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 0.1f, 10);
+            Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 0.1f, 100);
             ModelView = Matrix4.Identity;
             // apply camera transform
             Camera.ApplyCamera(ref ModelView);

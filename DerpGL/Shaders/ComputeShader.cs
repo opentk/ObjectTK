@@ -1,9 +1,11 @@
 using System;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Represents a compute shader.
+    /// </summary>
     public class ComputeShader
         : Shader
     {
@@ -12,7 +14,21 @@ namespace DerpGL.Shaders
         /// </summary>
         public Vector3i WorkGroupSize { get; protected set; }
 
+        /// <summary>
+        /// The total number of work groups of this compute shader.
+        /// </summary>
         public int WorkGroupTotalSize { get; protected set; }
+
+        public static Vector3i MaximumWorkGroupSize { get; protected set; }
+
+        static ComputeShader()
+        {
+            int x,y,z;
+            GL.GetInteger((GetIndexedPName)All.MaxComputeWorkGroupCount, 0, out x);
+            GL.GetInteger((GetIndexedPName)All.MaxComputeWorkGroupCount, 1, out y);
+            GL.GetInteger((GetIndexedPName)All.MaxComputeWorkGroupCount, 2, out z);
+            MaximumWorkGroupSize = new Vector3i(x,y,z);
+        }
 
         protected ComputeShader()
         {
@@ -27,15 +43,20 @@ namespace DerpGL.Shaders
         /// Splits a given number of work groups up to the three dimensions.
         /// The number of work groups in any dimensions is kept less or equal to the supported maximum.
         /// The resulting total number of work groups may be larger than the given number.
-        /// TODO: actually query the maximum supported number of workgroups per dimension instead of assuming the minimum defined by the specs
-        /// TODO: add support for the z-dimension, if it is needed
         /// </summary>
-        public static Vector3i SplitWorkGroups(int groups)
+        public static Vector3i SplitWorkGroups(long groups)
         {
-            const int maxWorkGroups = 32768;
-            var y = (int)Math.Ceiling((float)groups / maxWorkGroups);
-            var x = (int)Math.Ceiling((float)groups / y);
-            return new Vector3i(x, y, 1);
+            if (groups > (long)MaximumWorkGroupSize.X * MaximumWorkGroupSize.Y * MaximumWorkGroupSize.Z)
+                throw new ArgumentException("Maximum work group size exceeded.");
+            double n = groups;
+            // determine number of layers needed
+            var z = (int)Math.Ceiling(n / ((long)MaximumWorkGroupSize.X * MaximumWorkGroupSize.Y));
+            // determine the number of items per layer
+            n = Math.Ceiling(n / z);
+            // determine x and y to have the smallest number of items equal or larger to n
+            var y = (int)Math.Ceiling(n / MaximumWorkGroupSize.X);
+            var x = (int)Math.Ceiling(n / y);
+            return new Vector3i(x, y, z);
         }
 
         /// <summary>

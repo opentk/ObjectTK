@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Handles initialization and access to a collection of elements of type T in a buffer object.
+    /// Represents an OpenGL buffer object.<br/>
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer object.</typeparam>
     public class Buffer<T>
@@ -209,7 +209,7 @@ namespace DerpGL.Buffers
         /// <summary>
         /// Copies elements from the source buffer to this buffer until the end of either buffer is reached.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">The source buffer to copy elements from.</param>
         public void CopyFrom(Buffer<T> source)
         {
             CopyFrom(source, 0, 0, Math.Min(ElementCount, source.ElementCount));

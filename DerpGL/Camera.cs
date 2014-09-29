@@ -134,7 +134,9 @@ namespace DerpGL
                     break;
                 case MouseButton.Middle:
                     if (dy > 100) dy = 100;
-                    Position.Z *= 1 + dy * MouseSpeed / 100;
+                    Position.X += dx * MouseSpeed / 100;
+                    Position.Y -= dy * MouseSpeed / 100;
+                    //Position.Z *= 1 + dy * MouseSpeed / 100;
                     break;
             }
             // remember mouse position

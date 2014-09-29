@@ -5,65 +5,37 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using DerpGL.Properties;
+using DerpGL.Shaders.Variables;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Provides a base class for shader programs.<br/>
+    /// Automatically maps properties to shader variables by name.<br/>
+    /// For shader variable types see:<br/>
+    /// <see cref="VertexAttrib"/>, <see cref="Uniform{T}"/>, <see cref="TextureUniform"/>, <see cref="ImageUniform"/>,
+    /// <see cref="UniformBuffer"/>, <see cref="TransformOut"/>, <see cref="ShaderStorage"/>
+    /// </summary>
     public class Shader
         : GLResource
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
-        private interface IMapping
+        /// <summary>
+        /// Handle of the currently active shader program.
+        /// </summary>
+        public static int ActiveProgramHandle { get; protected set; }
+
+        /// <summary>
+        /// Defines the <see cref="TransformFeedbackMode"/> which is used to specify how data should be written to the output buffer(s).
+        /// May be overwritten by derived classes to be changed.
+        /// </summary>
+        protected virtual TransformFeedbackMode TransformOutMode
         {
-            Type MappedType { get; }
-            object Create(int program, MemberInfo info);
-        }
-
-        private class Mapping<T>
-            : IMapping
-        {
-            private readonly Func<int, MemberInfo, T> _creator;
-
-            public Type MappedType { get { return typeof(T); } }
-
-            public Mapping(Func<int, MemberInfo, T> creator)
-            {
-                _creator = creator;
-            }
-
-            public object Create(int program, MemberInfo info)
-            {
-                return _creator(program, info);
-            }
-        }
-
-        //TODO: refactor to use GL.ProgramUniform* (check out EXT_direct_state_access)
-        private static readonly List<IMapping> TypeMapping = new List<IMapping>
-        {
-            new Mapping<VertexAttrib>(VertexAttribHelper),
-            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
-            new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
-            new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
-            new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
-            new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
-            new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
-            new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
-            new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
-            new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
-            new Mapping<FragData>((p,i) => new FragData(p, i.Name))
-        };
-
-        private static VertexAttrib VertexAttribHelper(int program, MemberInfo info)
-        {
-            var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
-            if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
-            return new VertexAttrib(program, info.Name, attrib);
+            get { return TransformFeedbackMode.SeparateAttribs; }
         }
 
         protected Shader()
@@ -82,6 +54,19 @@ namespace DerpGL.Shaders
             }
         }
 
+        /// <summary>
+        /// Activates the shader program.
+        /// </summary>
+        public void Use()
+        {
+            // remember handle of the active program
+            ActiveProgramHandle = Handle;
+            // activate program
+            GL.UseProgram(Handle);
+            // disable all vertex attributes
+            VertexAttrib.DisableVertexAttribArrays();
+        }
+
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
             Logger.InfoFormat("Creating shader program: {0}", GetType().Name);
@@ -91,7 +76,7 @@ namespace DerpGL.Shaders
             var outs = InitializeTransformOut();
             if (outs.Count > 0)
             {
-                GL.TransformFeedbackVaryings(Handle, outs.Count, outs.ToArray(), TransformFeedbackMode.SeparateAttribs);
+                GL.TransformFeedbackVaryings(Handle, outs.Count, outs.ToArray(), TransformOutMode);
             }
             // link program
             Logger.DebugFormat("Linking shader program: {0}", GetType().Name);
@@ -218,15 +203,39 @@ namespace DerpGL.Shaders
             }
         }
 
-        public void Use()
-        {
-            GL.UseProgram(Handle);
-        }
-
         protected override void Dispose(bool manual)
         {
             if (!manual) return;
             GL.DeleteProgram(Handle);
+        }
+
+        /// <summary>
+        /// Defines available property mappings.<br/>
+        /// NOTE: maybe refactor to use GL.ProgramUniform* later (check out EXT_direct_state_access)
+        /// </summary>
+        private static readonly List<IMapping> TypeMapping = new List<IMapping>
+        {
+            new Mapping<VertexAttrib>(VertexAttribMapping),
+            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
+            new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
+            new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
+            new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
+            new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
+            new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
+            new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
+            new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
+            new Mapping<FragData>((p,i) => new FragData(p, i.Name))
+        };
+
+        private static VertexAttrib VertexAttribMapping(int program, MemberInfo info)
+        {
+            var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
+            if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
+            return new VertexAttrib(program, info.Name, attrib);
         }
     }
 }

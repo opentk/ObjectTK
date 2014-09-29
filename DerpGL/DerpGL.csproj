@@ -31,24 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\Dependencies\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Release'">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Release\OpenTK.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="QuickFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Release'">
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Release\QuickFont.dll</HintPath>
+      <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Debug'">
+    <Reference Include="QuickFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Debug\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Debug'">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Debug\QuickFont.dll</HintPath>
+      <HintPath>..\..\QuickFont-master\QuickFont\bin\Release\QuickFont.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,14 +50,10 @@
   <ItemGroup>
     <Compile Include="Buffers\Buffer.cs" />
     <Compile Include="Buffers\BufferPod.cs" />
-    <Compile Include="Buffers\BufferTexture.cs" />
     <Compile Include="Buffers\FrameBuffer.cs" />
     <Compile Include="QueryMapping.cs" />
     <Compile Include="QueryIndexer.cs" />
     <Compile Include="Buffers\RenderBuffer.cs" />
-    <Compile Include="Buffers\Texture.cs" />
-    <Compile Include="Buffers\Texture2D.cs" />
-    <Compile Include="Buffers\Texture2DArray.cs" />
     <Compile Include="Buffers\TransformFeedbackBuffer.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="GLObject.cs" />
@@ -78,20 +67,26 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Shaders\BufferBinding.cs" />
     <Compile Include="Shaders\ComputeShader.cs" />
-    <Compile Include="Shaders\FragData.cs" />
-    <Compile Include="Shaders\ImageUniform.cs" />
+    <Compile Include="Shaders\ComputeShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\FragmentShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\GeometryShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\IMapping.cs" />
+    <Compile Include="Shaders\Mapping.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderSourceAttribute.cs" />
-    <Compile Include="Shaders\ShaderStorage.cs" />
-    <Compile Include="Shaders\ShaderVariable.cs" />
-    <Compile Include="Shaders\TextureUniform.cs" />
-    <Compile Include="Shaders\TransformOut.cs" />
-    <Compile Include="Shaders\Uniform.cs" />
-    <Compile Include="Shaders\UniformBuffer.cs" />
-    <Compile Include="Shaders\VertexAttrib.cs" />
-    <Compile Include="Shaders\VertexAttribAttribute.cs" />
+    <Compile Include="Shaders\Variables\BufferBinding.cs" />
+    <Compile Include="Shaders\Variables\FragData.cs" />
+    <Compile Include="Shaders\Variables\ImageUniform.cs" />
+    <Compile Include="Shaders\Variables\ShaderStorage.cs" />
+    <Compile Include="Shaders\Variables\ShaderVariable.cs" />
+    <Compile Include="Shaders\Variables\TextureUniform.cs" />
+    <Compile Include="Shaders\Variables\TransformOut.cs" />
+    <Compile Include="Shaders\Variables\Uniform.cs" />
+    <Compile Include="Shaders\Variables\UniformBuffer.cs" />
+    <Compile Include="Shaders\Variables\VertexAttrib.cs" />
+    <Compile Include="Shaders\Variables\VertexAttribAttribute.cs" />
+    <Compile Include="Shaders\VertexShaderSourceAttribute.cs" />
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\ColorCube.cs" />
     <Compile Include="Shapes\ColoredShape.cs" />
@@ -103,14 +98,26 @@
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\TexturedQuad.cs" />
     <Compile Include="Shapes\TexturedShape.cs" />
+    <Compile Include="Textures\BufferTexture.cs" />
+    <Compile Include="Textures\FormatMapping.cs" />
+    <Compile Include="Textures\LayeredTexture.cs" />
+    <Compile Include="Textures\Texture.cs" />
+    <Compile Include="Textures\Texture2D.cs" />
+    <Compile Include="Textures\Texture2DArray.cs" />
+    <Compile Include="Textures\Texture3D.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Vector3i.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,12 +2,35 @@
 
 namespace DerpGL
 {
+    /// <summary>
+    /// Handles frame timing and fps calculation.
+    /// </summary>
     public class FrameTimer
     {
+        /// <summary>
+        /// Total number of frames rendered.
+        /// </summary>
         public int FramesRendered { get; private set; }
+
+        /// <summary>
+        /// Time spent for the last completed frame in milliseconds.
+        /// </summary>
         public double FrameTime { get; private set; }
+
+        /// <summary>
+        /// Frames per second calculated from the time spent on the last frame.
+        /// </summary>
         public double FpsBasedOnFrameTime { get; private set; }
+
+        /// <summary>
+        /// Frames per second calculated from the number of frames completed within the last second.
+        /// </summary>
         public double FpsBasedOnFramesRendered { get; private set; }
+
+        /// <summary>
+        /// Total time running in milliseconds.
+        /// </summary>
+        public double TimeRunning { get; protected set; }
 
         private readonly Stopwatch _stopwatch;
         private double _elapsed;
@@ -25,9 +48,10 @@ namespace DerpGL
         public void Time()
         {
             // retrieve time spent since last frame
-            _stopwatch.Stop();
             FrameTime = _stopwatch.Elapsed.TotalMilliseconds;
             _stopwatch.Restart();
+            // count time running
+            TimeRunning += FrameTime;
             // calculate fps based on time spent on one frame
             FpsBasedOnFrameTime = (int) (1000/FrameTime);
             // calculate fps based on frames rendered during one second
