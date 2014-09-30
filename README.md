@@ -3,6 +3,14 @@ DerpGL
 
 DerpGL is an abstraction layer on top of OpenTK to provide OpenGL features in an object-oriented and type-safe manner with modern C#-style.
 
+The main working parts currently are:
+* Buffer objects
+* Shaders (Vertex, Geometry, Fragment, Compute)
+* Textures (2D, 2DArray, BufferTexture)
+* Framebuffers
+
+Important parts still missing:
+* More texture types (1D, 3D, Cubemap, etc)
 
 ## Examples
 ### Shader abstraction
