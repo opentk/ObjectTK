@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DerpGL")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Abstraction layer on top of OpenTK to provide OpenGL features in an object-oriented and type-safe manner with modern C#-style")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bernack Studios")]
+[assembly: AssemblyCompany("JcBernack")]
 [assembly: AssemblyProduct("DerpGL")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
