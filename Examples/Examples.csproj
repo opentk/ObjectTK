@@ -43,15 +43,22 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RenderVboWithShader\ExampleShader.cs" />
-    <Compile Include="RenderVboWithShader\RenderVboWithShaderWindow.cs" />
+    <Compile Include="AdvancedExamples\SimpleColorShader.cs" />
+    <Compile Include="AdvancedExamples\SimpleTextureShader.cs" />
+    <Compile Include="BasicExamples\ExampleShader.cs" />
+    <Compile Include="AdvancedExamples\RenderToTextureWindow.cs" />
+    <Compile Include="BasicExamples\ShaderBufferExampleWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AdvancedExamples\Shaders\SimpleColor.fs.glsl" />
+    <None Include="AdvancedExamples\Shaders\SimpleColor.vs.glsl" />
+    <None Include="AdvancedExamples\Shaders\SimpleTexture.fs.glsl" />
+    <None Include="AdvancedExamples\Shaders\SimpleTexture.vs.glsl" />
     <None Include="app.config" />
-    <None Include="RenderVboWithShader\Shaders\ExampleShader.fs.glsl" />
-    <None Include="RenderVboWithShader\Shaders\ExampleShader.vs.glsl" />
+    <None Include="BasicExamples\Shaders\ExampleShader.fs.glsl" />
+    <None Include="BasicExamples\Shaders\ExampleShader.vs.glsl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

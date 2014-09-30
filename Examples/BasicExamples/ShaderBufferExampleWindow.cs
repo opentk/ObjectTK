@@ -7,15 +7,15 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Examples.RenderVboWithShader
+namespace Examples.BasicExamples
 {
-    public class RenderVboWithShaderWindow
+    public class ShaderBufferExampleWindow
         : DerpWindow
     {
         private ExampleShader _shader;
         private Buffer<Vector3> _vbo;
 
-        public RenderVboWithShaderWindow(int width, int height, GraphicsMode mode, string title)
+        public ShaderBufferExampleWindow(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
             Load += OnLoad;
@@ -25,8 +25,8 @@ namespace Examples.RenderVboWithShader
         private void OnLoad(object sender, EventArgs e)
         {
             // set shader search path
-            Shader.BasePath = "Data/RenderVboWithShader/Shaders/";
-            
+            Shader.BasePath = "Data/BasicExamples/Shaders/";
+
             // initialize shader (load sources, create/compile/link shader program, error checking)
             _shader = new ExampleShader();
             
@@ -49,7 +49,7 @@ namespace Examples.RenderVboWithShader
             // render vertices
             _shader.Use();
             _shader.ModelViewProjectionMatrix.Set(ModelView*Projection);
-            _shader.InVertex.Bind(_vbo);
+            _shader.InPosition.Bind(_vbo);
             GL.DrawArrays(PrimitiveType.Triangles, 0, _vbo.ElementCount);
 
             // swap buffers
