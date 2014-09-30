@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using DerpGL.Properties;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using QuickFont;
 
 namespace DerpGL
 {
-    public abstract class GameBase
+    public abstract class DerpWindow
         : GameWindow
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(GameBase));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(DerpWindow));
 
-        protected readonly QFont Font;
         protected readonly Camera Camera;
-
-        protected FrameTimer FrameTimer;
+        protected readonly FrameTimer FrameTimer;
         protected Matrix4 ModelView;
         protected Matrix4 Projection;
 
         protected readonly List<MouseButton> MouseButtons;
 
-        protected GameBase(int width, int height, GraphicsMode mode, string title)
+        protected DerpWindow(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
             // get open gl information
@@ -38,28 +33,35 @@ namespace DerpGL
             Logger.DebugFormat("{0}:\n{1}", StringName.Extensions, string.Join("",
                 GL.GetString(StringName.Extensions).Split(' ').Select((_,i) => string.Format("{0}{1}", _, i%4==3?"\n":"\t"))));
             Logger.InfoFormat("Initializing game window: {0}", title);
-            var fontPath = Path.Combine(Settings.Default.FontDir, "Comfortaa-Regular.ttf");
-            Logger.InfoFormat("Loading font: {0}", fontPath);
-            Font = new QFont(fontPath, 16);
             VSync = VSyncMode.Off;
-            Camera = new Camera(this);
-            FrameTimer = new FrameTimer();
-            ResetMatrices();
+            // set up mouse events
             MouseButtons = new List<MouseButton>();
             Mouse.ButtonDown += OnMouseDown;
             Mouse.ButtonUp += OnMouseUp;
+            // set up camera
+            Camera = new Camera(this);
+            ResetMatrices();
+            // set up GameWindow events
+            Load += OnLoad;
+            Resize += OnResize;
+            UpdateFrame += OnUpdateFrame;
+            // set up frame timer
+            FrameTimer = new FrameTimer();
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void OnLoad(object sender, EventArgs eventArgs)
         {
-            base.OnLoad(e);
             WindowState = WindowState.Maximized;
         }
 
-        protected override void OnResize(EventArgs e)
+        private void OnResize(object sender, EventArgs eventArgs)
         {
-            base.OnResize(e);
             Logger.InfoFormat("Window resized to: {0}x{1}", Width, Height);
+        }
+
+        private void OnUpdateFrame(object sender, FrameEventArgs e)
+        {
+            FrameTimer.Time();
         }
 
         protected void ResetMatrices()

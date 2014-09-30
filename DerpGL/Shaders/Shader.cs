@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using DerpGL.Properties;
 using DerpGL.Shaders.Variables;
 using log4net;
 using OpenTK;
@@ -25,6 +24,11 @@ namespace DerpGL.Shaders
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
         /// <summary>
+        /// Path used when looking for shader files.
+        /// </summary>
+        public static string BasePath { get; set; }
+
+        /// <summary>
         /// Handle of the currently active shader program.
         /// </summary>
         public static int ActiveProgramHandle { get; protected set; }
@@ -41,6 +45,7 @@ namespace DerpGL.Shaders
         protected Shader()
             : base(GL.CreateProgram())
         {
+            BasePath = "Data/Shaders/";
             var shaderSources = ShaderSourceAttribute.GetShaderSources(this);
             if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
             try
@@ -105,7 +110,7 @@ namespace DerpGL.Shaders
             // create shader
             var shader = GL.CreateShader(type);
             // load shaders source
-            GL.ShaderSource(shader, RetrieveShaderSource(Path.Combine(Settings.Default.ShaderDir, name)));
+            GL.ShaderSource(shader, RetrieveShaderSource(Path.Combine(BasePath, name)));
             // compile shader
             GL.CompileShader(shader);
             // assert that no compile error occured
@@ -236,6 +241,16 @@ namespace DerpGL.Shaders
             var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
             if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
             return new VertexAttrib(program, info.Name, attrib);
+        }
+
+        /// <summary>
+        /// Enables registration of additional property mappings.<br/>
+        /// Mapped types provide automatic property initialization on instantiation.
+        /// </summary>
+        /// <param name="mapping">The property mapping to add.</param>
+        public void AddPropertyMapping(IMapping mapping)
+        {
+            TypeMapping.Add(mapping);
         }
     }
 }

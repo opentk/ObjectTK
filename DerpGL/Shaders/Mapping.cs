@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace DerpGL.Shaders
 {
-    internal class Mapping<T>
+    public class Mapping<T>
         : IMapping
     {
         private readonly Func<int, MemberInfo, T> _creator;
