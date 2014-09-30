@@ -5,11 +5,18 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL
 {
+    /// <summary>
+    /// Provides named queries of hardware counters.
+    /// </summary>
+    /// <typeparam name="T">An enum type containing the query names.</typeparam>
     public class QueryMapping<T>
         : QueryIndexer
         , IDisposable
         where T : struct, IConvertible
     {
+        /// <summary>
+        /// Represents an OpenGL query.
+        /// </summary>
         private class QueryMap
             : GLResource
         {
@@ -32,6 +39,11 @@ namespace DerpGL
             }
         }
 
+
+        /// <summary>
+        /// Gets the average value measured for the given query name.
+        /// </summary>
+        /// <param name="key"></param>
         public float this[T key]
         {
             get
@@ -39,11 +51,31 @@ namespace DerpGL
                 return _queries[key].Average;
             }
         }
-        
-        public float AveragingFactor = 0.05f;
+
+        /// <summary>
+        /// Elapsed time is measured in nanoseconds and divided by this factor for better readability.<br/>
+        /// A factor of 1,000 therefore results in microseconds, a factor of 1,000,000 results in milliseconds.
+        /// </summary>
         public int ElapsedTimeFactor = 1000;
+
+        /// <summary>
+        /// Weighting factor used for averaging.<br/>
+        /// A value close to 1 enables very fast averaging, giving noisy results.<br/>
+        /// A value close to 0 gives a better mean, reacting much slower to fluctuations in the results.<br/>
+        /// The default value is 0.05f.<br/>
+        /// Let the current and the previous query result be A and B, respectively, then the average is calculated with this formula:<br/>
+        /// average = A * AveragingFactor + B * (1-AveragingFactor);<br/>
+        /// </summary>
+        public float AveragingFactor = 0.05f;
+
+        /// <summary>
+        /// Holds all QueryMap objects.
+        /// </summary>
         private readonly Dictionary<T, QueryMap> _queries;
 
+        /// <summary>
+        /// Initializes a new instance of this QueryMapping and generates required OpenGL query objects.
+        /// </summary>
         public QueryMapping()
         {
             if (!typeof(T).IsEnum) throw new ArgumentException("T must be an enumerated type");
@@ -59,6 +91,11 @@ namespace DerpGL
             }
         }
 
+        /// <summary>
+        /// Begins the given query name.
+        /// </summary>
+        /// <param name="mapping">The query name to begin.</param>
+        /// <param name="target">The query target to capture.</param>
         public void Begin(T mapping, QueryTarget target)
         {
             var map = _queries[mapping];
@@ -69,6 +106,10 @@ namespace DerpGL
             GL.BeginQueryIndexed(target, map.Index, map.Handle);
         }
 
+        /// <summary>
+        /// End the given query name.
+        /// </summary>
+        /// <param name="mapping">The query name to end.</param>
         public void End(T mapping)
         {
             var map = _queries[mapping];
@@ -78,6 +119,9 @@ namespace DerpGL
             map.Active = false;
         }
 
+        /// <summary>
+        /// Updates all query results.
+        /// </summary>
         public void Update()
         {
             foreach (var map in _queries.Values)
@@ -91,11 +135,19 @@ namespace DerpGL
             }
         }
 
+        /// <summary>
+        /// Retrieves query results.
+        /// </summary>
+        /// <returns>The query results.</returns>
         public IEnumerable<KeyValuePair<T, int>> GetValues()
         {
             return _queries.Select(map => new KeyValuePair<T, int>(map.Key, map.Value.Value));
         }
 
+        /// <summary>
+        /// Retrieves averaged query results.
+        /// </summary>
+        /// <returns>The averaged query results.</returns>
         public IEnumerable<KeyValuePair<T, int>> GetAverages()
         {
             return _queries.Select(map => new KeyValuePair<T, int>(map.Key, map.Value.Average));
