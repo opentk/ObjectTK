@@ -9,6 +9,10 @@ using OpenTK.Input;
 
 namespace DerpGL
 {
+    /// <summary>
+    /// Provides basic functionality to an OpenTK GameWindow such as camera controls,
+    /// ModelView and Projection matrices and improved timing.
+    /// </summary>
     public abstract class DerpWindow
         : GameWindow
     {
