@@ -15,7 +15,7 @@ Important parts still missing:
 ## Examples
 ### Shader abstraction
 DerpGL provides a base class for shaders which does all the work to get shaders up and running while also simplifying interop with uniforms, vertex attributes, etc.
-```
+```C#
 [VertexShaderSource("ExampleShader.vs")]
 [FragmentShaderSource("ExampleShader.fs")]
 public class ExampleShader
@@ -35,7 +35,7 @@ Most of OpenGL newest features are supported, namely: uniform buffers (UBO), sha
 ### Buffer object abstraction
 DerpGL also provides a generic type which encapsulates all the work necessary to set up, update, clear and copy buffer objects.
 
-```
+```C#
 // create some vertices
 var vertices = new[] { new Vector3(-1,-1,0), new Vector3(1,-1,0), new Vector3(0,1,0) };
 
@@ -46,7 +46,7 @@ vbo.Init(BufferTarget.ArrayBuffer, vertices);
 
 ### Render the buffer using the shader above
 Once the shader type is set up its usage is straight forward and much less error prone than doing all the stuff manually via OpenTK/OpenGL.
-```
+```C#
 shader.Use();
 shader.ModelViewProjectionMatrix.Set(ModelView*Projection);
 shader.InVertex.Bind(vbo);
