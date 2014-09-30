@@ -14,7 +14,7 @@ namespace DerpGL.Shaders
     /// <summary>
     /// Provides a base class for shader programs.<br/>
     /// Automatically maps properties to shader variables by name.<br/>
-    /// For shader variable types see:<br/>
+    /// For shader variable types see the DerpGL.Shaders.Variables namespace:<br/>
     /// <see cref="VertexAttrib"/>, <see cref="Uniform{T}"/>, <see cref="TextureUniform"/>, <see cref="ImageUniform"/>,
     /// <see cref="UniformBuffer"/>, <see cref="TransformOut"/>, <see cref="ShaderStorage"/>
     /// </summary>
@@ -42,21 +42,21 @@ namespace DerpGL.Shaders
             get { return TransformFeedbackMode.SeparateAttribs; }
         }
 
+        static Shader()
+        {
+            BasePath = "Data/Shaders/";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of this shader.<br/>
+        /// Retrieves shader source filenames from ShaderSourceAttributes tagged to this type.
+        /// </summary>
         protected Shader()
             : base(GL.CreateProgram())
         {
-            BasePath = "Data/Shaders/";
             var shaderSources = ShaderSourceAttribute.GetShaderSources(this);
             if (shaderSources.Count == 0) throw new ApplicationException("ShaderSourceAttribute(s) missing!");
-            try
-            {
-                CreateProgram(shaderSources);
-            }
-            catch (FileNotFoundException ex)
-            {
-                Logger.Error("Shader file not found.", ex);
-                throw;
-            }
+            CreateProgram(shaderSources);
         }
 
         /// <summary>
@@ -143,8 +143,18 @@ namespace DerpGL.Shaders
             includedNames.Add(file);
             // load shaders source
             var source = new StringBuilder();
+            StreamReader reader;
+            try
+            {
+                reader = new StreamReader(file + ".glsl");
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logger.Error("Shader source file not found.", ex);
+                throw;
+            }
             // parse this file
-            using (var reader = new StreamReader(file + ".glsl"))
+            using (reader)
             {
                 var fileNumber = includedNames.Count - 1;
                 var lineNumber = 1;
