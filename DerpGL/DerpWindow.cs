@@ -71,7 +71,7 @@ namespace DerpGL
         }
 
         /// <summary>
-        /// Sets the a perspective projection matrix and applies the camera transformation on the modelview matrix.
+        /// Sets a perspective projection matrix and applies the camera transformation on the modelview matrix.
         /// </summary>
         protected void SetupPerspective()
         {

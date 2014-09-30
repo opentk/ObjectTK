@@ -15,9 +15,9 @@ namespace DerpGL
         public float Pitch = 0;
         public float Roll;
 
-        public Vector3 DefaultPosition = new Vector3(0, 0, 2.2f);
-        public float DefaultYaw = 55;
-        public float DefaultPitch = 17;
+        public Vector3 DefaultPosition = new Vector3(0,0,3);
+        public float DefaultYaw = 0;
+        public float DefaultPitch = 0;
         public float DefaultRoll = 0;
 
         private readonly GameWindow _window;
