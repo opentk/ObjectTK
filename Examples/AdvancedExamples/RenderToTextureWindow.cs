@@ -11,6 +11,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.AdvancedExamples
 {
+    [ExampleProject]
     public class RenderToTextureWindow
         : DerpWindow
     {
@@ -26,6 +27,11 @@ namespace Examples.AdvancedExamples
         
         private ColorCube _cube;
         private TexturedQuad _quad;
+
+        public RenderToTextureWindow()
+            : this(800, 600, GraphicsMode.Default, "DerpGL example: Render to texture")
+        {
+        }
 
         public RenderToTextureWindow(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)

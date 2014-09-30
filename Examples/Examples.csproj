@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedExamples\SimpleColorShader.cs" />
@@ -48,6 +49,13 @@
     <Compile Include="BasicExamples\ExampleShader.cs" />
     <Compile Include="AdvancedExamples\RenderToTextureWindow.cs" />
     <Compile Include="BasicExamples\ShaderBufferExampleWindow.cs" />
+    <Compile Include="ExampleBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExampleBrowser.Designer.cs">
+      <DependentUpon>ExampleBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExampleProjectAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

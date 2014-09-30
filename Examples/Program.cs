@@ -1,7 +1,6 @@
 ﻿using System;
-using Examples.RenderVboWithShader;
+using System.Windows.Forms;
 using log4net.Config;
-using OpenTK.Graphics;
 
 namespace Examples
 {
@@ -12,10 +11,10 @@ namespace Examples
         {
             // initialize log4net via app.config
             XmlConfigurator.Configure();
-            // start the game loop
-            using (var game = new RenderVboWithShaderWindow(800, 600, GraphicsMode.Default, "DerpGL example"))
+            // show example browser
+            using (var browser = new ExampleBrowser())
             {
-                game.Run();
+                Application.Run(browser);
             }
         }
     }

@@ -9,11 +9,17 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.BasicExamples
 {
+    [ExampleProject]
     public class ShaderBufferExampleWindow
         : DerpWindow
     {
         private ExampleShader _shader;
         private Buffer<Vector3> _vbo;
+
+        public ShaderBufferExampleWindow()
+            : this(800, 600, GraphicsMode.Default, "DerpGL example: Shader and buffer usage")
+        {
+        }
 
         public ShaderBufferExampleWindow(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
