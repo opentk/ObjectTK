@@ -38,6 +38,15 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
+        /// Unbind this framebuffer, i.e. bind the default framebuffer.
+        /// </summary>
+        public void Unbind()
+        {
+            ActiveFramebufferHandle = 0;
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+
+        /// <summary>
         /// Throws an <see cref="InvalidOperationException"/> if this framebuffer is not the currently active one.
         /// </summary>
         private void AssertActive()
