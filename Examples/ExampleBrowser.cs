@@ -20,36 +20,55 @@ namespace Examples
         private void ExampleBrowser_Load(object sender, EventArgs e)
         {
             // find example projects
-            var types = Assembly.GetExecutingAssembly().GetTypes().Where(_ => _.IsDefined(typeof(ExampleProjectAttribute)));
+            var baseType = typeof (ExampleWindow);
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(_ => _ != baseType && baseType.IsAssignableFrom(_));
             // add tree nodes for example projects
             _examples = new Dictionary<string, Type>();
             foreach (var type in types)
             {
-                var node = treeViewExamples.Nodes.Add(type.Namespace, type.Namespace);
-                node.Nodes.Add(type.Name, type.Name);
+                // find or create node for namespace
+                var existingNodes = treeViewExamples.Nodes.Find(type.Namespace, false);
+                var node = existingNodes.Length > 0
+                    ? existingNodes[0]
+                    : treeViewExamples.Nodes.Add(type.Namespace, type.Namespace);
+                // add node for this example and get the caption from the attribute
+                var captionAttribute = type.GetCustomAttributes<ExampleProjectAttribute>().FirstOrDefault();
+                node.Nodes.Add(type.Name, captionAttribute == null ? type.Name : captionAttribute.Caption);
+                // remember example type
                 _examples.Add(type.Name, type);
             }
+            // show all examples
             treeViewExamples.ExpandAll();
         }
 
-        private void RunExample(Type exampleType)
+        private void ExampleBrowser_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape) Close();
+        }
+
+        private void TreeViewExamples_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) RunExample(treeViewExamples.SelectedNode);
+        }
+
+        private void TreeViewExamples_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            RunExample(e.Node);
+        }
+
+        private void RunExample(TreeNode node)
+        {
+            Type type;
+            if (!_examples.TryGetValue(node.Name, out type)) return;
             // hide browser
             Hide();
             // run the example
-            using (var exampleWindow = (GameWindow)Activator.CreateInstance(exampleType))
+            using (var exampleWindow = (GameWindow)Activator.CreateInstance(type))
             {
                 exampleWindow.Run();
             }
             // show the browser again
             Show();
-        }
-
-        private void TreeViewExamples_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            Type type;
-            if (!_examples.TryGetValue(e.Node.Name, out type)) return;
-            RunExample(type);
         }
     }
 }

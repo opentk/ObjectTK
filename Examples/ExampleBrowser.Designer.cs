@@ -40,8 +40,9 @@
             this.treeViewExamples.Location = new System.Drawing.Point(12, 25);
             this.treeViewExamples.Name = "treeViewExamples";
             this.treeViewExamples.Size = new System.Drawing.Size(344, 297);
-            this.treeViewExamples.TabIndex = 0;
+            this.treeViewExamples.TabIndex = 1;
             this.treeViewExamples.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeViewExamples_NodeMouseDoubleClick);
+            this.treeViewExamples.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TreeViewExamples_KeyDown);
             // 
             // label1
             // 
@@ -49,7 +50,7 @@
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(185, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Example projects: Double-click to run.";
             // 
             // ExampleBrowser
@@ -59,9 +60,11 @@
             this.ClientSize = new System.Drawing.Size(368, 334);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.treeViewExamples);
+            this.KeyPreview = true;
             this.Name = "ExampleBrowser";
             this.Text = "DerpGL example projects";
             this.Load += new System.EventHandler(this.ExampleBrowser_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ExampleBrowser_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

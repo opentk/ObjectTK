@@ -3,7 +3,7 @@ using DerpGL.Shaders.Variables;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Examples.AdvancedExamples
+namespace Examples.Shaders
 {
     [VertexShaderSource("SimpleTexture.vs")]
     [FragmentShaderSource("SimpleTexture.fs")]
@@ -18,5 +18,6 @@ namespace Examples.AdvancedExamples
         public Uniform<Matrix4> ModelViewProjectionMatrix { get; protected set; }
 
         public TextureUniform Texture { get; protected set; }
+        public Uniform<bool> RenderTexCoords { get; protected set; }
     }
 }

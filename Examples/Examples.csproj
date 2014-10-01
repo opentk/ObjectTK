@@ -44,29 +44,31 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvancedExamples\SimpleColorShader.cs" />
-    <Compile Include="AdvancedExamples\SimpleTextureShader.cs" />
-    <Compile Include="BasicExamples\ExampleShader.cs" />
-    <Compile Include="AdvancedExamples\RenderToTextureWindow.cs" />
-    <Compile Include="BasicExamples\ShaderBufferExampleWindow.cs" />
+    <Compile Include="ExampleProjectAttribute.cs" />
+    <Compile Include="Shaders\SimpleColorShader.cs" />
+    <Compile Include="Shaders\SimpleTextureShader.cs" />
+    <Compile Include="Shaders\ExampleShader.cs" />
+    <Compile Include="AdvancedExamples\RenderToTextureExample.cs" />
+    <Compile Include="BasicExamples\BufferLayoutExample.cs" />
+    <Compile Include="BasicExamples\MinimalExample.cs" />
     <Compile Include="ExampleBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ExampleBrowser.Designer.cs">
       <DependentUpon>ExampleBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExampleProjectAttribute.cs" />
+    <Compile Include="ExampleWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdvancedExamples\Shaders\SimpleColor.fs.glsl" />
-    <None Include="AdvancedExamples\Shaders\SimpleColor.vs.glsl" />
-    <None Include="AdvancedExamples\Shaders\SimpleTexture.fs.glsl" />
-    <None Include="AdvancedExamples\Shaders\SimpleTexture.vs.glsl" />
+    <None Include="Data\Shaders\SimpleColor.fs.glsl" />
+    <None Include="Data\Shaders\SimpleColor.vs.glsl" />
+    <None Include="Data\Shaders\SimpleTexture.fs.glsl" />
+    <None Include="Data\Shaders\SimpleTexture.vs.glsl" />
     <None Include="app.config" />
-    <None Include="BasicExamples\Shaders\ExampleShader.fs.glsl" />
-    <None Include="BasicExamples\Shaders\ExampleShader.vs.glsl" />
+    <None Include="Data\Shaders\ExampleShader.fs.glsl" />
+    <None Include="Data\Shaders\ExampleShader.vs.glsl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +77,14 @@
       <Name>DerpGL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Textures\checker.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rd /Q /S "$(TargetDir)Data"
-xcopy "$(ProjectDir)*.glsl" "$(SolutionDir)Data" /S /R /K /Y /I /D /H
-xcopy "$(SolutionDir)Data" "$(TargetDir)Data" /E /R /K /Y /I /D /H
-rd /Q /S "$(SolutionDir)Data"</PostBuildEvent>
+xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /E /R /K /Y /I /D /H
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Drawing;
-using DerpGL;
 using DerpGL.Buffers;
-using DerpGL.Shaders;
 using DerpGL.Shapes;
 using DerpGL.Textures;
+using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Examples.AdvancedExamples
 {
-    [ExampleProject]
-    public class RenderToTextureWindow
-        : DerpWindow
+    [ExampleProject("Render to 2D texture via framebuffer")]
+    public class RenderToTextureExample
+        : ExampleWindow
     {
         private const int FramebufferWidth = 400;
         private const int FramebufferHeight = 400;
@@ -28,13 +26,8 @@ namespace Examples.AdvancedExamples
         private ColorCube _cube;
         private TexturedQuad _quad;
 
-        public RenderToTextureWindow()
-            : this(800, 600, GraphicsMode.Default, "DerpGL example: Render to texture")
-        {
-        }
-
-        public RenderToTextureWindow(int width, int height, GraphicsMode mode, string title)
-            : base(width, height, mode, title)
+        public RenderToTextureExample()
+            : base("Render to texture")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
@@ -42,9 +35,6 @@ namespace Examples.AdvancedExamples
 
         private void OnLoad(object sender, EventArgs e)
         {
-            // set shader search path
-            Shader.BasePath = "Data/AdvancedExamples/Shaders/";
-
             // initialize and bind framebuffer
             _framebuffer = new FrameBuffer();
             _framebuffer.Bind();

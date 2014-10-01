@@ -1,28 +1,21 @@
 ﻿using System;
 using System.Drawing;
-using DerpGL;
 using DerpGL.Buffers;
-using DerpGL.Shaders;
+using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Examples.BasicExamples
 {
-    [ExampleProject]
-    public class ShaderBufferExampleWindow
-        : DerpWindow
+    [ExampleProject("Minimal example on shader and buffer usage")]
+    public class MinimalExample
+        : ExampleWindow
     {
         private ExampleShader _shader;
         private Buffer<Vector3> _vbo;
 
-        public ShaderBufferExampleWindow()
-            : this(800, 600, GraphicsMode.Default, "DerpGL example: Shader and buffer usage")
-        {
-        }
-
-        public ShaderBufferExampleWindow(int width, int height, GraphicsMode mode, string title)
-            : base(width, height, mode, title)
+        public MinimalExample()
+            : base("Shader and buffer usage")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
@@ -30,9 +23,6 @@ namespace Examples.BasicExamples
 
         private void OnLoad(object sender, EventArgs e)
         {
-            // set shader search path
-            Shader.BasePath = "Data/BasicExamples/Shaders/";
-
             // initialize shader (load sources, create/compile/link shader program, error checking)
             _shader = new ExampleShader();
             
