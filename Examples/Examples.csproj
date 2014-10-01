@@ -49,7 +49,7 @@
     <Compile Include="Shaders\SimpleTextureShader.cs" />
     <Compile Include="Shaders\ExampleShader.cs" />
     <Compile Include="AdvancedExamples\RenderToTextureExample.cs" />
-    <Compile Include="BasicExamples\BufferLayoutExample.cs" />
+    <Compile Include="BasicExamples\BufferLayoutTexturingExample.cs" />
     <Compile Include="BasicExamples\MinimalExample.cs" />
     <Compile Include="ExampleBrowser.cs">
       <SubType>Form</SubType>

@@ -6,11 +6,12 @@ using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace Examples.BasicExamples
 {
     [ExampleProject("Custom buffer memory layout and simple texturing")]
-    public class BufferLayoutExample
+    public class BufferLayoutTexturingExample
         : ExampleWindow
     {
         /// <summary>
@@ -30,15 +31,28 @@ namespace Examples.BasicExamples
                 TexCoord = new Vector2(u,v);
             }
         }
+        
         private Texture2D _texture;
+        private Sampler _sampler;
         private SimpleTextureShader _shader;
         private Buffer<Vertex> _vbo;
+        private bool _enableMipmapping;
 
-        public BufferLayoutExample()
+        public BufferLayoutTexturingExample()
             : base("Custom buffer memory layout and texturing")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
+            KeyDown += OnKeyDown;
+            _enableMipmapping = true;
+        }
+
+        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space: _enableMipmapping = !_enableMipmapping; break;
+            }
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -49,6 +63,10 @@ namespace Examples.BasicExamples
                 _texture = new Texture2D(bitmap, 10);
             }
             _texture.GenerateMipMaps();
+
+            // initialize sampler
+            _sampler = new Sampler();
+            _sampler.SetWrapMode(TextureWrapMode.Repeat);
 
             // initialize shader
             _shader = new SimpleTextureShader();
@@ -81,12 +99,21 @@ namespace Examples.BasicExamples
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
 
+            // enable/disable mipmapping
+            _sampler.SetParameter(SamplerParameterName.TextureMinFilter,
+                (int)(_enableMipmapping ? TextureMinFilter.NearestMipmapLinear : TextureMinFilter.Nearest));
+
             // activate shader program
             _shader.Use();
             // set transformation matrix
             _shader.ModelViewProjectionMatrix.Set(ModelView*Projection);
+            // bind sampler
+            _sampler.Bind(TextureUnit.Texture0);
             // bind texture
             _shader.Texture.BindTexture(TextureUnit.Texture0, _texture);
+            // which is equivalent to
+            //_shader.Texture.Set(TextureUnit.Texture0);
+            //_texture.Bind(TextureUnit.Texture0);
             // memory layout of our data is XYZUVXYZUV...
             // the buffer abstraction knows the total size of one "pack" of vertex data
             // and if a vertex attribute is bound without further arguments the first N elements are taken from each pack

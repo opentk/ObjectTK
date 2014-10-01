@@ -16,7 +16,8 @@ namespace Examples
             : base(800, 600, GraphicsMode.Default, string.Format("DerpGL example: {0}", title))
         {
             Load += OnLoad;
-            KeyDown += ExampleWindow_KeyDown;
+            Unload += OnUnload;
+            KeyDown += OnKeyDown;
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -25,7 +26,13 @@ namespace Examples
             Shader.BasePath = "Data/Shaders/";
         }
 
-        private void ExampleWindow_KeyDown(object sender, KeyboardKeyEventArgs e)
+        private void OnUnload(object sender, EventArgs e)
+        {
+            // release all gl resources on unload
+            GLResource.DisposeAll(this);
+        }
+
+        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
         {
             // close window on escape press
             if (e.Key == Key.Escape) Close();
