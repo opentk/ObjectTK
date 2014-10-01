@@ -12,9 +12,21 @@ namespace DerpGL.Shaders
     public class ShaderSourceAttribute
         : Attribute
     {
+        /// <summary>
+        /// Specifies the type of shader.
+        /// </summary>
         public ShaderType Type { get; protected set; }
+
+        /// <summary>
+        /// Specifies the path and filename to the source file.
+        /// </summary>
         public string File { get; protected set; }
 
+        /// <summary>
+        /// Initializes a new instance of the ShaderSourceAttribute.
+        /// </summary>
+        /// <param name="type">The type of the shader.</param>
+        /// <param name="file">The source filename.</param>
         public ShaderSourceAttribute(ShaderType type, string file)
         {
             Type = type;

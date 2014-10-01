@@ -5,6 +5,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders.Variables
 {
+    /// <summary>
+    /// Represents a shader buffer binding point identified by its resource index.
+    /// </summary>
     public abstract class BufferBinding
         : ShaderVariable
     {
@@ -15,7 +18,7 @@ namespace DerpGL.Shaders.Variables
         public readonly bool Active;
         protected int Binding;
 
-        protected BufferBinding(int program, string name, BufferRangeTarget bindingTarget, ProgramInterface programInterface)
+        internal BufferBinding(int program, string name, BufferRangeTarget bindingTarget, ProgramInterface programInterface)
             : base(program, name)
         {
             BindingTarget = bindingTarget;

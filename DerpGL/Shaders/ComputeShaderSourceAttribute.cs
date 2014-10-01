@@ -8,6 +8,10 @@ namespace DerpGL.Shaders
     public class ComputeShaderSourceAttribute
         : ShaderSourceAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the ComputeShaderSourceAttribute.
+        /// </summary>
+        /// <param name="file"></param>
         public ComputeShaderSourceAttribute(string file)
             : base(ShaderType.ComputeShader, file)
         {

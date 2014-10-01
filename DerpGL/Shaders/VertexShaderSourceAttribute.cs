@@ -8,6 +8,10 @@ namespace DerpGL.Shaders
     public class VertexShaderSourceAttribute
         : ShaderSourceAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the VertexShaderSourceAttribute.
+        /// </summary>
+        /// <param name="file"></param>
         public VertexShaderSourceAttribute(string file)
             : base(ShaderType.VertexShader, file)
         {

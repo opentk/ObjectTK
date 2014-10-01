@@ -8,6 +8,10 @@ namespace DerpGL.Shaders
     public class GeometryShaderSourceAttribute
         : ShaderSourceAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the GeometryShaderSourceAttribute.
+        /// </summary>
+        /// <param name="file"></param>
         public GeometryShaderSourceAttribute(string file)
             : base(ShaderType.GeometryShader, file)
         {

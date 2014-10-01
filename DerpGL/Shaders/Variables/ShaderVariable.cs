@@ -5,7 +5,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a shader variable identified by its name and the corresponding program handle.
     /// </summary>
-    public class ShaderVariable
+    public abstract class ShaderVariable
     {
         /// <summary>
         /// The handle of the program to which this variable relates.
@@ -17,7 +17,7 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         public readonly string Name;
 
-        protected ShaderVariable(int program, string name)
+        internal ShaderVariable(int program, string name)
         {
             Program = program;
             Name = name;

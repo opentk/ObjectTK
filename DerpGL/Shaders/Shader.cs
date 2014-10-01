@@ -59,6 +59,12 @@ namespace DerpGL.Shaders
             CreateProgram(shaderSources);
         }
 
+        protected override void Dispose(bool manual)
+        {
+            if (!manual) return;
+            GL.DeleteProgram(Handle);
+        }
+
         /// <summary>
         /// Activates the shader program.
         /// </summary>
@@ -216,12 +222,6 @@ namespace DerpGL.Shaders
                 Logger.DebugFormat("Creating property mapping: {0}", property.Name);
                 property.SetValue(this, mapping.Create(Handle, property), null);
             }
-        }
-
-        protected override void Dispose(bool manual)
-        {
-            if (!manual) return;
-            GL.DeleteProgram(Handle);
         }
 
         /// <summary>
