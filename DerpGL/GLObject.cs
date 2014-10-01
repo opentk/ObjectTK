@@ -13,6 +13,9 @@ namespace DerpGL
         /// </summary>
         public readonly int Handle;
 
+        /// <summary>
+        /// Initializes a new instance of the GLObject class.
+        /// </summary>
         public GLObject(int handle)
         {
             Handle = handle;

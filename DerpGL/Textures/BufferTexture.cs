@@ -7,7 +7,7 @@ namespace DerpGL.Textures
     /// <summary>
     /// Represents a buffer texture.
     /// </summary>
-    public class BufferTexture
+    public sealed class BufferTexture
         : Texture
     {
         /// <summary>

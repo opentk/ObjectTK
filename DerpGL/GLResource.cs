@@ -14,6 +14,9 @@ namespace DerpGL
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GLResource));
         
+        /// <summary>
+        /// Initializes a new instance of the GLResource class.
+        /// </summary>
         protected GLResource(int handle)
             : base(handle)
         {

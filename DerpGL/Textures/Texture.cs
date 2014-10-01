@@ -9,16 +9,21 @@ namespace DerpGL.Textures
         : GLResource
     {
         /// <summary>
-        /// The default texture target for this texture.
+        /// The default texture target.
         /// </summary>
-        public TextureTarget TextureTarget { get; protected set; }
+        public TextureTarget TextureTarget { get; private set; }
 
         /// <summary>
         /// The internal format of the texture.
         /// </summary>
-        public SizedInternalFormat InternalFormat { get; protected set; }
+        public SizedInternalFormat InternalFormat { get; private set; }
 
-        protected Texture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
+        /// <summary>
+        /// Initializes a new texture object which is capable of mipmapping.
+        /// </summary>
+        /// <param name="textureTarget">The default texture target to use.</param>
+        /// <param name="internalFormat">The internal format of the texture.</param>
+        internal Texture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
             : base(GL.GenTexture())
         {
             TextureTarget = textureTarget;
@@ -36,15 +41,6 @@ namespace DerpGL.Textures
 #if DEBUG
             Utility.Assert("Unable to create texture");
 #endif
-        }
-
-        protected void SetDefaultTexParameters()
-        {
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            CheckError();
         }
     }
 }

@@ -46,8 +46,9 @@ namespace Examples.BasicExamples
             // load texture from file
             using (var bitmap = new Bitmap("Data/Textures/checker.jpg"))
             {
-                _texture = new Texture2D(bitmap);
+                _texture = new Texture2D(bitmap, 10);
             }
+            _texture.GenerateMipMaps();
 
             // initialize shader
             _shader = new SimpleTextureShader();
