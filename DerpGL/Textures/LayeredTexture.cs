@@ -14,8 +14,8 @@ namespace DerpGL.Textures
         {
         }
 
-        internal LayeredTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat, GenerateMipmapTarget generateMipmapTarget, int levels)
-            : base(textureTarget, internalFormat, generateMipmapTarget, levels)
+        internal LayeredTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat, int levels)
+            : base(textureTarget, internalFormat, levels)
         {
         }
     }

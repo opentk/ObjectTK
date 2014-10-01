@@ -35,7 +35,6 @@ namespace DerpGL.Textures
         public Texture2DArray(Bitmap bitmap, int layers, int levels)
             : this(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, layers, levels)
         {
-            SetDefaultTexParameters();
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace DerpGL.Textures
         /// Creates a 2D texture array with given internal format, width, height, number of layers and number of mipmap levels.
         /// </summary>
         public Texture2DArray(SizedInternalFormat internalFormat, int width, int height, int layers, int levels)
-            : base(TextureTarget.Texture2DArray, internalFormat, GenerateMipmapTarget.Texture2DArray, levels)
+            : base(TextureTarget.Texture2DArray, internalFormat, levels)
         {
             Initialize(width, height, layers);
         }
@@ -61,10 +60,9 @@ namespace DerpGL.Textures
             Width = width;
             Height = height;
             Layers = layers;
-            GL.BindTexture(TextureTarget.Texture2DArray, Handle);
-            GL.TexStorage3D(TextureTarget3d.Texture2DArray, Levels, InternalFormat, Width, Height, Layers);
+            GL.BindTexture(TextureTarget, Handle);
+            GL.TexStorage3D((TextureTarget3d)TextureTarget, Levels, InternalFormat, Width, Height, Layers);
             CheckError();
-            SetDefaultTexParameters();
         }
 
         /// <summary>
@@ -83,7 +81,7 @@ namespace DerpGL.Textures
             try
             {
                 var map = FormatMapping.Get(bitmap);
-                GL.TexSubImage3D(TextureTarget.Texture2DArray, 0, 0, 0, layer, data.Width, data.Height, 1, map.PixelFormat, map.PixelType, data.Scan0);
+                GL.TexSubImage3D(TextureTarget, 0, 0, 0, layer, data.Width, data.Height, 1, map.PixelFormat, map.PixelType, data.Scan0);
             }
             finally
             {

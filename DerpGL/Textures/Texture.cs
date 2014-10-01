@@ -36,6 +36,49 @@ namespace DerpGL.Textures
             GL.DeleteTexture(Handle);
         }
 
+        /// <summary>
+        /// Binds the texture to the current texture unit at its default texture target.
+        /// </summary>
+        public void Bind()
+        {
+            GL.BindTexture(TextureTarget, Handle);
+        }
+
+        /// <summary>
+        /// Binds the texture to the given texture unit at its default texture target.
+        /// </summary>
+        /// <param name="unit">The texture unit to bind to.</param>
+        public void Bind(TextureUnit unit)
+        {
+            GL.ActiveTexture(unit);
+            Bind();
+        }
+
+        /// <summary>
+        /// Sets the given wrap mode on all dimensions R, S and T.
+        /// </summary>
+        /// <param name="wrapMode">The wrap mode to apply.</param>
+        public void SetWrapMode(TextureWrapMode wrapMode)
+        {
+            var mode = (int)wrapMode;
+            SetParameter(TextureParameterName.TextureWrapR, mode);
+            SetParameter(TextureParameterName.TextureWrapS, mode);
+            SetParameter(TextureParameterName.TextureWrapT, mode);
+        }
+
+        /// <summary>
+        /// Sets texture parameters.
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="value"></param>
+        public void SetParameter(TextureParameterName parameterName, int value)
+        {
+            GL.TexParameter(TextureTarget, parameterName, value);
+        }
+
+        /// <summary>
+        /// Calls GL.<see cref="GL.GetError()"/> to check if there are any errors.
+        /// </summary>
         protected static void CheckError()
         {
 #if DEBUG

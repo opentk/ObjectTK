@@ -9,11 +9,6 @@ namespace DerpGL.Textures
         : Texture
     {
         /// <summary>
-        /// The default GenerateMipmapTarget.
-        /// </summary>
-        public GenerateMipmapTarget GenerateMipmapTarget { get; private set; }
-
-        /// <summary>
         /// The number of mipmap levels.
         /// </summary>
         public int Levels { get; private set; }
@@ -24,7 +19,7 @@ namespace DerpGL.Textures
         /// <param name="textureTarget">The default texture target to use.</param>
         /// <param name="internalFormat">The internal format of the texture.</param>
         internal MipmapTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
-            : this(textureTarget, internalFormat, 0, 1)
+            : this(textureTarget, internalFormat, 1)
         {
         }
 
@@ -33,12 +28,10 @@ namespace DerpGL.Textures
         /// </summary>
         /// <param name="textureTarget">The default texture target to use.</param>
         /// <param name="internalFormat">The internal format of the texture.</param>
-        /// <param name="generateMipmapTarget">The target to generate mipmaps with.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        internal MipmapTexture(TextureTarget textureTarget,  SizedInternalFormat internalFormat, GenerateMipmapTarget generateMipmapTarget, int levels)
+        internal MipmapTexture(TextureTarget textureTarget,  SizedInternalFormat internalFormat, int levels)
             : base(textureTarget, internalFormat)
         {
-            GenerateMipmapTarget = generateMipmapTarget;
             Levels = levels;
         }
 
@@ -47,7 +40,9 @@ namespace DerpGL.Textures
         /// </summary>
         public void GenerateMipMaps()
         {
-            if (Levels > 1) GL.GenerateMipmap(GenerateMipmapTarget);
+            if (Levels <= 1) return;
+            Bind();
+            GL.GenerateMipmap((GenerateMipmapTarget)TextureTarget);
         }
 
         /// <summary>

@@ -26,10 +26,6 @@ namespace DerpGL.Textures
         /// <summary>
         /// Initializes a new 3D texture object.
         /// </summary>
-        /// <param name="internalFormat"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="depth"></param>
         public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth)
             : base(TextureTarget.Texture3D, internalFormat)
         {
@@ -40,7 +36,7 @@ namespace DerpGL.Textures
         /// Initializes a new 3D texture object.
         /// </summary>
         public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels)
-            : base(TextureTarget.Texture3D, internalFormat, GenerateMipmapTarget.Texture3D, levels)
+            : base(TextureTarget.Texture3D, internalFormat, levels)
         {
             Initialize(width, height, depth);
         }
@@ -50,10 +46,9 @@ namespace DerpGL.Textures
             Width = width;
             Height = height;
             Depth = depth;
-            GL.BindTexture(TextureTarget.Texture2DArray, Handle);
-            GL.TexStorage3D(TextureTarget3d.Texture2DArray, Levels, InternalFormat, Width, Height, Depth);
+            GL.BindTexture(TextureTarget, Handle);
+            GL.TexStorage3D((TextureTarget3d)TextureTarget, Levels, InternalFormat, Width, Height, Depth);
             CheckError();
-            SetDefaultTexParameters();
         }
     }
 }

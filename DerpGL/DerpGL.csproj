@@ -95,7 +95,9 @@
     <Compile Include="Textures\FormatMapping.cs" />
     <Compile Include="Textures\LayeredTexture.cs" />
     <Compile Include="Textures\MipmapTexture.cs" />
+    <Compile Include="Textures\Sampler.cs" />
     <Compile Include="Textures\Texture.cs" />
+    <Compile Include="Textures\Texture1D.cs" />
     <Compile Include="Textures\Texture1DArray.cs" />
     <Compile Include="Textures\Texture2D.cs" />
     <Compile Include="Textures\Texture2DArray.cs" />

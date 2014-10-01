@@ -15,17 +15,12 @@ namespace DerpGL.Shaders.Variables
         }
 
         /// <summary>
-        /// Binds a <see cref="Texture"/> to the given <see cref="TextureUnit"/> and sets the corresponding uniform to the respective number to access it.
+        /// Sets this uniform to sample from the given texture unit.
         /// </summary>
-        /// <param name="target">The target to which the texture is bound.</param>
-        /// <param name="unit">The texture unit to bind to.</param>
-        /// <param name="texture">The texture to bind.</param>
-        public void BindTexture(TextureTarget target, TextureUnit unit, Texture texture)
+        /// <param name="unit">The texture unit to sample from.</param>
+        public void Set(TextureUnit unit)
         {
-            const int zero = (int)TextureUnit.Texture0;
-            if (!Set((int)unit - zero)) return;
-            GL.ActiveTexture(unit);
-            GL.BindTexture(target, texture.Handle);
+            Set((int)unit - (int)TextureUnit.Texture0);
         }
 
         /// <summary>
@@ -36,7 +31,8 @@ namespace DerpGL.Shaders.Variables
         /// <param name="texture">The texture to bind.</param>
         public void BindTexture(TextureUnit unit, Texture texture)
         {
-            BindTexture(texture.TextureTarget, unit, texture);
+            Set(unit);
+            texture.Bind(unit);
         }
     }
 }

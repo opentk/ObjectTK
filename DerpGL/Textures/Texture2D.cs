@@ -23,7 +23,8 @@ namespace DerpGL.Textures
         public int Height { get; private set; }
 
         /// <summary>
-        /// Allocates immutable texture storage compatible to the given bitmap and fills it with its contents.
+        /// Allocates immutable texture storage compatible to the given bitmap and fills it with its contents.<br/>
+        /// Remember to call GenerateMipMaps() if levels is greater than 1 and you are using a mipmap filtering.
         /// </summary>
         /// <param name="bitmap">The bitmap to upload.</param>
         /// <param name="levels">The number of mipmap levels.</param>
@@ -53,7 +54,7 @@ namespace DerpGL.Textures
         /// <param name="height">The height of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels)
-            : base(TextureTarget.Texture2D, internalFormat, GenerateMipmapTarget.Texture2D, levels)
+            : base(TextureTarget.Texture2D, internalFormat, levels)
         {
             Initialize(width, height);
         }
@@ -62,10 +63,9 @@ namespace DerpGL.Textures
         {
             Width = width;
             Height = height;
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
-            GL.TexStorage2D(TextureTarget2d.Texture2D, Levels, InternalFormat, Width, Height);
+            GL.BindTexture(TextureTarget, Handle);
+            GL.TexStorage2D((TextureTarget2d)TextureTarget, Levels, InternalFormat, Width, Height);
             CheckError();
-            SetDefaultTexParameters();
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace DerpGL.Textures
             try
             {
                 var map = FormatMapping.Get(bitmap);
-                GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, data.Width, data.Height, map.PixelFormat, map.PixelType, data.Scan0);
+                GL.TexSubImage2D(TextureTarget, 0, 0, 0, data.Width, data.Height, map.PixelFormat, map.PixelType, data.Scan0);
             }
             finally
             {
@@ -100,8 +100,8 @@ namespace DerpGL.Textures
             where T : struct
         {
             var data = new T[Width, Height];
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
-            GL.GetTexImage(TextureTarget.Texture2D, 0, pixelFormat, pixelType, data);
+            GL.BindTexture(TextureTarget, Handle);
+            GL.GetTexImage(TextureTarget, 0, pixelFormat, pixelType, data);
             return data;
         }
     }

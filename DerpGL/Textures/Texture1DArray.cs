@@ -24,9 +24,6 @@ namespace DerpGL.Textures
         /// <summary>
         /// Creates a 1D texture array with given internal format, width and number of layers.
         /// </summary>
-        /// <param name="internalFormat"></param>
-        /// <param name="width"></param>
-        /// <param name="layers"></param>
         public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers)
             : base(TextureTarget.Texture1DArray, internalFormat)
         {
@@ -37,7 +34,7 @@ namespace DerpGL.Textures
         /// Creates a 1D texture array with given internal format, width, number of layers and number of mipmap levels.
         /// </summary>
         public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels)
-            : base(TextureTarget.Texture1DArray, internalFormat, GenerateMipmapTarget.Texture1DArray, levels)
+            : base(TextureTarget.Texture1DArray, internalFormat, levels)
         {
             Initialize(width, layers);
         }
@@ -46,8 +43,8 @@ namespace DerpGL.Textures
         {
             Width = width;
             Layers = layers;
-            GL.BindTexture(TextureTarget.Texture1DArray, Handle);
-            GL.TexStorage2D(TextureTarget2d.Texture1DArray, Levels, InternalFormat, Width, Layers);
+            GL.BindTexture(TextureTarget, Handle);
+            GL.TexStorage2D((TextureTarget2d)TextureTarget, Levels, InternalFormat, Width, Layers);
             CheckError();
         }
     }
