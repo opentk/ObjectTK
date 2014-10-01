@@ -53,7 +53,7 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Requests a new, uninitialized buffer object using an explicitly given element size in bytes.
+        /// Creates a new, uninitialized buffer object using an explicitly given element size in bytes.
         /// </summary>
         public Buffer(int elementSize)
             : base(GL.GenBuffer())
@@ -63,7 +63,7 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Requests a new, uninitialized buffer object using the element size determined by Marshal.SizeOf().
+        /// Creates a new, uninitialized buffer object using the element size determined by Marshal.SizeOf().
         /// </summary>
         public Buffer()
             : this(Marshal.SizeOf(typeof(T)))

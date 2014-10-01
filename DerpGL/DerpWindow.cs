@@ -25,6 +25,9 @@ namespace DerpGL
 
         protected readonly List<MouseButton> MouseButtons;
 
+        /// <summary>
+        /// Initializes a new instance of the DerpWindow class.
+        /// </summary>
         protected DerpWindow(int width, int height, GraphicsMode mode, string title)
             : base(width, height, mode, title)
         {
@@ -68,6 +71,9 @@ namespace DerpGL
             FrameTimer.Time();
         }
 
+        /// <summary>
+        /// Resets the ModelView and Projection matrices to the identity.
+        /// </summary>
         protected void ResetMatrices()
         {
             ModelView = Matrix4.Identity;

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
@@ -19,6 +20,10 @@ namespace DerpGL.Shaders
         /// </summary>
         public int WorkGroupTotalSize { get; protected set; }
 
+        /// <summary>
+        /// The maximum work group size of compute shaders.<br/>
+        /// The values are hardware dependent and queried from OpenGL.
+        /// </summary>
         public static Vector3i MaximumWorkGroupSize { get; protected set; }
 
         static ComputeShader()
@@ -30,8 +35,14 @@ namespace DerpGL.Shaders
             MaximumWorkGroupSize = new Vector3i(x,y,z);
         }
 
+        /// <summary>
+        /// Initializes a new instance of this compute shader.<br/>
+        /// Retrieves shader source filenames from ShaderSourceAttributes tagged to this type.
+        /// </summary>
         protected ComputeShader()
         {
+            if (ShaderSourceAttribute.GetShaderSources(this).Any(_ => _.Key != ShaderType.ComputeShader))
+                throw new ApplicationException("Invalid ShaderType supplied to compute shader via ShaderSourceAttribute(s).");
             // query the work group size
             var sizes = new int[3];
             GL.GetProgram(Handle, (GetProgramParameterName)All.ComputeWorkGroupSize, sizes);

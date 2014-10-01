@@ -38,6 +38,9 @@ namespace DerpGL
 
         private double _lastIntermediateTime;
 
+        /// <summary>
+        /// Initializes a new instance of the FrameTimer class.
+        /// </summary>
         public FrameTimer()
         {
             _stopwatch = new Stopwatch();
@@ -45,6 +48,10 @@ namespace DerpGL
             _stopwatch.Start();
         }
 
+        /// <summary>
+        /// Calculates timings based on the intervals between subsequent calls. Call once each frame.<br/>
+        /// Determines frames per seconds and other statistics.
+        /// </summary>
         public void Time()
         {
             // retrieve time spent since last frame
@@ -69,6 +76,9 @@ namespace DerpGL
             _lastIntermediateTime = 0;
         }
 
+        /// <summary>
+        /// Calculates the interval between two subsequent calls in milliseconds.
+        /// </summary>
         public double IntermediateTiming()
         {
             var elapsed = _stopwatch.Elapsed.TotalMilliseconds;

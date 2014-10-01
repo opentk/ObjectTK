@@ -181,7 +181,7 @@ namespace DerpGL.Shaders
                         // insert #line statement to correct line numbers
                         source.AppendLine(string.Format("#line 1 {0}", includedNames.Count));
                         // replace current line with the source of that file
-                        includedFile = Path.Combine(Path.GetDirectoryName(file), includedFile);
+                        includedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", includedFile);
                         source.Append(RetrieveShaderSource(includedFile, includedNames));
                         // the #line statement defines the line number of the *next* line
                         source.AppendLine(string.Format("#line {0} {1}", lineNumber+1, fileNumber));

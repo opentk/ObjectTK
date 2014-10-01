@@ -5,11 +5,14 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents an OpenGL framebuffer.
+    /// Represents an framebuffer object.
     /// </summary>
     public class FrameBuffer
         : GLResource
     {
+        /// <summary>
+        /// Creates a new framebuffer object.
+        /// </summary>
         public FrameBuffer()
             : base(GL.GenFramebuffer())
         {
