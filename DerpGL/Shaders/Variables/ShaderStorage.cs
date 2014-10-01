@@ -5,7 +5,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a shader storage buffer object (SSBO) binding.
     /// </summary>
-    public class ShaderStorage
+    public sealed class ShaderStorage
         : BufferBinding
     {
         internal ShaderStorage(int program, string name)

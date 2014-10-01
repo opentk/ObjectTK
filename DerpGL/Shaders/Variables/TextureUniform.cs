@@ -6,7 +6,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a texture uniform.
     /// </summary>
-    public class TextureUniform
+    public sealed class TextureUniform
         : Uniform<int>
     {
         internal TextureUniform(int program, string name)

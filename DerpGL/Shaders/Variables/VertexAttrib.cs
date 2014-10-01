@@ -8,7 +8,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a vertex attribute.
     /// </summary>
-    public class VertexAttrib
+    public sealed class VertexAttrib
         : ShaderVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
@@ -38,12 +38,12 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// Default binding parameters attributed to this vertex attribute.
         /// </summary>
-        protected readonly VertexAttribAttribute Parameters;
+        private readonly VertexAttribAttribute _parameters;
 
         internal VertexAttrib(int program, string name, VertexAttribAttribute parameters)
             : base(program, name)
         {
-            Parameters = parameters;
+            _parameters = parameters;
             Index = GL.GetAttribLocation(program, name);
             if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", name);
         }
@@ -55,7 +55,7 @@ namespace DerpGL.Shaders.Variables
         public void Bind<T>(Buffer<T> buffer)
             where T : struct
         {
-            Bind(buffer, Parameters.Components, Parameters.Type, buffer.ElementSize, 0, Parameters.Normalized);
+            Bind(buffer, _parameters.Components, _parameters.Type, buffer.ElementSize, 0, _parameters.Normalized);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace DerpGL.Shaders.Variables
         public void Bind<T>(Buffer<T> buffer, int offset)
             where T : struct
         {
-            Bind(buffer, Parameters.Components, Parameters.Type, buffer.ElementSize, offset, Parameters.Normalized);
+            Bind(buffer, _parameters.Components, _parameters.Type, buffer.ElementSize, offset, _parameters.Normalized);
         }
 
         /// <summary>
@@ -75,25 +75,34 @@ namespace DerpGL.Shaders.Variables
         public void Bind<T>(Buffer<T> buffer, int stride, int offset)
             where T : struct
         {
-            Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, Parameters.Normalized);
+            Bind(buffer, _parameters.Components, _parameters.Type, stride, offset, _parameters.Normalized);
         }
 
+        /// <summary>
+        /// Binds the given buffer to this vertex attribute.
+        /// </summary>
         public void Bind<T>(Buffer<T> buffer, int stride, int offset, bool normalized)
             where T : struct
         {
-            Bind(buffer, Parameters.Components, Parameters.Type, stride, offset, normalized);
+            Bind(buffer, _parameters.Components, _parameters.Type, stride, offset, normalized);
         }
 
+        /// <summary>
+        /// Binds the given buffer to this vertex attribute.
+        /// </summary>
         public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset)
             where T : struct
         {
-            Bind(buffer, components, Parameters.Type, stride, offset, Parameters.Normalized);
+            Bind(buffer, components, _parameters.Type, stride, offset, _parameters.Normalized);
         }
 
+        /// <summary>
+        /// Binds the given buffer to this vertex attribute.
+        /// </summary>
         public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset, bool normalized)
             where T : struct
         {
-            Bind(buffer, components, Parameters.Type, stride, offset, normalized);
+            Bind(buffer, components, _parameters.Type, stride, offset, normalized);
         }
 
         /// <summary>

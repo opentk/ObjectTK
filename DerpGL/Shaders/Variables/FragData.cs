@@ -3,11 +3,19 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders.Variables
 {
-    public class FragData
+    /// <summary>
+    /// Represents a fragment shader output.<br/>
+    /// TODO: implement methods to bind output to a specific attachment
+    /// see glBindFragDataLocation, glDrawBuffers and http://stackoverflow.com/questions/1733838/fragment-shaders-output-variables
+    /// </summary>
+    public sealed class FragData
         : ShaderVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(FragData));
 
+        /// <summary>
+        /// The location of the output.
+        /// </summary>
         public readonly int Location;
 
         internal FragData(int program, string name)

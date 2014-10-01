@@ -7,7 +7,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// TODO: Implemented in a completely strange way ..
     /// </summary>
-    public class TransformOut
+    public sealed class TransformOut
     {
         public readonly int Index;
 

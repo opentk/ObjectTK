@@ -5,7 +5,7 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a uniform buffer object (UBO) binding.
     /// </summary>
-    public class UniformBuffer
+    public sealed class UniformBuffer
         : BufferBinding
     {
         internal UniformBuffer(int program, string name)
@@ -18,7 +18,7 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// Assigns a binding point to this uniform block.
         /// </summary>
-        /// <param name="binding">The binding point to assing.</param>
+        /// <param name="binding">The binding point to assign.</param>
         public override void ChangeBinding(int binding)
         {
             base.ChangeBinding(binding);

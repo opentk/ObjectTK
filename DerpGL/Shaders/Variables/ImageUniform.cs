@@ -6,17 +6,13 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents an image uniform.
     /// </summary>
-    public class ImageUniform
+    public sealed class ImageUniform
         : Uniform<int>
     {
         internal ImageUniform(int program, string name)
             : base(program, name, GL.Uniform1)
         {
         }
-
-        //TODO: refactor somehow to automatically increment the used imageUnit, and reset that counter on Shader.Use()
-        // preventing bugs from accidentally using the same imageUnit multiple times
-        // the same may apply to textures
 
         /// <summary>
         /// Binds a single level of a texture to an image unit.
