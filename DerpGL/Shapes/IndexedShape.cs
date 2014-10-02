@@ -1,5 +1,5 @@
 ﻿using DerpGL.Buffers;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shapes
 {
@@ -20,16 +20,6 @@ namespace DerpGL.Shapes
         {
             base.Dispose();
             if (IndexBuffer != null) IndexBuffer.Dispose();
-        }
-
-        public override void RenderImmediate(PrimitiveType mode)
-        {
-            GL.Begin(mode);
-            foreach (var index in Indices)
-            {
-                GL.Vertex3(Vertices[index]);
-            }
-            GL.End();
         }
     }
 }

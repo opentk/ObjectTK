@@ -1,7 +1,6 @@
-﻿using System;
-using DerpGL.Buffers;
+﻿using DerpGL.Buffers;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shapes
 {
@@ -22,11 +21,6 @@ namespace DerpGL.Shapes
         {
             base.Dispose();
             if (TexCoordBuffer != null) TexCoordBuffer.Dispose();
-        }
-
-        public override void RenderImmediate(PrimitiveType mode)
-        {
-            throw new NotImplementedException();
         }
     }
 }

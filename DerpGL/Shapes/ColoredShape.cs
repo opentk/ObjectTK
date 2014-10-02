@@ -1,6 +1,5 @@
-﻿using System;
-using DerpGL.Buffers;
-using OpenTK.Graphics.OpenGL;
+﻿using DerpGL.Buffers;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shapes
 {
@@ -21,11 +20,6 @@ namespace DerpGL.Shapes
         {
             base.Dispose();
             if (ColorBuffer != null) ColorBuffer.Dispose();
-        }
-
-        public override void RenderImmediate(PrimitiveType mode)
-        {
-            throw new NotImplementedException();
         }
     }
 }

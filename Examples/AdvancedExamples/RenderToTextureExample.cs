@@ -5,7 +5,7 @@ using DerpGL.Shapes;
 using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Examples.AdvancedExamples
 {
@@ -82,7 +82,7 @@ namespace Examples.AdvancedExamples
             _colorShader.InPosition.Bind(_cube.VertexBuffer);
             _colorShader.InColor.Bind(_cube.ColorBuffer);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _cube.IndexBuffer.Handle);
-            GL.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
             // reset to default framebuffer
             _framebuffer.Unbind();

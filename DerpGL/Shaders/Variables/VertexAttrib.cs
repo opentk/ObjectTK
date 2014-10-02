@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DerpGL.Buffers;
 using log4net;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shaders.Variables
 {

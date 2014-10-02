@@ -1,6 +1,6 @@
 ﻿using System;
 using DerpGL.Textures;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Buffers
 {

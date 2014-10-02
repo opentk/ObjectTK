@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 
 namespace DerpGL
@@ -37,8 +36,10 @@ namespace DerpGL
             Logger.InfoFormat("{0}: {1}", StringName.Renderer, GL.GetString(StringName.Renderer));
             Logger.InfoFormat("{0}: {1}", StringName.Version, GL.GetString(StringName.Version));
             Logger.InfoFormat("{0}: {1}", StringName.ShadingLanguageVersion, GL.GetString(StringName.ShadingLanguageVersion));
-            Logger.DebugFormat("{0}:\n{1}", StringName.Extensions, string.Join("",
-                GL.GetString(StringName.Extensions).Split(' ').Select((_,i) => string.Format("{0}{1}", _, i%4==3?"\n":"\t"))));
+            int numExtensions;
+            GL.GetInteger(GetPName.NumExtensions, out numExtensions);
+            Logger.DebugFormat("Number available extensions: {0}", numExtensions);
+            for (var i = 0; i < numExtensions; i++) Logger.DebugFormat("{0}: {1}", i, GL.GetString(StringNameIndexed.Extensions, i));
             Logger.InfoFormat("Initializing game window: {0}", title);
             VSync = VSyncMode.Off;
             // set up mouse events

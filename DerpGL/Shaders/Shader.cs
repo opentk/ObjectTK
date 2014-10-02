@@ -7,7 +7,7 @@ using System.Text;
 using DerpGL.Shaders.Variables;
 using log4net;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shaders
 {
@@ -75,6 +75,7 @@ namespace DerpGL.Shaders
             // activate program
             GL.UseProgram(Handle);
             // disable all vertex attributes
+            //TODO: maybe dont ever do that
             VertexAttrib.DisableVertexAttribArrays();
         }
 

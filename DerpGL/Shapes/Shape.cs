@@ -1,7 +1,7 @@
 ﻿using System;
 using DerpGL.Buffers;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shapes
 {
@@ -21,21 +21,6 @@ namespace DerpGL.Shapes
         public virtual void Dispose()
         {
             if (VertexBuffer != null) VertexBuffer.Dispose();
-        }
-
-        public void RenderImmediate()
-        {
-            RenderImmediate(DefaultMode);
-        }
-
-        public virtual void RenderImmediate(PrimitiveType mode)
-        {
-            GL.Begin(mode);
-            foreach (var vertex in Vertices)
-            {
-                GL.Vertex3(vertex);
-            }
-            GL.End();
         }
     }
 }

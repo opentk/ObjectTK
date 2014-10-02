@@ -1,6 +1,6 @@
 ﻿using System;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shapes
 {

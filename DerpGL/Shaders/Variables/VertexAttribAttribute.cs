@@ -1,5 +1,5 @@
 using System;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace DerpGL.Shaders.Variables
 {
