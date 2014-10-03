@@ -15,11 +15,17 @@ namespace DerpGL
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GLResource));
         
         /// <summary>
+        /// Gets a values specifying if this resource has already been disposed.
+        /// </summary>
+        public bool IsDisposed { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the GLResource class.
         /// </summary>
         protected GLResource(int handle)
             : base(handle)
         {
+            IsDisposed = false;
         }
 
         /// <summary>
@@ -36,8 +42,14 @@ namespace DerpGL
         /// </summary>
         public void Dispose()
         {
+            // safely handle multiple calls to dispose
+            if (IsDisposed) return;
+            IsDisposed = true;
+            // dipose this resource
             Dispose(true);
+            // prevent the destructor from being called
             GC.SuppressFinalize(this);
+            // make sure the garbage collector does not eat our object before it is properly disposed
             GC.KeepAlive(this);
         }
 
