@@ -22,7 +22,7 @@ namespace DerpGL.Textures
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out width);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out height);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureInternalFormat, out internalFormat);
-            return new Texture2D(textureHandle, (SizedInternalFormat)internalFormat , width, height, levels);
+            return new Texture2D(textureHandle, (SizedInternalFormat)internalFormat, width, height, levels);
         }
     }
 }

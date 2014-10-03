@@ -12,7 +12,7 @@ namespace Examples.Shaders
     {
         [VertexAttrib(3, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }
-        [VertexAttrib(4, VertexAttribPointerType.UnsignedByte, Normalized = true)]
+        [VertexAttrib(4, VertexAttribPointerType.UnsignedByte, true)]
         public VertexAttrib InColor { get; protected set; }
 
         public Uniform<Matrix4> ModelViewProjectionMatrix { get; protected set; }

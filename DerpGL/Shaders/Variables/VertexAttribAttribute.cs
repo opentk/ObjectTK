@@ -23,14 +23,25 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// Specifies whether the components should be normalized.
         /// </summary>
-        public bool Normalized { get; set; }
+        public bool Normalized { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the VertexAttribAttribute with default values.<br/>
         /// The default is 4 components of type float without normalization.
         /// </summary>
         public VertexAttribAttribute()
-            : this(4, VertexAttribPointerType.Float)
+            : this(4, VertexAttribPointerType.Float, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the VertexAttribAttribute.<br/>
+        /// Normalization defaults to false.
+        /// </summary>
+        /// <param name="components">The number of components to read.</param>
+        /// <param name="type">The type of each component.</param>
+        public VertexAttribAttribute(int components, VertexAttribPointerType type)
+            : this(components, type, false)
         {
         }
 
@@ -39,11 +50,12 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         /// <param name="components">The number of components to read.</param>
         /// <param name="type">The type of each component.</param>
-        public VertexAttribAttribute(int components, VertexAttribPointerType type)
+        /// <param name="normalized">Specifies whether each component should be normalized.</param>
+        public VertexAttribAttribute(int components, VertexAttribPointerType type, bool normalized)
         {
             Components = components;
             Type = type;
-            Normalized = false;
+            Normalized = normalized;
         }
     }
 }
