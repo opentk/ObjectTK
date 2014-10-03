@@ -44,7 +44,11 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedExamples\LoaderDDS.cs" />
+    <Compile Include="AdvancedExamples\LoaderStatics.cs" />
+    <Compile Include="AdvancedExamples\ParallaxMappingExample.cs" />
     <Compile Include="ExampleProjectAttribute.cs" />
+    <Compile Include="Shaders\ParallaxShader.cs" />
     <Compile Include="Shaders\SimpleColorShader.cs" />
     <Compile Include="Shaders\SimpleTextureShader.cs" />
     <Compile Include="Shaders\ExampleShader.cs" />
@@ -62,6 +66,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\Shaders\Parallax.fs.glsl" />
+    <None Include="Data\Shaders\Parallax.vs.glsl" />
     <None Include="Data\Shaders\SimpleColor.fs.glsl" />
     <None Include="Data\Shaders\SimpleColor.vs.glsl" />
     <None Include="Data\Shaders\SimpleTexture.fs.glsl" />
@@ -79,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Textures\checker.jpg" />
+    <Content Include="Data\Textures\swizzled-rock-diffuse-height.dds" />
+    <Content Include="Data\Textures\swizzled-rock-normal-gloss.dds" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
