@@ -15,7 +15,9 @@ namespace DerpGL.Shaders.Variables
         }
 
         /// <summary>
-        /// Sets this uniform to sample from the given texture unit.
+        /// Sets this uniform to sample from the given texture unit.<br/>
+        /// Calls to <see cref="Set(TextureUnit)"/> are equivalent to <see cref="Uniform{T}.Set"/>
+        /// with the corresponding integer, it just adds readability.
         /// </summary>
         /// <param name="unit">The texture unit to sample from.</param>
         public void Set(TextureUnit unit)

@@ -19,77 +19,77 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
         /// <param name="textureHandle">The handle of the texture.</param>
+        /// <param name="level">The mipmap level to bind.</param>
         /// <param name="layered">Specifies whether a layered texture binding is to be established.</param>
         /// <param name="layer">If <paramref name="layered"/> is false, specifies the layer of the texture to be bound, ignored otherwise.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
         /// <param name="format">Specifies the format that the elements of the texture will be treated as.</param>
-        public void BindImage(int imageUnit, int textureHandle, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
+        public void BindImage(int imageUnit, int textureHandle, int level, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
         {
             if (!Set(imageUnit)) return;
-            GL.BindImageTexture(imageUnit, textureHandle, 0, layered, layer, access, format);
+            GL.BindImageTexture(imageUnit, textureHandle, level, layered, layer, access, format);
         }
 
         /// <summary>
-        /// Binds the given texture to an image unit.<br/>
-        /// The format argument is taken from the internal format of the texture.
+        /// Binds a single level of a texture to an image unit.
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
-        /// <param name="texture">The texture to be bound.</param>
+        /// <param name="texture">The texture to bind.</param>
+        /// <param name="level">The mipmap level to bind.</param>
         /// <param name="layered">Specifies whether a layered texture binding is to be established.</param>
         /// <param name="layer">If <paramref name="layered"/> is false, specifies the layer of the texture to be bound, ignored otherwise.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
-        public void BindTexture(int imageUnit, Texture texture, bool layered, int layer, TextureAccess access)
+        public void BindImage(int imageUnit, Texture texture, int level, bool layered, int layer, TextureAccess access)
         {
-            BindImage(imageUnit, texture.Handle, layered, layer, access, texture.InternalFormat);
+            BindImage(imageUnit, texture.Handle, level, layered, layer, access, texture.InternalFormat);
         }
 
         /// <summary>
-        /// Binds the given texture to an image unit.<br/>
-        /// The format argument is taken from the internal format of the texture.
+        /// Binds a single level of a texture to an image unit.
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
-        /// <param name="texture">The texture to be bound.</param>
+        /// <param name="texture">The texture to bind.</param>
+        /// <param name="level">The mipmap level to bind.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
-        public void BindTexture(int imageUnit, Texture2D texture, TextureAccess access)
+        public void BindTexture(int imageUnit, MipmapTexture texture, int level, TextureAccess access)
         {
-            BindImage(imageUnit, texture.Handle, false, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture, level, false, 0, access);
         }
 
         /// <summary>
-        /// Binds all layers of the given texture array to an image unit.<br/>
-        /// The format argument is taken from the internal format of the texture.
+        /// Binds a single layer of the given texture to an image unit.
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
-        /// <param name="texture">The texture array to be bound.</param>
+        /// <param name="texture">The texture to bind.</param>
+        /// <param name="level">The mipmap level to bind.</param>
+        /// <param name="layer">The layer of the texture to bind.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
-        public void BindTexture(int imageUnit, Texture2DArray texture, TextureAccess access)
+        public void BindTexture(int imageUnit, LayeredTexture texture, int level, int layer, TextureAccess access)
         {
-            BindImage(imageUnit, texture.Handle, true, 0, access, texture.InternalFormat);
+            BindImage(imageUnit, texture, level, false, layer, access);
         }
 
         /// <summary>
-        /// Binds a single layer of the given texture array to an image unit.<br/>
-        /// The format argument is taken from the internal format of the texture.
+        /// Binds all layers of the given texture to an image unit.
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
-        /// <param name="texture">The texture array to be bound.</param>
-        /// <param name="layer">The layer of the texture array to be bound.</param>
+        /// <param name="texture">The texture array to bind.</param>
+        /// <param name="level">The mipmap level to bind.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
-        public void BindTexture(int imageUnit, Texture2DArray texture, int layer, TextureAccess access)
+        public void BindTexture(int imageUnit, LayeredTexture texture, int level, TextureAccess access)
         {
-            BindImage(imageUnit, texture.Handle, false, layer, access, texture.InternalFormat);
+            BindImage(imageUnit, texture, level, true, 0, access);
         }
 
         /// <summary>
-        /// Binds the given buffer texture to an image unit.<br/>
-        /// The format argument is taken from the internal format of the buffer object.
+        /// Binds the given buffer texture to an image unit.
         /// </summary>
         /// <param name="imageUnit">The image unit to use.</param>
-        /// <param name="buffer">The buffer texture to be bound.</param>
+        /// <param name="buffer">The buffer texture to bind.</param>
         /// <param name="access">Specifies the type of access allowed on the image.</param>
         public void BindBuffer(int imageUnit, BufferTexture buffer, TextureAccess access)
         {
-            BindImage(imageUnit, buffer.Handle, false, 0, access, buffer.InternalFormat);
+            BindImage(imageUnit, buffer, 0, false, 0, access);
         }
     }
 }
