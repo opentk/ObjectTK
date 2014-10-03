@@ -102,6 +102,7 @@
     <Compile Include="Textures\Texture2D.cs" />
     <Compile Include="Textures\Texture2DArray.cs" />
     <Compile Include="Textures\Texture3D.cs" />
+    <Compile Include="Textures\TextureFactory.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Vector3i.cs" />
   </ItemGroup>

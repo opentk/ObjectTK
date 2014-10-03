@@ -69,6 +69,16 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
+        /// Internal constructor used by <see cref="TextureFactory"/> to wrap a Texture2D instance around an already existing texture.
+        /// </summary>
+        internal Texture2D(int textureHandle, SizedInternalFormat internalFormat, int width, int height, int levels)
+            : base(textureHandle, TextureTarget.Texture2D, internalFormat, levels)
+        {
+            Width = width;
+            Height = height;
+        }
+
+        /// <summary>
         /// Uploads the contents of the given bitmap to the texture memory.
         /// </summary>
         /// <param name="bitmap">The bitmap to upload.</param>

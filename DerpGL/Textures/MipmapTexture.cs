@@ -36,6 +36,15 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
+        /// Internal constructor used by <see cref="TextureFactory"/> to wrap a texture instance around an already existing texture.
+        /// </summary>
+        internal MipmapTexture(int textureHandle, TextureTarget textureTarget, SizedInternalFormat internalFormat, int levels)
+            : base(textureHandle, textureTarget, internalFormat)
+        {
+            Levels = levels;
+        }
+
+        /// <summary>
         /// Automatically generates all mipmaps.
         /// </summary>
         public void GenerateMipMaps()

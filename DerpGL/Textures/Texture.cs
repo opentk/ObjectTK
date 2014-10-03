@@ -19,12 +19,24 @@ namespace DerpGL.Textures
         public SizedInternalFormat InternalFormat { get; private set; }
 
         /// <summary>
-        /// Initializes a new texture object which is capable of mipmapping.
+        /// Initializes a new texture object. Creates a new texture handle.
         /// </summary>
         /// <param name="textureTarget">The default texture target to use.</param>
         /// <param name="internalFormat">The internal format of the texture.</param>
         internal Texture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
-            : base(GL.GenTexture())
+            : this(GL.GenTexture(), textureTarget, internalFormat)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new texture object. Uses the texture handle given.<br/>
+        /// Internal constructor used by <see cref="TextureFactory"/> to wrap a texture instance around an already existing texture.
+        /// </summary>
+        /// <param name="textureHandle">The texture handle.</param>
+        /// <param name="textureTarget">The default texture target to use.</param>
+        /// <param name="internalFormat">The internal format of the texture.</param>
+        internal Texture(int textureHandle, TextureTarget textureTarget, SizedInternalFormat internalFormat)
+            : base(textureHandle)
         {
             TextureTarget = textureTarget;
             InternalFormat = internalFormat;
