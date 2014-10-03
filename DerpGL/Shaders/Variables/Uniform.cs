@@ -1,6 +1,6 @@
 using System;
 using log4net;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders.Variables
 {

@@ -5,7 +5,7 @@ using DerpGL.Buffers;
 using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace Examples.BasicExamples

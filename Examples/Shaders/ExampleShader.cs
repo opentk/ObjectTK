@@ -1,7 +1,7 @@
 ﻿using DerpGL.Shaders;
 using DerpGL.Shaders.Variables;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {

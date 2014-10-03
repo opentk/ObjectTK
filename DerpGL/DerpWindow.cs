@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace DerpGL

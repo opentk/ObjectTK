@@ -7,7 +7,7 @@ using System.Text;
 using DerpGL.Shaders.Variables;
 using log4net;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {

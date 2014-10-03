@@ -5,7 +5,7 @@ using DerpGL.Shapes;
 using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace Examples.AdvancedExamples
 {

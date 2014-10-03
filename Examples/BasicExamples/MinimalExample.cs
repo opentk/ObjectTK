@@ -3,7 +3,7 @@ using System.Drawing;
 using DerpGL.Buffers;
 using Examples.Shaders;
 using OpenTK;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace Examples.BasicExamples
 {

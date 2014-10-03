@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
