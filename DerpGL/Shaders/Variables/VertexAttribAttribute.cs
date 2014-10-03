@@ -26,6 +26,15 @@ namespace DerpGL.Shaders.Variables
         public bool Normalized { get; set; }
 
         /// <summary>
+        /// Initializes a new instance of the VertexAttribAttribute with default values.<br/>
+        /// The default is 4 components of type float without normalization.
+        /// </summary>
+        public VertexAttribAttribute()
+            : this(4, VertexAttribPointerType.Float)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the VertexAttribAttribute.
         /// </summary>
         /// <param name="components">The number of components to read.</param>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -231,28 +232,38 @@ namespace DerpGL.Shaders
         /// </summary>
         private static readonly List<IMapping> TypeMapping = new List<IMapping>
         {
-            new Mapping<VertexAttrib>(VertexAttribMapping),
+            new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
             new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
             new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
             new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
             new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<double>>((p,i) => new Uniform<double>(p, i.Name, GL.Uniform1)),
+            new Mapping<Uniform<Half>>((p,i) => new Uniform<Half>(p, i.Name, (_, half) => GL.Uniform1(_, half))),
+            new Mapping<Uniform<Color>>((p,i) => new Uniform<Color>(p, i.Name, (_, color) => GL.Uniform4(_, color))),
             new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
             new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
             new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
+            new Mapping<Uniform<Vector2d>>((p,i) => new Uniform<Vector2d>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
+            new Mapping<Uniform<Vector2h>>((p,i) => new Uniform<Vector2h>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
+            new Mapping<Uniform<Vector3d>>((p,i) => new Uniform<Vector3d>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
+            new Mapping<Uniform<Vector3h>>((p,i) => new Uniform<Vector3h>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
+            new Mapping<Uniform<Vector4d>>((p,i) => new Uniform<Vector4d>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
+            new Mapping<Uniform<Vector4h>>((p,i) => new Uniform<Vector4h>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
+            new Mapping<Uniform<Matrix2>>((p,i) => new Uniform<Matrix2>(p, i.Name, (_, matrix) => GL.UniformMatrix2(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix3>>((p,i) => new Uniform<Matrix3>(p, i.Name, (_, matrix) => GL.UniformMatrix3(_, false, ref matrix))),
             new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix2x3>>((p,i) => new Uniform<Matrix2x3>(p, i.Name, (_, matrix) => GL.UniformMatrix2x3(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix2x4>>((p,i) => new Uniform<Matrix2x4>(p, i.Name, (_, matrix) => GL.UniformMatrix2x4(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix3x2>>((p,i) => new Uniform<Matrix3x2>(p, i.Name, (_, matrix) => GL.UniformMatrix3x2(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix3x4>>((p,i) => new Uniform<Matrix3x4>(p, i.Name, (_, matrix) => GL.UniformMatrix3x4(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix4x2>>((p,i) => new Uniform<Matrix4x2>(p, i.Name, (_, matrix) => GL.UniformMatrix4x2(_, false, ref matrix))),
+            new Mapping<Uniform<Matrix4x3>>((p,i) => new Uniform<Matrix4x3>(p, i.Name, (_, matrix) => GL.UniformMatrix4x3(_, false, ref matrix))),
             new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
             new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
             new Mapping<FragData>((p,i) => new FragData(p, i.Name))
         };
-
-        private static VertexAttrib VertexAttribMapping(int program, MemberInfo info)
-        {
-            var attrib = info.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault();
-            if (attrib == null) throw new ApplicationException("VertexAttribAttribute missing!");
-            return new VertexAttrib(program, info.Name, attrib);
-        }
 
         /// <summary>
         /// Enables registration of additional property mappings.<br/>
