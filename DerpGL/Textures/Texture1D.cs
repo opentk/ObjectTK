@@ -19,25 +19,9 @@ namespace DerpGL.Textures
         /// </summary>
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>
-        public Texture1D(SizedInternalFormat internalFormat, int width)
-            : base(TextureTarget.Texture1DArray, internalFormat, 1)
-        {
-            Initialize(width);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="width">The width of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture1D(SizedInternalFormat internalFormat, int width, int levels)
+        public Texture1D(SizedInternalFormat internalFormat, int width, int levels = 1)
             : base(TextureTarget.Texture1DArray, internalFormat, levels)
-        {
-            Initialize(width);
-        }
-
-        private void Initialize(int width)
         {
             Width = width;
             GL.BindTexture(TextureTarget, Handle);

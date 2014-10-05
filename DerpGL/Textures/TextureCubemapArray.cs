@@ -27,26 +27,9 @@ namespace DerpGL.Textures
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="size">The width and height of the cube map faces.</param>
         /// <param name="layers">The number of layers to allocate.</param>
-        public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers)
-            : base(TextureTarget.TextureCubeMapArray, internalFormat)
-        {
-            Initialize(size, layers);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="size">The width and height of the cube map faces.</param>
-        /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers, int levels)
+        public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers, int levels = 1)
             : base(TextureTarget.TextureCubeMapArray, internalFormat, levels)
-        {
-            Initialize(size, layers);
-        }
-
-        private void Initialize(int size, int layers)
         {
             Size = size;
             Layers = layers;

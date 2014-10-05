@@ -31,27 +31,9 @@ namespace DerpGL.Textures
         /// <param name="width">The width of the texture.</param>
         /// <param name="height">The height of the texture.</param>
         /// <param name="depth">The depth of the texture.</param>
-        public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth)
-            : base(TextureTarget.Texture3D, internalFormat)
-        {
-            Initialize(width, height, depth);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="width">The width of the texture.</param>
-        /// <param name="height">The height of the texture.</param>
-        /// <param name="depth">The depth of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels)
+        public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels = 1)
             : base(TextureTarget.Texture3D, internalFormat, levels)
-        {
-            Initialize(width, height, depth);
-        }
-
-        private void Initialize(int width, int height, int depth)
         {
             Width = width;
             Height = height;

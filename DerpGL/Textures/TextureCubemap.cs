@@ -20,25 +20,9 @@ namespace DerpGL.Textures
         /// </summary>
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="size">The width and height of the cube map faces.</param>
-        public TextureCubemap(SizedInternalFormat internalFormat, int size)
-            : base(TextureTarget.TextureCubeMap, internalFormat)
-        {
-            Initialize(size);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="size">The width and height of the cube map faces.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public TextureCubemap(SizedInternalFormat internalFormat, int size, int levels)
+        public TextureCubemap(SizedInternalFormat internalFormat, int size, int levels = 1)
             : base(TextureTarget.TextureCubeMap, internalFormat, levels)
-        {
-            Initialize(size);
-        }
-
-        private void Initialize(int size)
         {
             Size = size;
             GL.BindTexture(TextureTarget, Handle);

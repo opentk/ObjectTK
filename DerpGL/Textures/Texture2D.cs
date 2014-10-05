@@ -41,26 +41,9 @@ namespace DerpGL.Textures
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>
         /// <param name="height">The height of the texture.</param>
-        public Texture2D(SizedInternalFormat internalFormat, int width, int height)
-            : base(TextureTarget.Texture2D, internalFormat)
-        {
-            Initialize(width, height);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="width">The width of the texture.</param>
-        /// <param name="height">The height of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels)
+        public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels = 1)
             : base(TextureTarget.Texture2D, internalFormat, levels)
-        {
-            Initialize(width, height);
-        }
-
-        private void Initialize(int width, int height)
         {
             Width = width;
             Height = height;

@@ -29,26 +29,9 @@ namespace DerpGL.Textures
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>
         /// <param name="layers">The number of layers to allocate.</param>
-        public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers)
-            : base(TextureTarget.Texture1DArray, internalFormat)
-        {
-            Initialize(width, layers);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
-        /// </summary>
-        /// <param name="internalFormat">The internal format to allocate.</param>
-        /// <param name="width">The width of the texture.</param>
-        /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels)
+        public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels = 1)
             : base(TextureTarget.Texture1DArray, internalFormat, levels)
-        {
-            Initialize(width, layers);
-        }
-
-        private void Initialize(int width, int layers)
         {
             Width = width;
             Layers = layers;

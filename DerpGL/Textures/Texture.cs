@@ -54,18 +54,6 @@ namespace DerpGL.Textures
         public int Levels { get; private set; }
 
         /// <summary>
-        /// Initializes a new texture object. Creates a new texture handle.<br/>
-        /// The number of mipmap levels defaults to one.<br/>
-        /// TODO: maybe remove the constructor without the levels argument and set the default value (1) in derived classes as default argument-values.
-        /// </summary>
-        /// <param name="textureTarget">The default texture target to use.</param>
-        /// <param name="internalFormat">The internal format of the texture.</param>
-        internal Texture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
-            : this(textureTarget, internalFormat, 1)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new texture object. Creates a new texture handle.
         /// </summary>
         /// <param name="textureTarget">The default texture target to use.</param>

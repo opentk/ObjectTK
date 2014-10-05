@@ -29,7 +29,7 @@ namespace DerpGL.Textures
         /// <param name="width">The width of the texture.</param>
         /// <param name="height">The height of the texture.</param>
         public TextureRectangle(SizedInternalFormat internalFormat, int width, int height)
-            : base(TextureTarget.TextureRectangle, internalFormat)
+            : base(TextureTarget.TextureRectangle, internalFormat, 1)
         {
             Width = width;
             Height = height;

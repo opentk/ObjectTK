@@ -11,11 +11,6 @@ namespace DerpGL.Textures
     {
         public override bool SupportsLayers { get { return true; } }
 
-        internal LayeredTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
-            : base(textureTarget, internalFormat)
-        {
-        }
-
         internal LayeredTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat, int levels)
             : base(textureTarget, internalFormat, levels)
         {

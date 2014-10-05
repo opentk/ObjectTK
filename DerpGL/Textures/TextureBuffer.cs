@@ -19,7 +19,7 @@ namespace DerpGL.Textures
         /// </summary>
         /// <param name="internalFormat"></param>
         public TextureBuffer(SizedInternalFormat internalFormat)
-            : base(TextureTarget.TextureBuffer, internalFormat)
+            : base(TextureTarget.TextureBuffer, internalFormat, 1)
         {
         }
 

@@ -46,7 +46,7 @@ namespace DerpGL.Textures
         /// <param name="samples">The number of samples per texel.</param>
         /// <param name="fixedSampleLocations">Specifies whether the texels will use identical sample locations.</param>
         public Texture2DMultisampleArray(SizedInternalFormat internalFormat, int width, int height, int layers, int samples, bool fixedSampleLocations)
-            : base(TextureTarget.Texture2DMultisample, internalFormat)
+            : base(TextureTarget.Texture2DMultisample, internalFormat, 1)
         {
             Width = width;
             Height = height;
