@@ -7,9 +7,11 @@ namespace DerpGL.Textures
     /// Images in this texture are all cube maps. It contains multiple sets of cube maps, all within one texture.
     /// The array length * 6 (number of cube faces) is part of the texture size.
     /// </summary>
-    public class TextureCubemapArray
+    public sealed class TextureCubemapArray
         : LayeredTexture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.TextureCubeMapArray; } }
+
         /// <summary>
         /// The size of the texture.<br/>
         /// This represents both width and height of the texture, because cube maps have to be square.
@@ -29,7 +31,7 @@ namespace DerpGL.Textures
         /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers, int levels = 1)
-            : base(TextureTarget.TextureCubeMapArray, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Size = size;
             Layers = layers;

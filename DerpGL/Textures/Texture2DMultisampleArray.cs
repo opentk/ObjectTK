@@ -6,9 +6,10 @@ namespace DerpGL.Textures
     /// Represents a 2D multisample array texture.<br/>
     /// Combines 2D array and 2D multisample types. No mipmapping.
     /// </summary>
-    public class Texture2DMultisampleArray
+    public sealed class Texture2DMultisampleArray
         : LayeredTexture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.Texture2DMultisampleArray; } }
         public override bool SupportsMipmaps { get { return false; } }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace DerpGL.Textures
         /// <param name="samples">The number of samples per texel.</param>
         /// <param name="fixedSampleLocations">Specifies whether the texels will use identical sample locations.</param>
         public Texture2DMultisampleArray(SizedInternalFormat internalFormat, int width, int height, int layers, int samples, bool fixedSampleLocations)
-            : base(TextureTarget.Texture2DMultisample, internalFormat, 1)
+            : base(internalFormat, 1)
         {
             Width = width;
             Height = height;

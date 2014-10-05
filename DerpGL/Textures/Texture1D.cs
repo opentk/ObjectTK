@@ -9,6 +9,8 @@ namespace DerpGL.Textures
     public sealed class Texture1D
         : Texture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.Texture1D; } }
+
         /// <summary>
         /// The width of the texture.
         /// </summary>
@@ -21,7 +23,7 @@ namespace DerpGL.Textures
         /// <param name="width">The width of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public Texture1D(SizedInternalFormat internalFormat, int width, int levels = 1)
-            : base(TextureTarget.Texture1DArray, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Width = width;
             GL.BindTexture(TextureTarget, Handle);

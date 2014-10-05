@@ -6,9 +6,11 @@ namespace DerpGL.Textures
     /// Represents a cubemap texture.<br/>
     /// There are exactly 6 distinct sets of 2D images, all of the same size. They act as 6 faces of a cube.
     /// </summary>
-    public class TextureCubemap
+    public sealed class TextureCubemap
         : LayeredTexture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.TextureCubeMap; } }
+
         /// <summary>
         /// The size of the texture.<br/>
         /// This represents both width and height of the texture, because cube maps have to be square.
@@ -22,7 +24,7 @@ namespace DerpGL.Textures
         /// <param name="size">The width and height of the cube map faces.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public TextureCubemap(SizedInternalFormat internalFormat, int size, int levels = 1)
-            : base(TextureTarget.TextureCubeMap, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Size = size;
             GL.BindTexture(TextureTarget, Handle);

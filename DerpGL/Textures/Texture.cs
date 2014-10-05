@@ -27,26 +27,21 @@ namespace DerpGL.Textures
         : GLResource
     {
         /// <summary>
-        /// Specifies whether this texture supports mipmap levels.<br/>
-        /// False for buffer, rectangle and multisample textures, otherwise true.
+        /// Specifies the texture target.
         /// </summary>
-        public virtual bool SupportsMipmaps { get { return true; } }
+        public abstract TextureTarget TextureTarget { get; }
 
         /// <summary>
         /// Specifies whether this texture supports multiple layers.<br/>
-        /// True for all array and 3D textures, otherwise false.
+        /// True for all texture types derived from LayeredTexture, that is all array, cube map and 3D textures.
         /// </summary>
         public virtual bool SupportsLayers { get { return false; } }
 
         /// <summary>
-        /// The default texture target.
+        /// Specifies whether this texture supports mipmap levels.<br/>
+        /// False for buffer, rectangle and multisample textures, otherwise true.
         /// </summary>
-        public TextureTarget TextureTarget { get; private set; }
-
-        /// <summary>
-        /// The internal format of the texture.
-        /// </summary>
-        public SizedInternalFormat InternalFormat { get; private set; }
+        public virtual bool SupportsMipmaps { get { return true; } }
 
         /// <summary>
         /// The number of mipmap levels.
@@ -54,13 +49,17 @@ namespace DerpGL.Textures
         public int Levels { get; private set; }
 
         /// <summary>
+        /// The internal format of the texture.
+        /// </summary>
+        public SizedInternalFormat InternalFormat { get; private set; }
+
+        /// <summary>
         /// Initializes a new texture object. Creates a new texture handle.
         /// </summary>
-        /// <param name="textureTarget">The default texture target to use.</param>
         /// <param name="internalFormat">The internal format of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        internal Texture(TextureTarget textureTarget, SizedInternalFormat internalFormat, int levels)
-            : this(GL.GenTexture(), textureTarget, internalFormat, levels)
+        internal Texture(SizedInternalFormat internalFormat, int levels)
+            : this(GL.GenTexture(), internalFormat, levels)
         {
         }
 
@@ -69,13 +68,11 @@ namespace DerpGL.Textures
         /// Internal constructor used by <see cref="TextureFactory"/> to wrap a texture instance around an already existing texture.
         /// </summary>
         /// <param name="textureHandle">The texture handle.</param>
-        /// <param name="textureTarget">The default texture target to use.</param>
         /// <param name="internalFormat">The internal format of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        internal Texture(int textureHandle, TextureTarget textureTarget, SizedInternalFormat internalFormat, int levels)
+        internal Texture(int textureHandle, SizedInternalFormat internalFormat, int levels)
             : base(textureHandle)
         {
-            TextureTarget = textureTarget;
             InternalFormat = internalFormat;
             Levels = levels;
         }
@@ -147,17 +144,6 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Throws an exception if the given mipmap level is not supported by this texture.
-        /// </summary>
-        /// <param name="level">The mipmap level of the texture.</param>
-        internal void AssertLevel(int level)
-        {
-#if DEBUG
-            if (!SupportsLevel(level)) throw new ArgumentException("Texture does not support this mipmap level or mipmapping at all.");
-#endif
-        }
-
-        /// <summary>
         /// Checks if the given mipmap level is supported by this texture.<br/>
         /// A supported level is either zero for all textures which do not support mipmapping,
         /// or smaller than the number of existing levels.
@@ -167,6 +153,17 @@ namespace DerpGL.Textures
         public bool SupportsLevel(int level)
         {
             return (SupportsMipmaps || level == 0) && (level < Levels || !SupportsMipmaps);
+        }
+
+        /// <summary>
+        /// Throws an exception if the given mipmap level is not supported by this texture.
+        /// </summary>
+        /// <param name="level">The mipmap level of the texture.</param>
+        internal void AssertLevel(int level)
+        {
+#if DEBUG
+            if (!SupportsLevel(level)) throw new ArgumentException("Texture does not support this mipmap level or mipmapping at all.");
+#endif
         }
 
         /// <summary>

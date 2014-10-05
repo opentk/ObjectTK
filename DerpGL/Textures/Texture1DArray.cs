@@ -10,6 +10,8 @@ namespace DerpGL.Textures
     public sealed class Texture1DArray
         : LayeredTexture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.Texture1DArray; } }
+
         /// <summary>
         /// The width of the texture.
         /// </summary>
@@ -31,7 +33,7 @@ namespace DerpGL.Textures
         /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels = 1)
-            : base(TextureTarget.Texture1DArray, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Width = width;
             Layers = layers;

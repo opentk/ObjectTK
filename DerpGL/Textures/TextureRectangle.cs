@@ -7,9 +7,10 @@ namespace DerpGL.Textures
     /// The image in this texture (only one image. No mipmapping) is 2-dimensional.
     /// Texture coordinates used for these textures are not normalized.
     /// </summary>
-    public class TextureRectangle
+    public sealed class TextureRectangle
         : Texture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.TextureRectangle; } }
         public override bool SupportsMipmaps { get { return false; } }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace DerpGL.Textures
         /// <param name="width">The width of the texture.</param>
         /// <param name="height">The height of the texture.</param>
         public TextureRectangle(SizedInternalFormat internalFormat, int width, int height)
-            : base(TextureTarget.TextureRectangle, internalFormat, 1)
+            : base(internalFormat, 1)
         {
             Width = width;
             Height = height;

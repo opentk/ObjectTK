@@ -9,6 +9,8 @@ namespace DerpGL.Textures
     public sealed class Texture3D
         : LayeredTexture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.Texture3D; } }
+
         /// <summary>
         /// The width of the texture.
         /// </summary>
@@ -33,7 +35,7 @@ namespace DerpGL.Textures
         /// <param name="depth">The depth of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels = 1)
-            : base(TextureTarget.Texture3D, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Width = width;
             Height = height;

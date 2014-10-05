@@ -13,6 +13,8 @@ namespace DerpGL.Textures
     public sealed class Texture2D
         : Texture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.Texture2D; } }
+
         /// <summary>
         /// The width of the texture.
         /// </summary>
@@ -43,7 +45,7 @@ namespace DerpGL.Textures
         /// <param name="height">The height of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
         public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels = 1)
-            : base(TextureTarget.Texture2D, internalFormat, levels)
+            : base(internalFormat, levels)
         {
             Width = width;
             Height = height;
@@ -56,7 +58,7 @@ namespace DerpGL.Textures
         /// Internal constructor used by <see cref="TextureFactory"/> to wrap a Texture2D instance around an already existing texture.
         /// </summary>
         internal Texture2D(int textureHandle, SizedInternalFormat internalFormat, int width, int height, int levels)
-            : base(textureHandle, TextureTarget.Texture2D, internalFormat, levels)
+            : base(textureHandle, internalFormat, levels)
         {
             Width = width;
             Height = height;

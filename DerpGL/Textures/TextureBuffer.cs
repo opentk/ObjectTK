@@ -12,6 +12,7 @@ namespace DerpGL.Textures
     public sealed class TextureBuffer
         : Texture
     {
+        public override TextureTarget TextureTarget { get { return TextureTarget.TextureBuffer; } }
         public override bool SupportsMipmaps { get { return false; } }
 
         /// <summary>
@@ -19,7 +20,7 @@ namespace DerpGL.Textures
         /// </summary>
         /// <param name="internalFormat"></param>
         public TextureBuffer(SizedInternalFormat internalFormat)
-            : base(TextureTarget.TextureBuffer, internalFormat, 1)
+            : base(internalFormat, 1)
         {
         }
 
