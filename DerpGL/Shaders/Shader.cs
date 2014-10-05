@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using DerpGL.Shaders.Variables;
+using DerpGL.Textures;
 using log4net;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -233,8 +233,20 @@ namespace DerpGL.Shaders
         private static readonly List<IMapping> TypeMapping = new List<IMapping>
         {
             new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
-            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
             new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
+            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<TextureUniform<Texture>>((p,i) => new TextureUniform(p, i.Name)),
+            new Mapping<TextureUniform<Texture1D>>((p,i) => new TextureUniform<Texture1D>(p, i.Name)),
+            new Mapping<TextureUniform<Texture2D>>((p,i) => new TextureUniform<Texture2D>(p, i.Name)),
+            new Mapping<TextureUniform<Texture3D>>((p,i) => new TextureUniform<Texture3D>(p, i.Name)),
+            new Mapping<TextureUniform<Texture1DArray>>((p,i) => new TextureUniform<Texture1DArray>(p, i.Name)),
+            new Mapping<TextureUniform<Texture2DArray>>((p,i) => new TextureUniform<Texture2DArray>(p, i.Name)),
+            new Mapping<TextureUniform<TextureCubemap>>((p,i) => new TextureUniform<TextureCubemap>(p, i.Name)),
+            new Mapping<TextureUniform<TextureCubemapArray>>((p,i) => new TextureUniform<TextureCubemapArray>(p, i.Name)),
+            new Mapping<TextureUniform<Texture2DMultisample>>((p,i) => new TextureUniform<Texture2DMultisample>(p, i.Name)),
+            new Mapping<TextureUniform<Texture2DMultisampleArray>>((p,i) => new TextureUniform<Texture2DMultisampleArray>(p, i.Name)),
+            new Mapping<TextureUniform<TextureRectangle>>((p,i) => new TextureUniform<TextureRectangle>(p, i.Name)),
+            new Mapping<TextureUniform<TextureBuffer>>((p,i) => new TextureUniform<TextureBuffer>(p, i.Name)),
             new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
             new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
             new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),

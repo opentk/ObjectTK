@@ -1,5 +1,6 @@
 ﻿using DerpGL.Shaders;
 using DerpGL.Shaders.Variables;
+using DerpGL.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -26,8 +27,8 @@ namespace Examples.Shaders
         public Uniform<Vector3> Light_Position { get; protected set; }
         public Uniform<Vector3> Camera_Position { get; protected set; }
 
-        public TextureUniform Material_DiffuseAndHeight { get; protected set; }
-        public TextureUniform Material_NormalAndGloss { get; protected set; }
+        public TextureUniform<Texture2D> Material_DiffuseAndHeight { get; protected set; }
+        public TextureUniform<Texture2D> Material_NormalAndGloss { get; protected set; }
         public Uniform<Vector3> Material_ScaleBiasShininess { get; protected set; }
 
         public Uniform<Vector3> Light_DiffuseColor { get; protected set; }

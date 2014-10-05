@@ -12,8 +12,6 @@ namespace DerpGL.Shaders.Variables
         internal ImageUniform(int program, string name)
             : base(program, name, GL.Uniform1)
         {
-            var texture = new TextureCubemapArray(SizedInternalFormat.R16, 1, 1);
-            Bind(1, texture, 1, 2, TextureAccess.ReadOnly);
         }
 
         /// <summary>

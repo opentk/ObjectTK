@@ -4,10 +4,11 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders.Variables
 {
     /// <summary>
-    /// Represents a texture uniform.
+    /// Represents a typed texture uniform. Allows only textures of the given type to be bound.
     /// </summary>
-    public sealed class TextureUniform
+    public class TextureUniform<T>
         : Uniform<int>
+        where T : Texture
     {
         internal TextureUniform(int program, string name)
             : base(program, name, GL.Uniform1)
@@ -26,15 +27,26 @@ namespace DerpGL.Shaders.Variables
         }
 
         /// <summary>
-        /// Binds a <see cref="Texture"/> to the given <see cref="TextureUnit"/> and sets the corresponding uniform to the respective number to access it.<br/>
-        /// The <see cref="TextureTarget"/> is taken from the texture.
+        /// Binds a texture to the given texture unit and sets the corresponding uniform to the respective number to access it.
         /// </summary>
         /// <param name="unit">The texture unit to bind to.</param>
         /// <param name="texture">The texture to bind.</param>
-        public void BindTexture(TextureUnit unit, Texture texture)
+        public void BindTexture(TextureUnit unit, T texture)
         {
             Set(unit);
             texture.Bind(unit);
+        }
+    }
+
+    /// <summary>
+    /// Represents a texture uniform. Allows any texture type to be bound.
+    /// </summary>
+    public sealed class TextureUniform
+        : TextureUniform<Texture>
+    {
+        internal TextureUniform(int program, string name)
+            : base(program, name)
+        {
         }
     }
 }

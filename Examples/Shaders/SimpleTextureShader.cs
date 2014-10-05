@@ -1,5 +1,6 @@
 using DerpGL.Shaders;
 using DerpGL.Shaders.Variables;
+using DerpGL.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -17,7 +18,7 @@ namespace Examples.Shaders
 
         public Uniform<Matrix4> ModelViewProjectionMatrix { get; protected set; }
 
-        public TextureUniform Texture { get; protected set; }
+        public TextureUniform<Texture2D> Texture { get; protected set; }
         public Uniform<bool> RenderTexCoords { get; protected set; }
     }
 }
