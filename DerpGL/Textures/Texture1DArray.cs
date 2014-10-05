@@ -3,7 +3,9 @@
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a 1D texture array.
+    /// Represents a 1D texture array.<br/>
+    /// Images in this texture all are 1-dimensional. However, it contains multiple sets of 1-dimensional images,
+    /// all within one texture. The array length is part of the texture's size.
     /// </summary>
     public sealed class Texture1DArray
         : LayeredTexture
@@ -22,8 +24,11 @@ namespace DerpGL.Textures
         public int Layers { get; private set; }
 
         /// <summary>
-        /// Creates a 1D texture array with given internal format, width and number of layers.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="layers">The number of layers to allocate.</param>
         public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers)
             : base(TextureTarget.Texture1DArray, internalFormat)
         {
@@ -31,8 +36,12 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Creates a 1D texture array with given internal format, width, number of layers and number of mipmap levels.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="layers">The number of layers to allocate.</param>
+        /// <param name="levels">The number of mipmap levels.</param>
         public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels)
             : base(TextureTarget.Texture1DArray, internalFormat, levels)
         {

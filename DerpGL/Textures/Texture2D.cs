@@ -7,10 +7,11 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a 2D texture.
+    /// Represents a 2D texture.<br/>
+    /// Images in this texture all are 2-dimensional. They have width and height, but no depth.
     /// </summary>
     public sealed class Texture2D
-        : MipmapTexture
+        : Texture
     {
         /// <summary>
         /// The width of the texture.
@@ -35,7 +36,7 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Allocates immutable texture storage with the given parameters and a single level.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>

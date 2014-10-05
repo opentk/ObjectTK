@@ -6,7 +6,9 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a 2D texture array.
+    /// Represents a 2D texture array.<br/>
+    /// Images in this texture all are 2-dimensional. However, it contains multiple sets of 2-dimensional images,
+    /// all within one texture. The array length is part of the texture's size.
     /// </summary>
     public sealed class Texture2DArray
         : LayeredTexture
@@ -38,8 +40,12 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Creates a 2D texture array with given internal format, width, height and number of layers.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="height">The height of the texture.</param>
+        /// <param name="layers">The number of layers to allocate.</param>
         public Texture2DArray(SizedInternalFormat internalFormat, int width, int height, int layers)
             : base(TextureTarget.Texture2DArray, internalFormat)
         {
@@ -47,8 +53,13 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Creates a 2D texture array with given internal format, width, height, number of layers and number of mipmap levels.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="height">The height of the texture.</param>
+        /// <param name="layers">The number of layers to allocate.</param>
+        /// <param name="levels">The number of mipmap levels.</param>
         public Texture2DArray(SizedInternalFormat internalFormat, int width, int height, int layers, int levels)
             : base(TextureTarget.Texture2DArray, internalFormat, levels)
         {

@@ -4,11 +4,13 @@ namespace DerpGL.Textures
 {
     /// <summary>
     /// Represents a layered texture.<br/>
-    /// Layered textures are <see cref="Texture2DArray"/>, <see cref="Texture3D"/>
+    /// Layered textures are all array and 3D textures.
     /// </summary>
     public abstract class LayeredTexture
-        : MipmapTexture
+        : Texture
     {
+        public override bool SupportsLayers { get { return true; } }
+
         internal LayeredTexture(TextureTarget textureTarget, SizedInternalFormat internalFormat)
             : base(textureTarget, internalFormat)
         {

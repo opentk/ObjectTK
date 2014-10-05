@@ -3,7 +3,8 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a 3D texture.
+    /// Represents a 3D texture.<br/>
+    /// Images in this texture all are 3-dimensional. They have width, height, and depth.
     /// </summary>
     public sealed class Texture3D
         : LayeredTexture
@@ -24,8 +25,12 @@ namespace DerpGL.Textures
         public int Depth { get; private set; }
 
         /// <summary>
-        /// Initializes a new 3D texture object.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="height">The height of the texture.</param>
+        /// <param name="depth">The depth of the texture.</param>
         public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth)
             : base(TextureTarget.Texture3D, internalFormat)
         {
@@ -33,8 +38,13 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Initializes a new 3D texture object.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="height">The height of the texture.</param>
+        /// <param name="depth">The depth of the texture.</param>
+        /// <param name="levels">The number of mipmap levels.</param>
         public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels)
             : base(TextureTarget.Texture3D, internalFormat, levels)
         {

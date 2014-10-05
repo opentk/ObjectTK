@@ -58,20 +58,27 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Attaches a texture to the given attachment point.
+        /// Attaches a texture to the given attachment point.<br/>
+        /// If texture is a three-dimensional, cube map array, cube map, one- or two-dimensional array, or two-dimensional multisample array texture
+        /// the specified texture level is an array of images and the framebuffer attachment is considered to be layered.
         /// </summary>
         /// <param name="attachment">The attachment point to attach to.</param>
         /// <param name="texture">The texture to attach.</param>
         /// <param name="level">The level of the texture to attach.</param>
         public void Attach(FramebufferAttachment attachment, Texture texture, int level = 0)
         {
+            texture.AssertLevel(level);
             AssertActive();
             GL.FramebufferTexture(FramebufferTarget.Framebuffer, attachment, texture.Handle, level);
             CheckState();
         }
 
         /// <summary>
-        /// Attaches a single layer of a texture to the given attachment point.
+        /// Attaches a single layer of a texture to the given attachment point.<br/>
+        /// Note that for cube maps and cube map arrays the <paramref name="layer"/> parameter actually indexes the layer-faces.<br/>
+        /// Thus for cube maps the layer parameter equals the face to be bound.<br/>
+        /// For cube map arrays the layer parameter can be calculated as 6 * arrayLayer + face, which is done automatically when using
+        /// the corresponding overload <see cref="AttachLayer(OpenTK.Graphics.OpenGL.FramebufferAttachment,DerpGL.Textures.TextureCubemapArray,int,int,int)"/>.
         /// </summary>
         /// <param name="attachment">The attachment point to attach to.</param>
         /// <param name="texture">The texture to attach.</param>
@@ -79,9 +86,35 @@ namespace DerpGL.Buffers
         /// <param name="level">The level of the texture to attach.</param>
         public void AttachLayer(FramebufferAttachment attachment, LayeredTexture texture, int layer, int level = 0)
         {
+            texture.AssertLevel(level);
             AssertActive();
             GL.FramebufferTextureLayer(FramebufferTarget.Framebuffer, attachment, texture.Handle, level, layer);
             CheckState();
+        }
+
+        /// <summary>
+        /// Attaches a single face of a cube map texture to the given attachment point.
+        /// </summary>
+        /// <param name="attachment">The attachment point to attach to.</param>
+        /// <param name="texture">The texture to attach.</param>
+        /// <param name="face">The cube map face of the texture to attach.</param>
+        /// <param name="level">The level of the texture to attach.</param>
+        public void AttachLayer(FramebufferAttachment attachment, TextureCubemap texture, int face, int level = 0)
+        {
+            AttachLayer(attachment, (LayeredTexture)texture, face, level);
+        }
+
+        /// <summary>
+        /// Attaches a single face of a cube map array texture to the given attachment point.
+        /// </summary>
+        /// <param name="attachment">The attachment point to attach to.</param>
+        /// <param name="texture">The texture to attach.</param>
+        /// <param name="arrayLayer">The layer of the texture to attach.</param>
+        /// <param name="face">The cube map face of the texture to attach.</param>
+        /// <param name="level">The level of the texture to attach.</param>
+        public void AttachLayer(FramebufferAttachment attachment, TextureCubemapArray texture, int arrayLayer, int face, int level = 0)
+        {
+            AttachLayer(attachment, (LayeredTexture)texture, 6 * arrayLayer + face, level);
         }
 
         /// <summary>
@@ -89,7 +122,7 @@ namespace DerpGL.Buffers
         /// </summary>
         /// <param name="attachment">The attachment point to attach to.</param>
         /// <param name="renderbuffer">Render buffer to attach.</param>
-        public void Attach(FramebufferAttachment attachment, RenderBuffer renderbuffer)
+        public void AttachLayer(FramebufferAttachment attachment, RenderBuffer renderbuffer)
         {
             AssertActive();
             GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment, RenderbufferTarget.Renderbuffer, renderbuffer.Handle);

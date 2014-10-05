@@ -5,16 +5,20 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a buffer texture.
+    /// Represents a buffer texture.<br/>
+    /// The image in this texture (only one image. No mipmapping) is 1-dimensional.
+    /// The storage for this data comes from a Buffer Object.
     /// </summary>
-    public sealed class BufferTexture
+    public sealed class TextureBuffer
         : Texture
     {
+        public override bool SupportsMipmaps { get { return false; } }
+
         /// <summary>
         /// Creates a buffer texture and uses the given internal format to access a bound buffer, if not specified otherwise.
         /// </summary>
         /// <param name="internalFormat"></param>
-        public BufferTexture(SizedInternalFormat internalFormat)
+        public TextureBuffer(SizedInternalFormat internalFormat)
             : base(TextureTarget.TextureBuffer, internalFormat)
         {
         }

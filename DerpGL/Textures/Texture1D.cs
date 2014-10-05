@@ -3,10 +3,11 @@
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents a 1D texture.
+    /// Represents a 1D texture.<br/>
+    /// Images in this texture all are 1-dimensional. They have width, but no height or depth.
     /// </summary>
     public sealed class Texture1D
-        : MipmapTexture
+        : Texture
     {
         /// <summary>
         /// The width of the texture.
@@ -14,17 +15,22 @@ namespace DerpGL.Textures
         public int Width { get; private set; }
 
         /// <summary>
-        /// Creates a 1D texture array with given internal format and width.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
         public Texture1D(SizedInternalFormat internalFormat, int width)
-            : base(TextureTarget.Texture1DArray, internalFormat)
+            : base(TextureTarget.Texture1DArray, internalFormat, 1)
         {
             Initialize(width);
         }
 
         /// <summary>
-        /// Creates a 1D texture array with given internal format, width, number of layers and number of mipmap levels.
+        /// Allocates immutable texture storage with the given parameters.
         /// </summary>
+        /// <param name="internalFormat">The internal format to allocate.</param>
+        /// <param name="width">The width of the texture.</param>
+        /// <param name="levels">The number of mipmap levels.</param>
         public Texture1D(SizedInternalFormat internalFormat, int width, int levels)
             : base(TextureTarget.Texture1DArray, internalFormat, levels)
         {
