@@ -23,8 +23,8 @@ namespace DerpGL.Textures
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="size">The width and height of the cube map faces.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public TextureCubemap(SizedInternalFormat internalFormat, int size, int levels = 1)
-            : base(internalFormat, levels)
+        public TextureCubemap(SizedInternalFormat internalFormat, int size, int levels = 0)
+            : base(internalFormat, GetLevels(levels, size))
         {
             Size = size;
             GL.BindTexture(TextureTarget, Handle);

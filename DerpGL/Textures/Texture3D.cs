@@ -34,8 +34,8 @@ namespace DerpGL.Textures
         /// <param name="height">The height of the texture.</param>
         /// <param name="depth">The depth of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels = 1)
-            : base(internalFormat, levels)
+        public Texture3D(SizedInternalFormat internalFormat, int width, int height, int depth, int levels = 0)
+            : base(internalFormat, GetLevels(levels, width, height, depth))
         {
             Width = width;
             Height = height;

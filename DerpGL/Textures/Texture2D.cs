@@ -1,8 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing;
 using OpenTK.Graphics.OpenGL;
-using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace DerpGL.Textures
 {
@@ -26,26 +23,15 @@ namespace DerpGL.Textures
         public int Height { get; private set; }
 
         /// <summary>
-        /// Allocates immutable texture storage compatible to the given bitmap and fills it with its contents.<br/>
-        /// Remember to call GenerateMipMaps() if levels is greater than 1 and you are using a mipmap filtering.
-        /// </summary>
-        /// <param name="bitmap">The bitmap to upload.</param>
-        /// <param name="levels">The number of mipmap levels.</param>
-        public Texture2D(Bitmap bitmap, int levels)
-            : this(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, levels)
-        {
-            LoadBitmap(bitmap);
-        }
-
-        /// <summary>
-        /// Allocates immutable texture storage with the given parameters.
+        /// Allocates immutable texture storage with the given parameters.<br/>
+        /// A value of zero for the number of mipmap levels will default to the maximum number of levels possible for the given bitmaps width and height.
         /// </summary>
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>
         /// <param name="height">The height of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels = 1)
-            : base(internalFormat, levels)
+        public Texture2D(SizedInternalFormat internalFormat, int width, int height, int levels = 0)
+            : base(internalFormat, GetLevels(levels, width, height))
         {
             Width = width;
             Height = height;
@@ -65,40 +51,14 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Uploads the contents of the given bitmap to the texture memory.
+        /// Creates a new Texture2D instance compatible to the given bitmap.
         /// </summary>
-        /// <param name="bitmap">The bitmap to upload.</param>
-        public void LoadBitmap(Bitmap bitmap)
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        /// <returns>A new instance of Texture2D.</returns>
+        public static Texture2D CreateCompatible(Bitmap bitmap, int levels = 0)
         {
-            if (bitmap.Width != Width || bitmap.Height != Height || FormatMapping.Get(bitmap).InternalFormat != InternalFormat)
-                throw new ArgumentException("Bitmap incompatible to texture storage.");
-            // flip bitmap
-            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            // get the raw data and pass it to opengl
-            var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            try
-            {
-                var map = FormatMapping.Get(bitmap);
-                GL.TexSubImage2D(TextureTarget, 0, 0, 0, data.Width, data.Height, map.PixelFormat, map.PixelType, data.Scan0);
-            }
-            finally
-            {
-                bitmap.UnlockBits(data);
-            }
-            GL.Finish();
-            CheckError();
-        }
-
-        /// <summary>
-        /// Retrieves the texture data.
-        /// </summary>
-        public T[,] GetContent<T>(PixelFormat pixelFormat, PixelType pixelType)
-            where T : struct
-        {
-            var data = new T[Width, Height];
-            GL.BindTexture(TextureTarget, Handle);
-            GL.GetTexImage(TextureTarget, 0, pixelFormat, pixelType, data);
-            return data;
+            return new Texture2D(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, levels);
         }
     }
 }

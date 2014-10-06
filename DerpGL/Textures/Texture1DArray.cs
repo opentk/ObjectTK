@@ -32,8 +32,8 @@ namespace DerpGL.Textures
         /// <param name="width">The width of the texture.</param>
         /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels = 1)
-            : base(internalFormat, levels)
+        public Texture1DArray(SizedInternalFormat internalFormat, int width, int layers, int levels = 0)
+            : base(internalFormat, GetLevels(levels, width))
         {
             Width = width;
             Layers = layers;

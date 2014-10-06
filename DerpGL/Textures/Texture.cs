@@ -102,13 +102,32 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
+        /// Calculates the maximum number of mipmap levels allowed for the given size in each dimension.<br/>
+        /// If <paramref name="levels"/> is greater than zero and less or equal to the calculated maximum it is returned without change.<br/>
+        /// If <paramref name="levels"/> is zero the calculated maximum is returned instead.
+        /// </summary>
+        /// <remarks>
+        /// At the maximum mipmap level the image would consist of exactly one texel, i.e. 1x1 in 2D or 1x1x1 in 3D.
+        /// </remarks>
+        /// <param name="levels">Specifies the number of desired mipmap levels.</param>
+        /// <param name="dimensions">Specifies the size of the textures base image in each dimension.</param>
+        /// <returns>A valid number of mipmap levels.</returns>
+        protected static int GetLevels(int levels, params int[] dimensions)
+        {
+            var maxLevels = TextureFactory.CalculateMaxMipmapLevels(dimensions);
+            if (levels > maxLevels || levels < 0) throw new ArgumentException();
+            return levels > 0 ? levels : maxLevels;
+        }
+
+        /// <summary>
         /// Automatically generates all mipmaps.
         /// </summary>
         public void GenerateMipMaps()
         {
-            if (!SupportsMipmaps || Levels <= 1) return;
+            if (!SupportsMipmaps) throw new InvalidOperationException("Texture does not support mipmaps.");
             Bind();
             GL.GenerateMipmap((GenerateMipmapTarget)TextureTarget);
+            Utility.Assert("Could not generate mipmaps.");
         }
 
         /// <summary>
@@ -138,9 +157,9 @@ namespace DerpGL.Textures
         /// </summary>
         public virtual void SetDefaultTexParameters()
         {
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureMinFilter, (int)(Levels > 1 ? TextureMinFilter.NearestMipmapLinear : TextureMinFilter.Linear));
-            GL.TexParameter(TextureTarget, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            CheckError();
+            SetParameter(TextureParameterName.TextureMinFilter, (int)(Levels > 1 ? TextureMinFilter.NearestMipmapLinear : TextureMinFilter.Linear));
+            SetParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            Utility.Assert("Could not set tex parameters.");
         }
 
         /// <summary>
@@ -156,24 +175,21 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Throws an exception if the given mipmap level is not supported by this texture.
+        /// Throws an exception if the given mipmap level is not supported by this texture.<br/>
+        /// The mipmap level must be zero for all texture types which do not support mipmaps.
         /// </summary>
-        /// <param name="level">The mipmap level of the texture.</param>
+        /// <param name="level">Specifies a mipmap level of the texture.</param>
         internal void AssertLevel(int level)
         {
-#if DEBUG
-            if (!SupportsLevel(level)) throw new ArgumentException("Texture does not support this mipmap level or mipmapping at all.");
-#endif
+            if (!SupportsLevel(level)) throw new ArgumentException(string.Format("Texture does not contain the mipmap level {0} or does not support mipmapping at all.", level));
         }
 
         /// <summary>
         /// Calls GL.<see cref="GL.GetError()"/> to check if there are any errors.
         /// </summary>
-        protected static void CheckError()
+        internal static void CheckError()
         {
-#if DEBUG
-            Utility.Assert("Unable to create texture");
-#endif
+            Utility.Assert("Texture error");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using System.Linq;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Textures
 {
@@ -11,6 +13,7 @@ namespace DerpGL.Textures
         /// Creates a new Texture2D instance using the given texture handle.<br/>
         /// The width, height and internal format are queried from OpenGL and passed to the instance.
         /// The number of mipmap levels can not be queried and must be specified, otherwise it is set to one.
+        /// TODO: somehow find out the number of mipmap levels because otherwise <see cref="Texture.AssertLevel"/> does not work correctly.
         /// </summary>
         /// <param name="textureHandle">An active handle to a 2D texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
@@ -23,6 +26,16 @@ namespace DerpGL.Textures
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out height);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureInternalFormat, out internalFormat);
             return new Texture2D(textureHandle, (SizedInternalFormat)internalFormat, width, height, levels);
+        }
+
+        /// <summary>
+        /// Calculates the maximum number of mipmap levels allowed, based on the size of all dimensions given.
+        /// </summary>
+        /// <param name="dimensions">Specifies the size in all dimensions.</param>
+        /// <returns>The maximum number of mipmap levels allowed. The last level would consist of 1 texel.</returns>
+        public static int CalculateMaxMipmapLevels(params int[] dimensions)
+        {
+            return 1 + (int)Math.Floor(Math.Log(dimensions.Max()));
         }
     }
 }

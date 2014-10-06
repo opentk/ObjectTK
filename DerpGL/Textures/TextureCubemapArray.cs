@@ -30,8 +30,8 @@ namespace DerpGL.Textures
         /// <param name="size">The width and height of the cube map faces.</param>
         /// <param name="layers">The number of layers to allocate.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers, int levels = 1)
-            : base(internalFormat, levels)
+        public TextureCubemapArray(SizedInternalFormat internalFormat, int size, int layers, int levels = 0)
+            : base(internalFormat, GetLevels(levels, size))
         {
             Size = size;
             Layers = layers;

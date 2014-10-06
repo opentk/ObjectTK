@@ -46,7 +46,7 @@ namespace Examples.AdvancedExamples
             _framebuffer.Attach(FramebufferAttachment.DepthAttachment, _depthBuffer);
 
             // initialize texture and bind it to the color attachment
-            _texture = new Texture2D(SizedInternalFormat.Rgba8, FramebufferWidth, FramebufferHeight);
+            _texture = new Texture2D(SizedInternalFormat.Rgba8, FramebufferWidth, FramebufferHeight, 1);
             _framebuffer.Attach(FramebufferAttachment.ColorAttachment0, _texture);
             _framebuffer.Unbind();
 

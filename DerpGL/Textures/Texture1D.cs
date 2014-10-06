@@ -22,8 +22,8 @@ namespace DerpGL.Textures
         /// <param name="internalFormat">The internal format to allocate.</param>
         /// <param name="width">The width of the texture.</param>
         /// <param name="levels">The number of mipmap levels.</param>
-        public Texture1D(SizedInternalFormat internalFormat, int width, int levels = 1)
-            : base(internalFormat, levels)
+        public Texture1D(SizedInternalFormat internalFormat, int width, int levels = 0)
+            : base(internalFormat, GetLevels(levels, width))
         {
             Width = width;
             GL.BindTexture(TextureTarget, Handle);

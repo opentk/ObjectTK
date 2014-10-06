@@ -105,6 +105,7 @@
     <Compile Include="Textures\Texture3D.cs" />
     <Compile Include="Textures\TextureCubemap.cs" />
     <Compile Include="Textures\TextureCubemapArray.cs" />
+    <Compile Include="Textures\TextureExtensions.cs" />
     <Compile Include="Textures\TextureFactory.cs" />
     <Compile Include="Textures\TextureRectangle.cs" />
     <Compile Include="Utility.cs" />
