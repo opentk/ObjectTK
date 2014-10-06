@@ -6,7 +6,7 @@ DerpGL is an abstraction layer on top of OpenTK to provide OpenGL features in an
 The main functioning parts currently are:
 * Buffer object (VBO, UBO, SSBO)
 * Shader (Vertex, Geometry, Fragment, Compute)
-* Texture (1D, 2D, 3D, 1DArray, 2DArray, BufferTexture)
+* Texture (all 11 texture types of OpenGL are supported)
 * Sampler object
 * Query object
 * Framebuffer and Renderbuffer
@@ -14,6 +14,7 @@ The main functioning parts currently are:
 ## Examples
 ### Shader abstraction
 DerpGL provides a base class for shaders which does all the work to get shaders up and running while also simplifying interop with uniforms, vertex attributes, etc.
+Most of OpenGLs newer features are supported, e.g. uniform buffers (UBO), shader storage buffers (SSBO), image load/store, compute shaders, etc.
 ```C#
 [VertexShaderSource("ExampleShader.vs")]
 [FragmentShaderSource("ExampleShader.fs")]
@@ -29,7 +30,6 @@ public class ExampleShader
 // initialize shader (load sources, create/compile/link shader program, error checking)
 var shader = new ExampleShader();
 ```
-Most of OpenGL newest features are supported, namely: uniform buffers (UBO), shader storage buffers (SSBO), images, compute shaders, etc.
 
 ### Buffer object abstraction
 DerpGL also provides a generic type which encapsulates all the work necessary to set up, update, clear and copy buffer objects.
