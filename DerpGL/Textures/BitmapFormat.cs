@@ -22,17 +22,17 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Textures
 {
-    internal class FormatMapping
+    internal class BitmapFormat
     {
         public SizedInternalFormat InternalFormat;
         public PixelFormat PixelFormat;
         public PixelType PixelType;
 
-        private static readonly Dictionary<System.Drawing.Imaging.PixelFormat, FormatMapping> FormatMap = new Dictionary
-            <System.Drawing.Imaging.PixelFormat, FormatMapping>
+        private static readonly Dictionary<System.Drawing.Imaging.PixelFormat, BitmapFormat> FormatMap = new Dictionary
+            <System.Drawing.Imaging.PixelFormat, BitmapFormat>
         {
             {
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb, new FormatMapping
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb, new BitmapFormat
                 {
                     InternalFormat = SizedInternalFormat.Rgba8,
                     PixelFormat = PixelFormat.Bgr,
@@ -40,7 +40,7 @@ namespace DerpGL.Textures
                 }
             },
             {
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb, new FormatMapping
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb, new BitmapFormat
                 {
                     InternalFormat = SizedInternalFormat.Rgba8,
                     PixelFormat = PixelFormat.Bgra,
@@ -50,9 +50,9 @@ namespace DerpGL.Textures
         };
 
         // prevent instantiation
-        protected FormatMapping() { }
+        protected BitmapFormat() { }
 
-        static FormatMapping()
+        static BitmapFormat()
         {
             // does not work
             //_formatMap.Add(System.Drawing.Imaging.PixelFormat.Format16bppRgb555, _formatMap[System.Drawing.Imaging.PixelFormat.Format16bppArgb1555]);
@@ -63,7 +63,7 @@ namespace DerpGL.Textures
                 FormatMap[System.Drawing.Imaging.PixelFormat.Format32bppArgb]);
         }
 
-        public static FormatMapping Get(Bitmap bitmap)
+        public static BitmapFormat Get(Bitmap bitmap)
         {
             if (FormatMap.ContainsKey(bitmap.PixelFormat)) return FormatMap[bitmap.PixelFormat];
             throw new ArgumentException("Error: Unsupported Pixel Format " + bitmap.PixelFormat);

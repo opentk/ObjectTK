@@ -92,7 +92,7 @@
     <Compile Include="Shapes\TexturedQuad.cs" />
     <Compile Include="Shapes\TexturedShape.cs" />
     <Compile Include="Textures\TextureBuffer.cs" />
-    <Compile Include="Textures\FormatMapping.cs" />
+    <Compile Include="Textures\BitmapFormat.cs" />
     <Compile Include="Textures\LayeredTexture.cs" />
     <Compile Include="Textures\Sampler.cs" />
     <Compile Include="Textures\Texture.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="Textures\Texture3D.cs" />
     <Compile Include="Textures\TextureCubemap.cs" />
     <Compile Include="Textures\TextureCubemapArray.cs" />
-    <Compile Include="Textures\TextureExtensions.cs" />
+    <Compile Include="Textures\BitmapTexture.cs" />
     <Compile Include="Textures\TextureFactory.cs" />
     <Compile Include="Textures\TextureRectangle.cs" />
     <Compile Include="Utility.cs" />

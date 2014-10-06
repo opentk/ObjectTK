@@ -64,17 +64,5 @@ namespace DerpGL.Textures
             GL.TexStorage3D((TextureTarget3d)TextureTarget, Levels, InternalFormat, Width, Height, Layers);
             CheckError();
         }
-
-        /// <summary>
-        /// Creates a new Texture2DArray instance compatible to the given bitmap.
-        /// </summary>
-        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
-        /// <param name="layers">Specifies the number of array layers the texture will contain.</param>
-        /// <param name="levels">Specifies the number of mipmap levels.</param>
-        /// <returns>A new texture instance.</returns>
-        public static Texture2DArray CreateCompatible(Bitmap bitmap, int layers, int levels = 0)
-        {
-            return new Texture2DArray(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, layers, levels);
-        }
     }
 }

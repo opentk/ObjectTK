@@ -60,7 +60,7 @@ namespace Examples.BasicExamples
             // load texture from file
             using (var bitmap = new Bitmap("Data/Textures/checker.jpg"))
             {
-                _texture = Texture2D.CreateCompatible(bitmap);
+                BitmapTexture.CreateCompatible(bitmap, out _texture, 1);
                 _texture.LoadBitmap(bitmap);
             }
             _texture.GenerateMipMaps();

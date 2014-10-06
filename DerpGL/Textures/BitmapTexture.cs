@@ -26,13 +26,10 @@ namespace DerpGL.Textures
     /// <summary>
     /// Contains extension methods for texture types.
     /// </summary>
-    public static class TextureExtensions
+    public static class BitmapTexture
     {
-        private static BitmapData GetData(Bitmap bitmap)
+        private static BitmapData LockBits(Bitmap bitmap)
         {
-            // flip bitmap
-            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            // get the raw data and pass it to opengl
             return bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
         }
 
@@ -43,16 +40,74 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
+        /// Creates a new Texture2D instance compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="texture">Outputs the newly created texture.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        public static void CreateCompatible(Bitmap bitmap, out Texture2D texture, int levels = 0)
+        {
+            texture = new Texture2D(BitmapFormat.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, levels);
+        }
+
+        /// <summary>
+        /// Creates a new Texture2DArray instance compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="texture">Outputs the newly created texture.</param>
+        /// <param name="layers">Specifies the number of array layers the texture will contain.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        public static void CreateCompatible(Bitmap bitmap, out Texture2DArray texture, int layers, int levels = 0)
+        {
+            texture = new Texture2DArray(BitmapFormat.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, layers, levels);
+        }
+
+        /// <summary>
+        /// Creates a new TextureCubemap instance with faces compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="texture">Outputs the newly created texture.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        public static void CreateCompatible(Bitmap bitmap, out TextureCubemap texture, int levels = 0)
+        {
+            if (bitmap.Width != bitmap.Height) throw new ArgumentException("The faces of cube map textures must be square.");
+            texture = new TextureCubemap(BitmapFormat.Get(bitmap).InternalFormat, bitmap.Width, levels);
+        }
+
+        /// <summary>
+        /// Creates a new TextureCubemapArray instance with faces compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="layers">Specifies the number of array layers the texture will contain.</param>
+        /// <param name="texture">Outputs the newly created texture.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        public static void CreateCompatible(Bitmap bitmap, out TextureCubemapArray texture, int layers, int levels = 0)
+        {
+            if (bitmap.Width != bitmap.Height) throw new ArgumentException("The faces of cube map textures must be square.");
+            texture = new TextureCubemapArray(BitmapFormat.Get(bitmap).InternalFormat, bitmap.Width, layers, levels);
+        }
+
+        /// <summary>
+        /// Creates a new TextureRectangle instance compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="texture">Outputs the newly created texture.</param>
+        public static void CreateCompatible(Bitmap bitmap, out TextureRectangle texture)
+        {
+            texture = new TextureRectangle(BitmapFormat.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height);
+        }
+
+        /// <summary>
         /// Uploads the contents of a bitmap to the given texture level.<br/>
         /// Will result in an OpenGL error if the given bitmap is incompatible with the textures storage.
         /// </summary>
         public static void LoadBitmap(this Texture2D texture, Bitmap bitmap, int level = 0)
         {
             texture.Bind();
-            var data = GetData(bitmap);
+            var data = LockBits(bitmap);
             try
             {
-                var map = FormatMapping.Get(bitmap);
+                var map = BitmapFormat.Get(bitmap);
                 GL.TexSubImage2D(texture.TextureTarget, level, 0, 0, data.Width, data.Height,
                     map.PixelFormat, map.PixelType, data.Scan0);
             }
@@ -70,10 +125,10 @@ namespace DerpGL.Textures
         public static void LoadBitmap(this LayeredTexture texture, Bitmap bitmap, int layer, int level = 0)
         {
             texture.Bind();
-            var data = GetData(bitmap);
+            var data = LockBits(bitmap);
             try
             {
-                var map = FormatMapping.Get(bitmap);
+                var map = BitmapFormat.Get(bitmap);
                 GL.TexSubImage3D(texture.TextureTarget, level, 0, 0, layer, data.Width, data.Height, 1,
                     map.PixelFormat, map.PixelType, data.Scan0);
             }
@@ -103,10 +158,10 @@ namespace DerpGL.Textures
         {
             const TextureTarget firstFace = TextureTarget.TextureCubeMapPositiveX;
             texture.Bind();
-            var data = GetData(bitmap);
+            var data = LockBits(bitmap);
             try
             {
-                var map = FormatMapping.Get(bitmap);
+                var map = BitmapFormat.Get(bitmap);
                 GL.TexSubImage2D(firstFace + face, level, 0, 0, data.Width, data.Height,
                     map.PixelFormat, map.PixelType, data.Scan0);
             }

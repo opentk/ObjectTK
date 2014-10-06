@@ -66,16 +66,5 @@ namespace DerpGL.Textures
             Width = width;
             Height = height;
         }
-
-        /// <summary>
-        /// Creates a new Texture2D instance compatible to the given bitmap.
-        /// </summary>
-        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
-        /// <param name="levels">Specifies the number of mipmap levels.</param>
-        /// <returns>A new instance of Texture2D.</returns>
-        public static Texture2D CreateCompatible(Bitmap bitmap, int levels = 0)
-        {
-            return new Texture2D(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, bitmap.Height, levels);
-        }
     }
 }

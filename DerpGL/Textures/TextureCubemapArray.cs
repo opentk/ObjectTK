@@ -60,18 +60,5 @@ namespace DerpGL.Textures
             GL.TexStorage3D((TextureTarget3d)TextureTarget, Levels, InternalFormat, Size, Size, 6 * Layers);
             CheckError();
         }
-
-        /// <summary>
-        /// Creates a new TextureCubemapArray instance with faces compatible to the given bitmap.
-        /// </summary>
-        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
-        /// <param name="layers">Specifies the number of array layers the texture will contain.</param>
-        /// <param name="levels">Specifies the number of mipmap levels.</param>
-        /// <returns>A new texture instance.</returns>
-        public static TextureCubemapArray CreateCompatible(Bitmap bitmap, int layers, int levels = 0)
-        {
-            if (bitmap.Width != bitmap.Height) throw new ArgumentException("The faces of cube map textures must be square.");
-            return new TextureCubemapArray(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, layers, levels);
-        }
     }
 }
