@@ -47,6 +47,7 @@
     <Compile Include="AdvancedExamples\LoaderDDS.cs" />
     <Compile Include="AdvancedExamples\LoaderStatics.cs" />
     <Compile Include="AdvancedExamples\ParallaxMappingExample.cs" />
+    <Compile Include="BasicExamples\SkyboxExample.cs" />
     <Compile Include="ExampleProjectAttribute.cs" />
     <Compile Include="Shaders\ParallaxShader.cs" />
     <Compile Include="Shaders\SimpleColorShader.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="ExampleWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shaders\SkyboxShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\Parallax.fs.glsl" />
@@ -75,6 +77,8 @@
     <None Include="app.config" />
     <None Include="Data\Shaders\ExampleShader.fs.glsl" />
     <None Include="Data\Shaders\ExampleShader.vs.glsl" />
+    <None Include="Data\Shaders\Skybox.fs.glsl" />
+    <None Include="Data\Shaders\Skybox.vs.glsl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Textures\checker.jpg" />
+    <Content Include="Data\Textures\city0.jpg" />
+    <Content Include="Data\Textures\city1.jpg" />
+    <Content Include="Data\Textures\city2.jpg" />
+    <Content Include="Data\Textures\city3.jpg" />
+    <Content Include="Data\Textures\city4.jpg" />
+    <Content Include="Data\Textures\city5.jpg" />
     <Content Include="Data\Textures\swizzled-rock-diffuse-height.dds" />
     <Content Include="Data\Textures\swizzled-rock-normal-gloss.dds" />
   </ItemGroup>
