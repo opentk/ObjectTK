@@ -187,7 +187,7 @@ namespace DerpGL.Textures
         /// <summary>
         /// Calls GL.<see cref="GL.GetError()"/> to check if there are any errors.
         /// </summary>
-        internal static void CheckError()
+        protected static void CheckError()
         {
             Utility.Assert("Texture error");
         }

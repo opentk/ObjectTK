@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using System.Drawing;
+using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Textures
 {
@@ -30,6 +32,18 @@ namespace DerpGL.Textures
             GL.BindTexture(TextureTarget, Handle);
             GL.TexStorage2D((TextureTarget2d)TextureTarget, Levels, InternalFormat, Size, Size);
             CheckError();
+        }
+
+        /// <summary>
+        /// Creates a new TextureCubemap instance with faces compatible to the given bitmap.
+        /// </summary>
+        /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
+        /// <param name="levels">Specifies the number of mipmap levels.</param>
+        /// <returns>A new texture instance.</returns>
+        public static TextureCubemap CreateCompatible(Bitmap bitmap, int levels = 0)
+        {
+            if (bitmap.Width != bitmap.Height) throw new ArgumentException("The faces of cube map textures must be square.");
+            return new TextureCubemap(FormatMapping.Get(bitmap).InternalFormat, bitmap.Width, levels);
         }
     }
 }
