@@ -20,7 +20,7 @@ The main advantages of using these types are:
 * Immediate detection of leaked resources.
 * Information log via log4net.
 
-DerpGL does not force you to use its functionality and skip the OpenGL API at all. It is perfectly fine to use the OpenGL API directly and the DerpGL types side-by-side, because DerpGL does not explicitly keep track of any OpenGL state which might get corrupted when you call the OpenGL API without it knowing.
+DerpGL does not force you to use its functionality and skip the OpenGL API at all. It is perfectly fine to use the OpenGL API directly and the DerpGL types side-by-side, because DerpGL does not explicitly keep track of any OpenGL state which might get corrupted when you call the OpenGL API without it knowing. This is an essential feature which makes DerpGL very usable even if it is not a "complete" wrapper around every corner of OpenGL.
 
 ## What about performance?
 Just like any wrapper it introduces another layer between the things you want to get done and the hardware, so it may theoretically slow things down a bit, but there are two things to consider:
