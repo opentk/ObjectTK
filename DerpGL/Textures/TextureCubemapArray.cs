@@ -45,7 +45,7 @@ namespace DerpGL.Textures
         }
 
         /// <summary>
-        /// Creates a new TextureCubemap instance with faces compatible to the given bitmap.
+        /// Creates a new TextureCubemapArray instance with faces compatible to the given bitmap.
         /// </summary>
         /// <param name="bitmap">Specifies the bitmap to which the new texture will be compatible.</param>
         /// <param name="layers">Specifies the number of array layers the texture will contain.</param>
