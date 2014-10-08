@@ -1,0 +1,23 @@
+using DerpGL.Shaders;
+using DerpGL.Shaders.Variables;
+using DerpGL.Textures;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+
+namespace Examples.Shaders
+{
+    [VertexShaderSource("TextureGrid.vs")]
+    [GeometryShaderSource("TextureGrid.gs")]
+    [FragmentShaderSource("TextureGrid.fs")]
+    public class TextureGridShader
+        : Shader
+    {
+        [VertexAttrib(2, VertexAttribPointerType.Float)]
+        public VertexAttrib InPosition { get; protected set; }
+        [VertexAttrib(1, VertexAttribPointerType.Float)]
+        public VertexAttrib InTexture { get; protected set; }
+
+        public Uniform<Matrix4> ModelViewProjectionMatrix { get; protected set; }
+        public TextureUniform<Texture2DArray> TextureData { get; protected set; }
+    }
+}

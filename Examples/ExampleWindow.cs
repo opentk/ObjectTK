@@ -12,9 +12,13 @@ namespace Examples
     public class ExampleWindow
         : DerpWindow
     {
+        protected string OriginalTitle;
+
         public ExampleWindow(string title)
-            : base(800, 600, GraphicsMode.Default, string.Format("DerpGL example: {0}", title))
+            : base(800, 600, GraphicsMode.Default, "")
         {
+            OriginalTitle = string.Format("DerpGL example: {0}", title);
+            Title = OriginalTitle;
             Load += OnLoad;
             Unload += OnUnload;
             KeyDown += OnKeyDown;
