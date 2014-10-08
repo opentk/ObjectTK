@@ -16,7 +16,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
+using System.Drawing;
+using System.Threading;
 using log4net;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders.Variables
@@ -33,19 +36,13 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// The location of the uniform within the shader program.
         /// </summary>
-        public readonly int Location;
-
-        /// <summary>
-        /// Specifies whether the uniform is active.<br/>
-        /// Unused uniforms are generally removed by OpenGL and cause them to be inactive.
-        /// </summary>
-        public readonly bool Active;
+        public int Location { get; private set; }
         
         /// <summary>
         /// Action used to set the uniform.<br/>
         /// Inputs are the uniforms location and the value to set.
         /// </summary>
-        private readonly Action<int, T> _setter;
+        private Action<int, T> _setter;
 
         /// <summary>
         /// The current value of the uniform.
@@ -67,13 +64,62 @@ namespace DerpGL.Shaders.Variables
             }
         }
 
-        internal Uniform(int program, string name, Action<int, T> setter)
-            : base(program, name)
+        protected static void Register<TU>(Action<int, TU> setter)
         {
-            Location = GL.GetUniformLocation(program, name);
-            Active = Location != -1;
-            if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", name);
+            AddTypedCallback(new ShaderVariableCallback<Uniform<TU>>((_,i) => _._setter = setter));
+        }
+
+        static Uniform()
+        {
+            Register<bool>((_,value) => GL.Uniform1(_, value ? 1 : 0));
+            Register<int>(GL.Uniform1);
+            Register<uint>(GL.Uniform1);
+            Register<float>(GL.Uniform1);
+            Register<double>(GL.Uniform1);
+            Register<Half>((_, half) => GL.Uniform1(_, half));
+            Register<Color>((_, color) => GL.Uniform4(_, color));
+            Register<Vector2>(GL.Uniform2);
+            Register<Vector3>(GL.Uniform3);
+            Register<Vector4>(GL.Uniform4);
+            Register<Vector2d>((_, vector) => GL.Uniform2(_, vector.X, vector.Y));
+            Register<Vector2h>((_, vector) => GL.Uniform2(_, vector.X, vector.Y));
+            Register<Vector3d>((_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z));
+            Register<Vector3h>((_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z));
+            Register<Vector4d>((_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W));
+            Register<Vector4h>((_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W));
+            Register<Matrix2>((_, matrix) => GL.UniformMatrix2(_, false, ref matrix));
+            Register<Matrix3>((_, matrix) => GL.UniformMatrix3(_, false, ref matrix));
+            Register<Matrix4>((_, matrix) => GL.UniformMatrix4(_, false, ref matrix));
+            Register<Matrix2x3>((_, matrix) => GL.UniformMatrix2x3(_, false, ref matrix));
+            Register<Matrix2x4>((_, matrix) => GL.UniformMatrix2x4(_, false, ref matrix));
+            Register<Matrix3x2>((_, matrix) => GL.UniformMatrix3x2(_, false, ref matrix));
+            Register<Matrix3x4>((_, matrix) => GL.UniformMatrix3x4(_, false, ref matrix));
+            Register<Matrix4x2>((_, matrix) => GL.UniformMatrix4x2(_, false, ref matrix));
+            Register<Matrix4x3>((_, matrix) => GL.UniformMatrix4x3(_, false, ref matrix));
+        }
+
+        public Uniform(Action<int, T> setter)
+            : this()
+        {
             _setter = setter;
+        }
+
+        internal Uniform()
+        {
+            PreLink += OnPreLink;
+            PostLink += OnPostLink;
+        }
+
+        private void OnPreLink()
+        {
+            if (_setter == null) throw new ApplicationException("This type of uniform is not supported: " + typeof(T).FullName);
+        }
+
+        internal void OnPostLink()
+        {
+            Location = GL.GetUniformLocation(Program, Name);
+            Active = Location != -1;
+            if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", Name);
         }
 
         /// <summary>

@@ -17,14 +17,11 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using DerpGL.Shaders.Variables;
-using DerpGL.Textures;
 using log4net;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
@@ -32,9 +29,7 @@ namespace DerpGL.Shaders
     /// <summary>
     /// Provides a base class for shader programs.<br/>
     /// Automatically maps properties to shader variables by name.<br/>
-    /// For shader variable types see the DerpGL.Shaders.Variables namespace:<br/>
-    /// <see cref="VertexAttrib"/>, <see cref="Uniform{T}"/>, <see cref="TextureUniform"/>, <see cref="ImageUniform"/>,
-    /// <see cref="UniformBuffer"/>, <see cref="TransformOut"/>, <see cref="ShaderStorage"/>
+    /// For shader variable types see the DerpGL.Shaders.Variables namespace.
     /// </summary>
     public class Shader
         : GLResource
@@ -59,6 +54,8 @@ namespace DerpGL.Shaders
         {
             get { return TransformFeedbackMode.SeparateAttribs; }
         }
+
+        private List<ShaderVariable> _properties;
 
         static Shader()
         {
@@ -92,22 +89,17 @@ namespace DerpGL.Shaders
             ActiveProgramHandle = Handle;
             // activate program
             GL.UseProgram(Handle);
-            // disable all vertex attributes
-            //TODO: maybe dont ever do that
-            VertexAttrib.DisableVertexAttribArrays();
         }
 
         private void CreateProgram(Dictionary<ShaderType, string> shaders)
         {
             Logger.InfoFormat("Creating shader program: {0}", GetType().Name);
+            // create shader properties and initialize with typed callbacks if existing
+            InitializePropertyMappings();
             // load and attach all specified shaders
             var shaderObjects = shaders.Select(_ => AttachShader(_.Key, _.Value)).ToList();
-            // bind transform feedback varyings if any
-            var outs = InitializeTransformOut();
-            if (outs.Count > 0)
-            {
-                GL.TransformFeedbackVaryings(Handle, outs.Count, outs.ToArray(), TransformOutMode);
-            }
+            // execute pre link event, used to bind vertex attribute or transform feedback indices
+            _properties.ForEach(_ => _.FirePreLink());
             // link program
             Logger.DebugFormat("Linking shader program: {0}", GetType().Name);
             GL.LinkProgram(Handle);
@@ -125,8 +117,8 @@ namespace DerpGL.Shaders
                 Logger.Error(msg);
                 throw new ApplicationException(msg);
             }
-            // initialize shader properties
-            InitializePropertyMapping();
+            // execute post link event, used to query uniform locations etc.
+            _properties.ForEach(_ => _.FirePostLink());
         }
 
         private int AttachShader(ShaderType type, string name)
@@ -212,96 +204,96 @@ namespace DerpGL.Shaders
         }
 
         /// <summary>
-        /// Initializes all properties of the current shader which are of type TransformOut.
-        /// Is called before linking the shader to initialize transform feedback outputs and store their index to the related property.
+        /// Initializes properties of the current shader instance.
         /// </summary>
-        /// <returns></returns>
-        private List<string> InitializeTransformOut()
+        private void InitializePropertyMappings()
         {
-            var outs = new List<string>();
-            var index = 0;
-            foreach (var property in GetType().GetProperties().Where(_ => _.PropertyType == typeof(TransformOut)))
+            _properties = new List<ShaderVariable>();
+            foreach (var property in GetType().GetProperties().Where(_ => typeof(ShaderVariable).IsAssignableFrom(_.PropertyType)))
             {
-                property.SetValue(this, new TransformOut(index++), null);
-                outs.Add(property.Name);
-            }
-            return outs;
-        }
-
-        /// <summary>
-        /// Initializes all properties of the current shader instance which are of a type contained in the TypeMapping.
-        /// Is called after linking the shader to initialize vertex attributes and uniforms.
-        /// </summary>
-        private void InitializePropertyMapping()
-        {
-            foreach (var property in GetType().GetProperties())
-            {
-                var mapping = TypeMapping.FirstOrDefault(_ => _.MappedType == property.PropertyType);
-                if (mapping == null) continue;
-                Logger.DebugFormat("Creating property mapping: {0}", property.Name);
-                property.SetValue(this, mapping.Create(Handle, property), null);
+                var instance = (ShaderVariable)Activator.CreateInstance(property.PropertyType, true);
+                instance.Initialize(Handle, property.Name);
+                ShaderVariable.InvokeCallback(instance, property);
+                property.SetValue(this, instance, null);
+                _properties.Add(instance);
             }
         }
 
-        /// <summary>
-        /// Defines available property mappings.<br/>
-        /// NOTE: maybe refactor to use GL.ProgramUniform* later (check out EXT_direct_state_access)
-        /// </summary>
-        private static readonly List<IMapping> TypeMapping = new List<IMapping>
-        {
-            new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
-            new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
-            new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
-            new Mapping<TextureUniform<Texture>>((p,i) => new TextureUniform(p, i.Name)),
-            new Mapping<TextureUniform<Texture1D>>((p,i) => new TextureUniform<Texture1D>(p, i.Name)),
-            new Mapping<TextureUniform<Texture2D>>((p,i) => new TextureUniform<Texture2D>(p, i.Name)),
-            new Mapping<TextureUniform<Texture3D>>((p,i) => new TextureUniform<Texture3D>(p, i.Name)),
-            new Mapping<TextureUniform<Texture1DArray>>((p,i) => new TextureUniform<Texture1DArray>(p, i.Name)),
-            new Mapping<TextureUniform<Texture2DArray>>((p,i) => new TextureUniform<Texture2DArray>(p, i.Name)),
-            new Mapping<TextureUniform<TextureCubemap>>((p,i) => new TextureUniform<TextureCubemap>(p, i.Name)),
-            new Mapping<TextureUniform<TextureCubemapArray>>((p,i) => new TextureUniform<TextureCubemapArray>(p, i.Name)),
-            new Mapping<TextureUniform<Texture2DMultisample>>((p,i) => new TextureUniform<Texture2DMultisample>(p, i.Name)),
-            new Mapping<TextureUniform<Texture2DMultisampleArray>>((p,i) => new TextureUniform<Texture2DMultisampleArray>(p, i.Name)),
-            new Mapping<TextureUniform<TextureRectangle>>((p,i) => new TextureUniform<TextureRectangle>(p, i.Name)),
-            new Mapping<TextureUniform<TextureBuffer>>((p,i) => new TextureUniform<TextureBuffer>(p, i.Name)),
-            new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
-            new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<double>>((p,i) => new Uniform<double>(p, i.Name, GL.Uniform1)),
-            new Mapping<Uniform<Half>>((p,i) => new Uniform<Half>(p, i.Name, (_, half) => GL.Uniform1(_, half))),
-            new Mapping<Uniform<Color>>((p,i) => new Uniform<Color>(p, i.Name, (_, color) => GL.Uniform4(_, color))),
-            new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
-            new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
-            new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
-            new Mapping<Uniform<Vector2d>>((p,i) => new Uniform<Vector2d>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
-            new Mapping<Uniform<Vector2h>>((p,i) => new Uniform<Vector2h>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
-            new Mapping<Uniform<Vector3d>>((p,i) => new Uniform<Vector3d>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
-            new Mapping<Uniform<Vector3h>>((p,i) => new Uniform<Vector3h>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
-            new Mapping<Uniform<Vector4d>>((p,i) => new Uniform<Vector4d>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
-            new Mapping<Uniform<Vector4h>>((p,i) => new Uniform<Vector4h>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
-            new Mapping<Uniform<Matrix2>>((p,i) => new Uniform<Matrix2>(p, i.Name, (_, matrix) => GL.UniformMatrix2(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix3>>((p,i) => new Uniform<Matrix3>(p, i.Name, (_, matrix) => GL.UniformMatrix3(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix2x3>>((p,i) => new Uniform<Matrix2x3>(p, i.Name, (_, matrix) => GL.UniformMatrix2x3(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix2x4>>((p,i) => new Uniform<Matrix2x4>(p, i.Name, (_, matrix) => GL.UniformMatrix2x4(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix3x2>>((p,i) => new Uniform<Matrix3x2>(p, i.Name, (_, matrix) => GL.UniformMatrix3x2(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix3x4>>((p,i) => new Uniform<Matrix3x4>(p, i.Name, (_, matrix) => GL.UniformMatrix3x4(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix4x2>>((p,i) => new Uniform<Matrix4x2>(p, i.Name, (_, matrix) => GL.UniformMatrix4x2(_, false, ref matrix))),
-            new Mapping<Uniform<Matrix4x3>>((p,i) => new Uniform<Matrix4x3>(p, i.Name, (_, matrix) => GL.UniformMatrix4x3(_, false, ref matrix))),
-            new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
-            new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
-            new Mapping<FragData>((p,i) => new FragData(p, i.Name))
-        };
+        ///// <summary>
+        ///// Initializes properties of the current shader instance. Is called before linking the shader.
+        ///// </summary>
+        ///// <returns></returns>
+        //private void InitializePreLink()
+        //{
+        //    var outs = new List<string>();
+        //    var index = 0;
+        //    foreach (var property in GetType().GetProperties().Where(_ => _.PropertyType == typeof(TransformOut)))
+        //    {
+        //        property.SetValue(this, new TransformOut(index++), null);
+        //        outs.Add(property.Name);
+        //    }
+        //    if (outs.Count > 0) GL.TransformFeedbackVaryings(Handle, outs.Count, outs.ToArray(), TransformOutMode);
+        //}
 
-        /// <summary>
-        /// Enables registration of additional property mappings.<br/>
-        /// Mapped types provide automatic property initialization on instantiation.
-        /// </summary>
-        /// <param name="mapping">The property mapping to add.</param>
-        public void AddPropertyMapping(IMapping mapping)
-        {
-            TypeMapping.Add(mapping);
-        }
+        ///// <summary>
+        ///// Defines available property mappings.<br/>
+        ///// NOTE: maybe refactor to use GL.ProgramUniform* later (check out EXT_direct_state_access)
+        ///// </summary>
+        //private static readonly List<IMapping> TypeMappings = new List<IMapping>
+        //{
+        //    new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
+        //    new Mapping<ImageUniform>((p,i) => new ImageUniform(p, i.Name)),
+        //    new Mapping<TextureUniform>((p,i) => new TextureUniform(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture>>((p,i) => new TextureUniform(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture1D>>((p,i) => new TextureUniform<Texture1D>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture2D>>((p,i) => new TextureUniform<Texture2D>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture3D>>((p,i) => new TextureUniform<Texture3D>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture1DArray>>((p,i) => new TextureUniform<Texture1DArray>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture2DArray>>((p,i) => new TextureUniform<Texture2DArray>(p, i.Name)),
+        //    new Mapping<TextureUniform<TextureCubemap>>((p,i) => new TextureUniform<TextureCubemap>(p, i.Name)),
+        //    new Mapping<TextureUniform<TextureCubemapArray>>((p,i) => new TextureUniform<TextureCubemapArray>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture2DMultisample>>((p,i) => new TextureUniform<Texture2DMultisample>(p, i.Name)),
+        //    new Mapping<TextureUniform<Texture2DMultisampleArray>>((p,i) => new TextureUniform<Texture2DMultisampleArray>(p, i.Name)),
+        //    new Mapping<TextureUniform<TextureRectangle>>((p,i) => new TextureUniform<TextureRectangle>(p, i.Name)),
+        //    new Mapping<TextureUniform<TextureBuffer>>((p,i) => new TextureUniform<TextureBuffer>(p, i.Name)),
+        //    new Mapping<Uniform<bool>>((p,i) => new Uniform<bool>(p, i.Name, (l,b) => GL.Uniform1(l, b?1:0))),
+        //    new Mapping<Uniform<int>>((p,i) => new Uniform<int>(p, i.Name, GL.Uniform1)),
+        //    new Mapping<Uniform<uint>>((p,i) => new Uniform<uint>(p, i.Name, GL.Uniform1)),
+        //    new Mapping<Uniform<float>>((p,i) => new Uniform<float>(p, i.Name, GL.Uniform1)),
+        //    new Mapping<Uniform<double>>((p,i) => new Uniform<double>(p, i.Name, GL.Uniform1)),
+        //    new Mapping<Uniform<Half>>((p,i) => new Uniform<Half>(p, i.Name, (_, half) => GL.Uniform1(_, half))),
+        //    new Mapping<Uniform<Color>>((p,i) => new Uniform<Color>(p, i.Name, (_, color) => GL.Uniform4(_, color))),
+        //    new Mapping<Uniform<Vector2>>((p,i) => new Uniform<Vector2>(p, i.Name, GL.Uniform2)),
+        //    new Mapping<Uniform<Vector3>>((p,i) => new Uniform<Vector3>(p, i.Name, GL.Uniform3)),
+        //    new Mapping<Uniform<Vector4>>((p,i) => new Uniform<Vector4>(p, i.Name, GL.Uniform4)),
+        //    new Mapping<Uniform<Vector2d>>((p,i) => new Uniform<Vector2d>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
+        //    new Mapping<Uniform<Vector2h>>((p,i) => new Uniform<Vector2h>(p, i.Name, (_, vector) => GL.Uniform2(_, vector.X, vector.Y))),
+        //    new Mapping<Uniform<Vector3d>>((p,i) => new Uniform<Vector3d>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
+        //    new Mapping<Uniform<Vector3h>>((p,i) => new Uniform<Vector3h>(p, i.Name, (_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z))),
+        //    new Mapping<Uniform<Vector4d>>((p,i) => new Uniform<Vector4d>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
+        //    new Mapping<Uniform<Vector4h>>((p,i) => new Uniform<Vector4h>(p, i.Name, (_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W))),
+        //    new Mapping<Uniform<Matrix2>>((p,i) => new Uniform<Matrix2>(p, i.Name, (_, matrix) => GL.UniformMatrix2(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix3>>((p,i) => new Uniform<Matrix3>(p, i.Name, (_, matrix) => GL.UniformMatrix3(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix4>>((p,i) => new Uniform<Matrix4>(p, i.Name, (_, matrix) => GL.UniformMatrix4(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix2x3>>((p,i) => new Uniform<Matrix2x3>(p, i.Name, (_, matrix) => GL.UniformMatrix2x3(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix2x4>>((p,i) => new Uniform<Matrix2x4>(p, i.Name, (_, matrix) => GL.UniformMatrix2x4(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix3x2>>((p,i) => new Uniform<Matrix3x2>(p, i.Name, (_, matrix) => GL.UniformMatrix3x2(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix3x4>>((p,i) => new Uniform<Matrix3x4>(p, i.Name, (_, matrix) => GL.UniformMatrix3x4(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix4x2>>((p,i) => new Uniform<Matrix4x2>(p, i.Name, (_, matrix) => GL.UniformMatrix4x2(_, false, ref matrix))),
+        //    new Mapping<Uniform<Matrix4x3>>((p,i) => new Uniform<Matrix4x3>(p, i.Name, (_, matrix) => GL.UniformMatrix4x3(_, false, ref matrix))),
+        //    new Mapping<UniformBuffer>((p,i) => new UniformBuffer(p, i.Name)),
+        //    new Mapping<ShaderStorage>((p,i) => new ShaderStorage(p, i.Name)),
+        //    new Mapping<FragData>((p,i) => new FragData(p, i.Name))
+        //};
+
+        ///// <summary>
+        ///// Enables registration of additional property mappings.<br/>
+        ///// Mapped types provide automatic property initialization on instantiation.
+        ///// </summary>
+        ///// <param name="mapping">The property mapping to add.</param>
+        //public void AddPropertyMapping(IMapping mapping)
+        //{
+        //    TypeMappings.Add(mapping);
+        //}
     }
 }

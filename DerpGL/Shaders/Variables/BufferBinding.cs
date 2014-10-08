@@ -35,28 +35,30 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         public readonly BufferRangeTarget BindingTarget;
 
+        private readonly ProgramInterface _programInterface;
+
         /// <summary>
         /// The resource index of this binding point.
         /// </summary>
-        public readonly int Index;
-
-        /// <summary>
-        /// Specifies whether this binding point is active in the current shader program.
-        /// </summary>
-        public readonly bool Active;
+        public int Index { get; private set; }
 
         /// <summary>
         /// Current binding point
         /// </summary>
         protected int Binding;
 
-        internal BufferBinding(int program, string name, BufferRangeTarget bindingTarget, ProgramInterface programInterface)
-            : base(program, name)
+        internal BufferBinding(BufferRangeTarget bindingTarget, ProgramInterface programInterface)
         {
             BindingTarget = bindingTarget;
-            Index = GL.GetProgramResourceIndex(program, programInterface, name);
+            _programInterface = programInterface;
+            PostLink += OnPostLink;
+        }
+
+        private void OnPostLink()
+        {
+            Index = GL.GetProgramResourceIndex(Program, _programInterface, Name);
             Active = Index > -1;
-            if (!Active) Logger.WarnFormat("Binding block not found or not active: {0}", name);
+            if (!Active) Logger.WarnFormat("Binding block not found or not active: {0}", Name);
             Binding = -1;
         }
 

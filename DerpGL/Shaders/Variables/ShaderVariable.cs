@@ -16,6 +16,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace DerpGL.Shaders.Variables
 {
@@ -24,20 +27,68 @@ namespace DerpGL.Shaders.Variables
     /// </summary>
     public abstract class ShaderVariable
     {
+        private static readonly List<IShaderVariableCallback> TypedCallbacks =  new List<IShaderVariableCallback>();
+
+        protected static void AddTypedCallback(IShaderVariableCallback callback)
+        {
+            TypedCallbacks.Add(callback);
+        }
+
+        internal static void InvokeCallback<T>(T property, PropertyInfo propertyInfo)
+            where T : ShaderVariable
+        {
+            foreach (var callback in TypedCallbacks.Where(callback => callback.MappedType == property.GetType()))
+            {
+                callback.Invoke(property, propertyInfo);
+                return;
+            }
+        }
+
         /// <summary>
         /// The handle of the program to which this variable relates.
         /// </summary>
-        public readonly int Program;
+        public int Program { get; private set; }
 
         /// <summary>
         /// The name of this shader variable.
         /// </summary>
-        public readonly string Name;
+        public string Name { get; private set; }
 
-        internal ShaderVariable(int program, string name)
+        /// <summary>
+        /// Specifies whether this variable is active.<br/>
+        /// Unused variables are generally removed by OpenGL and cause them to be inactive.
+        /// </summary>
+        public bool Active { get; protected set; }
+
+        protected event Action PreLink;
+
+        protected event Action PostLink;
+
+        /// <summary>
+        /// Called right after instantiation.
+        /// </summary>
+        internal void Initialize(int program, string name)
         {
             Program = program;
             Name = name;
+        }
+
+        /// <summary>
+        /// Called after attaching the shaders, but before linking the program.
+        /// </summary>
+        internal virtual void FirePreLink()
+        {
+            var handler = PreLink;
+            if (handler != null) handler();
+        }
+
+        /// <summary>
+        /// Called after all shaders are attached and the program is linked.
+        /// </summary>
+        internal virtual void FirePostLink()
+        {
+            var handler = PostLink;
+            if (handler != null) handler();
         }
 
         /// <summary>

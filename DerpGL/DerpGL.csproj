@@ -64,15 +64,15 @@
     <Compile Include="Shaders\ComputeShaderSourceAttribute.cs" />
     <Compile Include="Shaders\FragmentShaderSourceAttribute.cs" />
     <Compile Include="Shaders\GeometryShaderSourceAttribute.cs" />
-    <Compile Include="Shaders\IMapping.cs" />
-    <Compile Include="Shaders\Mapping.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderSourceAttribute.cs" />
     <Compile Include="Shaders\Variables\BufferBinding.cs" />
     <Compile Include="Shaders\Variables\FragData.cs" />
     <Compile Include="Shaders\Variables\ImageUniform.cs" />
+    <Compile Include="Shaders\Variables\IShaderVariableCallback.cs" />
     <Compile Include="Shaders\Variables\ShaderStorage.cs" />
     <Compile Include="Shaders\Variables\ShaderVariable.cs" />
+    <Compile Include="Shaders\Variables\ShaderVariableCallback.cs" />
     <Compile Include="Shaders\Variables\TextureUniform.cs" />
     <Compile Include="Shaders\Variables\TransformOut.cs" />
     <Compile Include="Shaders\Variables\Uniform.cs" />

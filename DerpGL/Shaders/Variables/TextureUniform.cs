@@ -27,8 +27,8 @@ namespace DerpGL.Shaders.Variables
         : Uniform<int>
         where T : Texture
     {
-        internal TextureUniform(int program, string name)
-            : base(program, name, GL.Uniform1)
+        internal TextureUniform()
+            : base(GL.Uniform1)
         {
         }
 
@@ -58,12 +58,5 @@ namespace DerpGL.Shaders.Variables
     /// <summary>
     /// Represents a texture uniform. Allows any texture type to be bound.
     /// </summary>
-    public sealed class TextureUniform
-        : TextureUniform<Texture>
-    {
-        internal TextureUniform(int program, string name)
-            : base(program, name)
-        {
-        }
-    }
+    public sealed class TextureUniform : TextureUniform<Texture> { }
 }

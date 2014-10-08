@@ -25,8 +25,13 @@ namespace DerpGL.Shaders.Variables
     public sealed class UniformBuffer
         : BufferBinding
     {
-        internal UniformBuffer(int program, string name)
-            : base(program, name, BufferRangeTarget.UniformBuffer, ProgramInterface.UniformBlock)
+        internal UniformBuffer()
+            : base(BufferRangeTarget.UniformBuffer, ProgramInterface.UniformBlock)
+        {
+            PostLink += OnPostLink;
+        }
+
+        private void OnPostLink()
         {
             // retrieve the default binding point
             if (Active) GL.GetActiveUniformBlock(Program, Index, ActiveUniformBlockParameter.UniformBlockBinding, out Binding);

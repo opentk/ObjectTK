@@ -33,14 +33,18 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// The location of the output.
         /// </summary>
-        public readonly int Location;
+        public int Location { get; private set; }
 
-        internal FragData(int program, string name)
-            : base(program, name)
+        internal FragData()
+        {
+            PostLink += OnPostLink;
+        }
+
+        private void OnPostLink()
         {
             //TODO: find out what GL.GetFragDataIndex(); does
-            Location = GL.GetFragDataLocation(program, name);
-            if (Location == -1) Logger.WarnFormat("Output variable not found or not active: {0}", name);
+            Location = GL.GetFragDataLocation(Program, Name);
+            if (Location == -1) Logger.WarnFormat("Output variable not found or not active: {0}", Name);
         }
     }
 }

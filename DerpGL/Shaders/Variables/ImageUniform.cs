@@ -26,8 +26,8 @@ namespace DerpGL.Shaders.Variables
     public sealed class ImageUniform
         : Uniform<int>
     {
-        internal ImageUniform(int program, string name)
-            : base(program, name, GL.Uniform1)
+        internal ImageUniform()
+            : base(GL.Uniform1)
         {
         }
 

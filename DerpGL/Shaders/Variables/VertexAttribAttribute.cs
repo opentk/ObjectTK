@@ -42,6 +42,8 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         public bool Normalized { get; protected set; }
 
+        public int Location { get; protected set; }
+
         /// <summary>
         /// Initializes a new instance of the VertexAttribAttribute with default values.<br/>
         /// The default is 4 components of type float without normalization.
@@ -73,6 +75,7 @@ namespace DerpGL.Shaders.Variables
             Components = components;
             Type = type;
             Normalized = normalized;
+            Location = -1;
         }
     }
 }

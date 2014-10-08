@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DerpGL.Buffers;
 using log4net;
 using OpenTK.Graphics.OpenGL;
@@ -31,38 +32,35 @@ namespace DerpGL.Shaders.Variables
         private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
 
         /// <summary>
-        /// Holds the indices of all currently enabled vertex attributes.
-        /// </summary>
-        private static readonly List<int> EnabledVertexAttribArrays = new List<int>();
-
-        /// <summary>
-        /// Disable all vertex attributes.
-        /// </summary>
-        internal static void DisableVertexAttribArrays()
-        {
-            foreach (var index in EnabledVertexAttribArrays)
-            {
-                GL.DisableVertexAttribArray(index);
-            }
-            EnabledVertexAttribArrays.Clear();
-        }
-
-        /// <summary>
         /// The vertex attributes location within the shader.
         /// </summary>
-        public readonly int Index;
+        public int Index { get; private set; }
 
         /// <summary>
         /// Default binding parameters attributed to this vertex attribute.
         /// </summary>
-        private readonly VertexAttribAttribute _parameters;
+        private VertexAttribAttribute _parameters;
 
-        internal VertexAttrib(int program, string name, VertexAttribAttribute parameters)
-            : base(program, name)
+        static VertexAttrib()
         {
-            _parameters = parameters;
-            Index = GL.GetAttribLocation(program, name);
-            if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", name);
+            AddTypedCallback(new ShaderVariableCallback<VertexAttrib>((_, i) => _.GetAttributes(i)));
+        }
+
+        internal VertexAttrib()
+        {
+            PostLink += OnPostLink;
+        }
+
+        private void GetAttributes(PropertyInfo property)
+        {
+            _parameters = property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
+        }
+        //    new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
+
+        internal void OnPostLink()
+        {
+            Index = GL.GetAttribLocation(Program, Name);
+            if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", Name);
         }
 
         /// <summary>
@@ -133,8 +131,6 @@ namespace DerpGL.Shaders.Variables
             GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
             // make sure the vertex attribute is enabled
             GL.EnableVertexAttribArray(Index);
-            // remember which vertex attributes are enabled
-            EnabledVertexAttribArrays.Add(Index);
             // set the vertex attribute pointer to the current buffer
             GL.VertexAttribPointer(Index, components, type, normalized, stride, offset);
         }
