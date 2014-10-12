@@ -22,7 +22,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents an framebuffer object.
+    /// Represents a framebuffer object.
     /// </summary>
     public class FrameBuffer
         : GLResource

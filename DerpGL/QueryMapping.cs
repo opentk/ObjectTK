@@ -91,7 +91,7 @@ namespace DerpGL
         private readonly Dictionary<T, QueryMap> _queries;
 
         /// <summary>
-        /// Initializes a new instance of this QueryMapping and generates required OpenGL query objects.
+        /// Initializes a new instance of this QueryMapping and generates required query objects.
         /// </summary>
         public QueryMapping()
         {
