@@ -5,8 +5,9 @@ DerpGL is a thin abstraction layer on top of OpenTK to provide OpenGL features i
 It is fully aimed at modern OpenGL and does not do a single deprecated OpenGL API-call.
 
 Currently there are types for the following OpenGL features:
-* Shaders (Vertex, Geometry, Fragment, Compute)
+* Programs and Shaders (Vertex, Geometry, Fragment, Compute)
 * Textures
+* Vertex array objects
 * Buffer objects
 * Sampler objects
 * Query objects
