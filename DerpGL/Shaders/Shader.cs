@@ -32,10 +32,20 @@ namespace DerpGL.Shaders
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
+        /// <summary>
+        /// Specifies the type of this shader.
+        /// </summary>
         public readonly ShaderType Type;
 
-        public string Filename { get; private set; }
+        /// <summary>
+        /// Specifies the path to the last compiled source file.
+        /// </summary>
+        public string Path { get; private set; }
 
+        /// <summary>
+        /// Initializes a new shader object of the given type.
+        /// </summary>
+        /// <param name="type"></param>
         public Shader(ShaderType type)
             : base(GL.CreateShader(type))
         {
@@ -48,32 +58,42 @@ namespace DerpGL.Shaders
             GL.DeleteShader(Handle);
         }
 
-        public void CompileSource(string filename)
+        /// <summary>
+        /// Loads the given source file and compiles the shader.
+        /// </summary>
+        /// <param name="path">Specifies the path to the glsl source file.</param>
+        public void CompileSource(string path)
         {
-            Filename = filename;
-            Logger.DebugFormat("Compiling {0}: {1}", Type, Filename);
-            GL.ShaderSource(Handle, RetrieveShaderSource(Path.Combine(Program.BasePath, Filename)));
+            Path = path;
+            Logger.DebugFormat("Compiling {0}: {1}", Type, path);
+            GL.ShaderSource(Handle, RetrieveShaderSource(path));
             GL.CompileShader(Handle);
             CheckCompileStatus();
         }
 
-        private static string RetrieveShaderSource(string file, List<string> includedNames = null)
+        /// <summary>
+        /// Load shader source file(s).<br/>
+        /// Supports multiple source files via "#include xx" directives and corrects the line numbering by using the glsl standard #line directive.
+        /// </summary>
+        /// <param name="path">Specifies the path to the glsl source file to load.</param>
+        /// <param name="includedNames">Holds the filename of all files already loaded to prevent multiple inclusions.</param>
+        /// <returns>The fully assembled shader source.</returns>
+        private static string RetrieveShaderSource(string path, List<string> includedNames = null)
         {
-            const string includeKeyword = "#include";
             if (includedNames == null) includedNames = new List<string>();
             // check for multiple includes of the same file
-            if (includedNames.Contains(file))
+            if (includedNames.Contains(path))
             {
-                Logger.WarnFormat("File already included: {0} (included files: {1})", file, string.Join(", ", includedNames));
+                Logger.WarnFormat("File already included: {0} (included files: {1})", path, string.Join(", ", includedNames));
                 return "";
             }
-            includedNames.Add(file);
+            includedNames.Add(path);
             // load shaders source
             var source = new StringBuilder();
             StreamReader reader;
             try
             {
-                reader = new StreamReader(file + ".glsl");
+                reader = new StreamReader(string.Format("{0}.glsl", System.IO.Path.Combine(Program.BasePath, path)));
             }
             catch (FileNotFoundException ex)
             {
@@ -91,6 +111,7 @@ namespace DerpGL.Shaders
                     var code = reader.ReadLine();
                     if (code == null) break;
                     // check if it is an include statement
+                    const string includeKeyword = "#include";
                     if (!code.StartsWith(includeKeyword))
                     {
                         source.AppendLine(code);
@@ -102,7 +123,7 @@ namespace DerpGL.Shaders
                         // insert #line statement to correct line numbers
                         source.AppendLine(string.Format("#line 1 {0}", includedNames.Count));
                         // replace current line with the source of that file
-                        includedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", includedFile);
+                        includedFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path) ?? "", includedFile);
                         source.Append(RetrieveShaderSource(includedFile, includedNames));
                         // the #line statement defines the line number of the *next* line
                         source.AppendLine(string.Format("#line {0} {1}", lineNumber + 1, fileNumber));
@@ -124,10 +145,10 @@ namespace DerpGL.Shaders
             Logger.DebugFormat("Compiling status: {0}", compileStatus);
             // check shader info log
             var info = GL.GetShaderInfoLog(Handle);
-            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log for {0}:\n{1}", Filename, info);
+            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log for {0}:\n{1}", Path, info);
             // log message and throw exception on compile error
             if (compileStatus == 1) return;
-            var msg = string.Format("Error compiling shader: {0}", Filename);
+            var msg = string.Format("Error compiling shader: {0}", Path);
             Logger.Error(msg);
             throw new ShaderCompileException(msg, info);
         }

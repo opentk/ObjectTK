@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using DerpGL;
 using DerpGL.Buffers;
 using DerpGL.Shaders;
 using DerpGL.Textures;

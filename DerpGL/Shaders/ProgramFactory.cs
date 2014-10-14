@@ -20,8 +20,16 @@ using DerpGL.Exceptions;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Contains methods to automatically initialize program objects.
+    /// </summary>
     public static class ProgramFactory
     {
+        /// <summary>
+        /// Initializes a program object using the shader sources tagged to the type with <see cref="ShaderSourceAttribute"/>.
+        /// </summary>
+        /// <typeparam name="T">Specifies the program type to create.</typeparam>
+        /// <returns>A compiled and linked program.</returns>
         public static T Create<T>()
             where T : Program
         {

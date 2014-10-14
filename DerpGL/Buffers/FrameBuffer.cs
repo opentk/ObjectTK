@@ -60,18 +60,6 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Throws an <see cref="ObjectNotBoundException"/> if this framebuffer is not the currently active one.
-        /// </summary>
-        private void AssertActive()
-        {
-#if DEBUG
-            int activeHandle;
-            GL.GetInteger(GetPName.FramebufferBinding, out activeHandle);
-            if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call FrameBuffer.Bind() first.");
-#endif
-        }
-
-        /// <summary>
         /// Attaches the given texture level to the an attachment point.
         /// </summary>
         /// <remarks>
@@ -174,6 +162,18 @@ namespace DerpGL.Buffers
 #if DEBUG
             Utility.Assert("Error on framebuffer attach/detach");
             Utility.Assert(GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer), FramebufferErrorCode.FramebufferComplete, "Framebuffer is not framebuffer complete.");
+#endif
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ObjectNotBoundException"/> if this framebuffer is not the currently active one.
+        /// </summary>
+        public void AssertActive()
+        {
+#if DEBUG
+            int activeHandle;
+            GL.GetInteger(GetPName.FramebufferBinding, out activeHandle);
+            if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call FrameBuffer.Bind() first.");
 #endif
         }
     }

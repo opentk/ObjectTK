@@ -39,7 +39,7 @@ namespace DerpGL.Shaders
         /// </summary>
         public static string BasePath { get; set; }
 
-        public string Name { get { return GetType().Name; } }
+        private string Name { get { return GetType().Name; } }
 
         private List<ProgramVariable> _variables;
 
@@ -48,6 +48,9 @@ namespace DerpGL.Shaders
             BasePath = "Data/Shaders/";
         }
 
+        /// <summary>
+        /// Initializes a new program object.
+        /// </summary>
         protected Program()
             : base(GL.CreateProgram())
         {
@@ -74,30 +77,49 @@ namespace DerpGL.Shaders
             }
         }
 
+        /// <summary>
+        /// Activate the program.
+        /// </summary>
         public void Use()
         {
             GL.UseProgram(Handle);
         }
 
-        public void Attach(ShaderType type, string filename)
+        /// <summary>
+        /// Attach shader object.
+        /// </summary>
+        /// <param name="type">Specifies the type of the shader object.</param>
+        /// <param name="path">Specifies the path to the shader source file.</param>
+        public void Attach(ShaderType type, string path)
         {
             using (var shader = new Shader(type))
             {
-                shader.CompileSource(filename);
+                shader.CompileSource(path);
                 Attach(shader);
             }
         }
         
+        /// <summary>
+        /// Attach shader object.
+        /// </summary>
+        /// <param name="shader">Specifies the shader object to attach.</param>
         public void Attach(Shader shader)
         {
             GL.AttachShader(Handle, shader.Handle);
         }
 
+        /// <summary>
+        /// Detach shader object.
+        /// </summary>
+        /// <param name="shader">Specifies the shader object to detach.</param>
         public void Detach(Shader shader)
         {
             GL.DetachShader(Handle, shader.Handle);
         }
 
+        /// <summary>
+        /// Link the program.
+        /// </summary>
         public virtual void Link()
         {
             Logger.DebugFormat("Linking program: {0}", Name);
@@ -107,6 +129,9 @@ namespace DerpGL.Shaders
             _variables.ForEach(_ => _.OnLink());
         }
 
+        /// <summary>
+        /// Assert that no link error occured.
+        /// </summary>
         private void CheckLinkStatus()
         {
             // check link status
@@ -123,6 +148,9 @@ namespace DerpGL.Shaders
             throw new ProgramLinkException(msg, info);
         }
 
+        /// <summary>
+        /// Throws an <see cref="ObjectNotBoundException"/> if this program is not the currently active one.
+        /// </summary>
         public void AssertActive()
         {
 #if DEBUG
