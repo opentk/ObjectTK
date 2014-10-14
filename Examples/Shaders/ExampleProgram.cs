@@ -5,15 +5,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("SimpleColor.vs")]
-    [FragmentShaderSource("SimpleColor.fs")]
-    public class SimpleColorShader
-        : Shader
+    [VertexShaderSource("ExampleShader.vs")]
+    [FragmentShaderSource("ExampleShader.fs")]
+    public class ExampleProgram
+        : Program
     {
         [VertexAttrib(3, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }
-        [VertexAttrib(4, VertexAttribPointerType.UnsignedByte, true)]
-        public VertexAttrib InColor { get; protected set; }
 
         public Uniform<Matrix4> ModelViewProjectionMatrix { get; protected set; }
     }

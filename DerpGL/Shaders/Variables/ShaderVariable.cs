@@ -15,9 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace DerpGL.Shaders.Variables
@@ -27,32 +24,25 @@ namespace DerpGL.Shaders.Variables
     /// </summary>
     public abstract class ShaderVariable
     {
-        private static readonly List<IShaderVariableCallback> TypedCallbacks =  new List<IShaderVariableCallback>();
-
-        protected static void AddTypedCallback(IShaderVariableCallback callback)
-        {
-            TypedCallbacks.Add(callback);
-        }
-
-        internal static void InvokeCallback<T>(T property, PropertyInfo propertyInfo)
-            where T : ShaderVariable
-        {
-            foreach (var callback in TypedCallbacks.Where(callback => callback.MappedType == property.GetType()))
-            {
-                callback.Invoke(property, propertyInfo);
-                return;
-            }
-        }
+        /// <summary>
+        /// The handle of the program to which this variable relates.
+        /// </summary>
+        protected Program Program { get; private set; }
 
         /// <summary>
         /// The handle of the program to which this variable relates.
         /// </summary>
-        public int Program { get; private set; }
+        protected PropertyInfo Property { get; private set; }
+
+        /// <summary>
+        /// The handle of the program to which this variable relates.
+        /// </summary>
+        public int ProgramHandle { get { return Program.Handle; } }
 
         /// <summary>
         /// The name of this shader variable.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get { return Property.Name; } }
 
         /// <summary>
         /// Specifies whether this variable is active.<br/>
@@ -60,43 +50,25 @@ namespace DerpGL.Shaders.Variables
         /// </summary>
         public bool Active { get; protected set; }
 
-        protected event Action PreLink;
-
-        protected event Action PostLink;
-
         /// <summary>
-        /// Called right after instantiation.
+        /// Initializes this instance using the given Program and PropertyInfo.
         /// </summary>
-        internal void Initialize(int program, string name)
+        internal void Initialize(Program program, PropertyInfo property)
         {
             Program = program;
-            Name = name;
+            Property = property;
+            Initialize();
         }
 
         /// <summary>
-        /// Called after attaching the shaders, but before linking the program.
+        /// When overridden in a derived class, handles initialization which depends on Program and PropertyInfo,
+        /// which are not available at construction.
         /// </summary>
-        internal virtual void FirePreLink()
-        {
-            var handler = PreLink;
-            if (handler != null) handler();
-        }
+        protected virtual void Initialize() { }
 
         /// <summary>
-        /// Called after all shaders are attached and the program is linked.
+        /// When overridden in a derived class, handles initialization which must occur after the program object is linked.
         /// </summary>
-        internal virtual void FirePostLink()
-        {
-            var handler = PostLink;
-            if (handler != null) handler();
-        }
-
-        /// <summary>
-        /// Throws an <see cref="InvalidOperationException"/> if this shader is not the currently active one.
-        /// </summary>
-        protected void AssertProgramActive()
-        {
-            if (Shader.ActiveProgramHandle != Program) throw new InvalidOperationException("Can not set uniforms of an inactive program. Call Shader.Use() before setting any uniforms.");
-        }
+        internal virtual void OnLink() { }
     }
 }

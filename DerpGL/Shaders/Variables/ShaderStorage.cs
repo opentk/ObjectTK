@@ -28,11 +28,11 @@ namespace DerpGL.Shaders.Variables
         internal ShaderStorage()
             : base(BufferRangeTarget.ShaderStorageBuffer, ProgramInterface.ShaderStorageBlock)
         {
-            PostLink += OnPostLink;
         }
 
-        private void OnPostLink()
+        internal override void OnLink()
         {
+            base.OnLink();
             //TODO: find out if the current binding point can be queried, like it can be for uniform blocks
             // set the binding point to the blocks index
             if (Active) ChangeBinding(Index);
@@ -45,7 +45,7 @@ namespace DerpGL.Shaders.Variables
         public override void ChangeBinding(int binding)
         {
             base.ChangeBinding(binding);
-            GL.ShaderStorageBlockBinding(Program, Index, binding);
+            GL.ShaderStorageBlockBinding(ProgramHandle, Index, binding);
         }
     }
 }

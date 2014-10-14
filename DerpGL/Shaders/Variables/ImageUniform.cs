@@ -139,7 +139,7 @@ namespace DerpGL.Shaders.Variables
         /// <param name="format">Specifies the format that the elements of the texture will be treated as.</param>
         public void Bind(int imageUnit, int textureHandle, int level, bool layered, int layer, TextureAccess access, SizedInternalFormat format)
         {
-            if (!Set(imageUnit)) return;
+            Set(imageUnit);
             GL.BindImageTexture(imageUnit, textureHandle, level, layered, layer, access, format);
         }
     }

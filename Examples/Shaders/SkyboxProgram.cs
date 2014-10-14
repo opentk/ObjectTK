@@ -8,8 +8,8 @@ namespace Examples.Shaders
 {
     [VertexShaderSource("Skybox.vs")]
     [FragmentShaderSource("Skybox.fs")]
-    public class SkyboxShader
-        : Shader
+    public class SkyboxProgram
+        : Program
     {
         [VertexAttrib(3, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }

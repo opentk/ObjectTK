@@ -16,8 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System.Linq;
-using System.Reflection;
-using DerpGL.Buffers;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 
@@ -37,102 +35,32 @@ namespace DerpGL.Shaders.Variables
         public int Index { get; private set; }
 
         /// <summary>
-        /// Default binding parameters attributed to this vertex attribute.
+        /// Default binding parameters attributed to this vertex attribute.<br/>
+        /// TODO: maybe just use to initialize defaults but don't keep the attribute here
         /// </summary>
-        private VertexAttribAttribute _parameters;
-
-        static VertexAttrib()
-        {
-            AddTypedCallback(new ShaderVariableCallback<VertexAttrib>((_, i) => _.GetAttributes(i)));
-        }
+        public VertexAttribAttribute Parameters { get; private set; }
 
         internal VertexAttrib()
         {
-            PostLink += OnPostLink;
         }
 
-        private void GetAttributes(PropertyInfo property)
+        protected override void Initialize()
         {
-            _parameters = property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
-        }
-        //    new Mapping<VertexAttrib>((p,i) => new VertexAttrib(p, i.Name, i.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute())),
-
-        internal void OnPostLink()
-        {
-            Index = GL.GetAttribLocation(Program, Name);
-            if (Index == -1) Logger.WarnFormat("Vertex attribute not found or not active: {0}", Name);
+            Parameters = Property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
+            if (Parameters.Index > 0) BindAttribLocation(Parameters.Index);
         }
 
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute. Uses the buffers element size as the stride parameter with an offset of zero.
-        /// The other parameters, namely components, type and normalized are chosen according to the corresponding <see cref="VertexAttribAttribute"/> attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer)
-            where T : struct
+        public void BindAttribLocation(int index)
         {
-            Bind(buffer, _parameters.Components, _parameters.Type, buffer.ElementSize, 0, _parameters.Normalized);
+            Index = index;
+            GL.BindAttribLocation(ProgramHandle, index, Name);
         }
 
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute. Uses the buffers element size as the stride parameter and the given offset.
-        /// The other parameters, namely components, type and normalized are chosen according to the corresponding <see cref="VertexAttribAttribute"/> attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int offset)
-            where T : struct
+        internal override void OnLink()
         {
-            Bind(buffer, _parameters.Components, _parameters.Type, buffer.ElementSize, offset, _parameters.Normalized);
-        }
-
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute. Uses the given stride and offset parameters.
-        /// The other parameters, namely components, type and normalized are chosen according to the corresponding <see cref="VertexAttribAttribute"/> attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int stride, int offset)
-            where T : struct
-        {
-            Bind(buffer, _parameters.Components, _parameters.Type, stride, offset, _parameters.Normalized);
-        }
-
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int stride, int offset, bool normalized)
-            where T : struct
-        {
-            Bind(buffer, _parameters.Components, _parameters.Type, stride, offset, normalized);
-        }
-
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset)
-            where T : struct
-        {
-            Bind(buffer, components, _parameters.Type, stride, offset, _parameters.Normalized);
-        }
-
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int components, int stride, int offset, bool normalized)
-            where T : struct
-        {
-            Bind(buffer, components, _parameters.Type, stride, offset, normalized);
-        }
-
-        /// <summary>
-        /// Binds the given buffer to this vertex attribute.
-        /// </summary>
-        public void Bind<T>(Buffer<T> buffer, int components, VertexAttribPointerType type, int stride, int offset, bool normalized)
-            where T : struct
-        {
-            if (Index == -1) return;
-            // bind given buffer
-            GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
-            // make sure the vertex attribute is enabled
-            GL.EnableVertexAttribArray(Index);
-            // set the vertex attribute pointer to the current buffer
-            GL.VertexAttribPointer(Index, components, type, normalized, stride, offset);
+            Index = GL.GetAttribLocation(ProgramHandle, Name);
+            Active = Index != -1;
+            if (!Active) Logger.WarnFormat("Vertex attribute not found or not active: {0}", Name);
         }
     }
 }

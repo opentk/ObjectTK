@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System;
+using DerpGL.Exceptions;
 using DerpGL.Textures;
+using DerpGL.Utilities;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Buffers
@@ -42,17 +43,10 @@ namespace DerpGL.Buffers
         }
 
         /// <summary>
-        /// Handle of the currently active framebuffer.
-        /// </summary>
-        public static int ActiveFramebufferHandle { get; protected set; }
-
-        /// <summary>
         /// Binds this framebuffer.
         /// </summary>
         public void Bind()
         {
-            // remember handle of active framebuffer
-            ActiveFramebufferHandle = Handle;
             // bind this framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, Handle);
         }
@@ -62,16 +56,19 @@ namespace DerpGL.Buffers
         /// </summary>
         public void Unbind()
         {
-            ActiveFramebufferHandle = 0;
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
         /// <summary>
-        /// Throws an <see cref="InvalidOperationException"/> if this framebuffer is not the currently active one.
+        /// Throws an <see cref="ObjectNotBoundException"/> if this framebuffer is not the currently active one.
         /// </summary>
         private void AssertActive()
         {
-            if (ActiveFramebufferHandle != Handle) throw new InvalidOperationException("Can not access an unbound framebuffer. Call FrameBuffer.Bind() first.");
+#if DEBUG
+            int activeHandle;
+            GL.GetInteger(GetPName.FramebufferBinding, out activeHandle);
+            if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call FrameBuffer.Bind() first.");
+#endif
         }
 
         /// <summary>

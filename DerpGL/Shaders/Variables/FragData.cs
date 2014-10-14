@@ -37,13 +37,12 @@ namespace DerpGL.Shaders.Variables
 
         internal FragData()
         {
-            PostLink += OnPostLink;
         }
 
-        private void OnPostLink()
+        internal override void OnLink()
         {
             //TODO: find out what GL.GetFragDataIndex(); does
-            Location = GL.GetFragDataLocation(Program, Name);
+            Location = GL.GetFragDataLocation(ProgramHandle, Name);
             if (Location == -1) Logger.WarnFormat("Output variable not found or not active: {0}", Name);
         }
     }

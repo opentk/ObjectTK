@@ -18,6 +18,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using DerpGL.Utilities;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 

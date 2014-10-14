@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Reflection;
+using DerpGL.Exceptions;
 using log4net;
 
 namespace DerpGL
@@ -53,7 +54,7 @@ namespace DerpGL
             Logger.WarnFormat("GLResource leaked: {0}", this);
             Dispose(false);
 #if DEBUG
-            throw new ApplicationException(string.Format("GLResource leaked: {0}", this));
+            throw new DerpGLException(string.Format("GLResource leaked: {0}", this));
 #endif
         }
 

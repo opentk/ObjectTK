@@ -16,10 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
-using System.Drawing;
-using System.Threading;
 using log4net;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders.Variables
@@ -42,7 +39,7 @@ namespace DerpGL.Shaders.Variables
         /// Action used to set the uniform.<br/>
         /// Inputs are the uniforms location and the value to set.
         /// </summary>
-        private Action<int, T> _setter;
+        private readonly Action<int, T> _setter;
 
         /// <summary>
         /// The current value of the uniform.
@@ -64,77 +61,34 @@ namespace DerpGL.Shaders.Variables
             }
         }
 
-        protected static void Register<TU>(Action<int, TU> setter)
+        internal Uniform()
+            : this(UniformSetter.Get<T>())
         {
-            AddTypedCallback(new ShaderVariableCallback<Uniform<TU>>((_,i) => _._setter = setter));
-        }
-
-        static Uniform()
-        {
-            Register<bool>((_,value) => GL.Uniform1(_, value ? 1 : 0));
-            Register<int>(GL.Uniform1);
-            Register<uint>(GL.Uniform1);
-            Register<float>(GL.Uniform1);
-            Register<double>(GL.Uniform1);
-            Register<Half>((_, half) => GL.Uniform1(_, half));
-            Register<Color>((_, color) => GL.Uniform4(_, color));
-            Register<Vector2>(GL.Uniform2);
-            Register<Vector3>(GL.Uniform3);
-            Register<Vector4>(GL.Uniform4);
-            Register<Vector2d>((_, vector) => GL.Uniform2(_, vector.X, vector.Y));
-            Register<Vector2h>((_, vector) => GL.Uniform2(_, vector.X, vector.Y));
-            Register<Vector3d>((_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z));
-            Register<Vector3h>((_, vector) => GL.Uniform3(_, vector.X, vector.Y, vector.Z));
-            Register<Vector4d>((_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W));
-            Register<Vector4h>((_, vector) => GL.Uniform4(_, vector.X, vector.Y, vector.Z, vector.W));
-            Register<Matrix2>((_, matrix) => GL.UniformMatrix2(_, false, ref matrix));
-            Register<Matrix3>((_, matrix) => GL.UniformMatrix3(_, false, ref matrix));
-            Register<Matrix4>((_, matrix) => GL.UniformMatrix4(_, false, ref matrix));
-            Register<Matrix2x3>((_, matrix) => GL.UniformMatrix2x3(_, false, ref matrix));
-            Register<Matrix2x4>((_, matrix) => GL.UniformMatrix2x4(_, false, ref matrix));
-            Register<Matrix3x2>((_, matrix) => GL.UniformMatrix3x2(_, false, ref matrix));
-            Register<Matrix3x4>((_, matrix) => GL.UniformMatrix3x4(_, false, ref matrix));
-            Register<Matrix4x2>((_, matrix) => GL.UniformMatrix4x2(_, false, ref matrix));
-            Register<Matrix4x3>((_, matrix) => GL.UniformMatrix4x3(_, false, ref matrix));
         }
 
         public Uniform(Action<int, T> setter)
-            : this()
         {
+            if (setter == null) throw new ArgumentNullException("setter");
             _setter = setter;
         }
 
-        internal Uniform()
+        internal override void OnLink()
         {
-            PreLink += OnPreLink;
-            PostLink += OnPostLink;
-        }
-
-        private void OnPreLink()
-        {
-            if (_setter == null) throw new ApplicationException("This type of uniform is not supported: " + typeof(T).FullName);
-        }
-
-        internal void OnPostLink()
-        {
-            Location = GL.GetUniformLocation(Program, Name);
+            Location = GL.GetUniformLocation(ProgramHandle, Name);
             Active = Location != -1;
             if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", Name);
         }
 
         /// <summary>
         /// Sets the given value to the program uniform.<br/>
-        /// Must be called on an active shader, i.e. after <see cref="Shader"/>.<see cref="Shader.Use()"/>, otherwise an <see cref="InvalidOperationException"/> is thrown.
+        /// Must be called on an active program, i.e. after <see cref="Program"/>.<see cref="Program.Use()"/>.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        /// <returns>True if the uniform was successfully set, otherwise false.</returns>
-        public bool Set(T value)
+        public void Set(T value)
         {
-            AssertProgramActive();
+            Program.AssertActive();
             _value = value;
-            if (!Active) return false;
-            _setter(Location, value);
-            return true;
+            if (Active) _setter(Location, value);
         }
     }
 }

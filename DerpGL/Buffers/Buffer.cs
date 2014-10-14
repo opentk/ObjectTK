@@ -137,7 +137,7 @@ namespace DerpGL.Buffers
         /// <param name="data">The data to be transfered into the buffer.</param>
         public void SubData(BufferTarget bufferTarget, T[] data)
         {
-            if (data.Length > ElementCount) throw new ApplicationException(
+            if (data.Length > ElementCount) throw new ArgumentException(
                 string.Format("Buffer not large enough to hold data. Buffer size: {0}. Elements to write: {1}.", ElementCount, data.Length));
             // check if data does not fit at the end of the buffer
             var rest = ElementCount - CurrentElementIndex;
@@ -175,8 +175,6 @@ namespace DerpGL.Buffers
         /// <param name="offset">The index to the first element of the buffer to be overwritten.</param>
         public void SubData(BufferTarget bufferTarget, T[] data, int offset)
         {
-            if (data.Length > ElementCount - offset) throw new ApplicationException(
-                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Offset: {1}. Elements to write: {2}.", ElementCount, offset, data.Length));
             SubData(bufferTarget, data, offset, data.Length);
         }
 
@@ -190,9 +188,9 @@ namespace DerpGL.Buffers
         /// <param name="count">The number of elements from data to write.</param>
         public void SubData(BufferTarget bufferTarget, T[] data, int offset, int count)
         {
-            if (count > ElementCount - offset) throw new ApplicationException(
-                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Offset: {1}. Elements to write: {2}.", ElementCount, offset, data.Length));
-            if (count > data.Length) throw new ApplicationException(
+            if (count > ElementCount - offset) throw new ArgumentException(
+                string.Format("Buffer not large enough to hold data. Buffer size: {0}. Offset: {1}. Elements to write: {2}.", ElementCount, offset, count));
+            if (count > data.Length) throw new ArgumentException(
                 string.Format("Not enough data to write to buffer. Data length: {0}. Elements to write: {1}.", data.Length, count));
             GL.BindBuffer(bufferTarget, Handle);
             GL.BufferSubData(bufferTarget, (IntPtr)(ElementSize * offset), (IntPtr)(ElementSize * count), data);
@@ -239,11 +237,8 @@ namespace DerpGL.Buffers
         {
             int uploadedSize;
             GL.GetBufferParameter(bufferTarget, BufferParameterName.BufferSize, out uploadedSize);
-            if (uploadedSize != size)
-            {
-                throw new ApplicationException(string.Format(
-                    "Problem uploading data to buffer object. Tried to upload {0} bytes, but uploaded {1}.", size, uploadedSize));
-            }
+            if (uploadedSize != size) throw new ApplicationException(
+                string.Format("Problem uploading data to buffer object. Tried to upload {0} bytes, but uploaded {1}.", size, uploadedSize));
         }
     }
 }

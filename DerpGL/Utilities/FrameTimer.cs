@@ -17,7 +17,7 @@
 #endregion
 using System.Diagnostics;
 
-namespace DerpGL
+namespace DerpGL.Utilities
 {
     /// <summary>
     /// Handles frame timing and fps calculation.

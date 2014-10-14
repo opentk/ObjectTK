@@ -18,9 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DerpGL.Exceptions;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL
+namespace DerpGL.Queries
 {
     /// <summary>
     /// Provides named queries of hardware counters.
@@ -116,7 +117,7 @@ namespace DerpGL
         public void Begin(T mapping, QueryTarget target)
         {
             var map = _queries[mapping];
-            if (map.Active) throw new ApplicationException(string.Format("Query already active: {0} {1}", target, mapping));
+            if (map.Active) throw new QueryException(string.Format("Query already active: {0} {1}", target, mapping));
             map.Active = true;
             map.Target = target;
             map.Index = AcquireIndex(target);
@@ -130,7 +131,7 @@ namespace DerpGL
         public void End(T mapping)
         {
             var map = _queries[mapping];
-            if (!map.Active) throw new ApplicationException(string.Format("Query not active: {0}", mapping));
+            if (!map.Active) throw new QueryException(string.Format("Query not active: {0}", mapping));
             GL.EndQueryIndexed(map.Target, map.Index);
             ReleaseIndex(map.Target, map.Index);
             map.Active = false;

@@ -1,6 +1,7 @@
 ﻿using System;
 using DerpGL;
 using DerpGL.Shaders;
+using DerpGL.Utilities;
 using OpenTK.Graphics;
 using OpenTK.Input;
 
@@ -23,7 +24,7 @@ namespace Examples
         private void OnLoad(object sender, EventArgs e)
         {
             // set search path for shader files
-            Shader.BasePath = "Data/Shaders/";
+            Program.BasePath = "Data/Shaders/";
         }
 
         private void OnUnload(object sender, EventArgs e)

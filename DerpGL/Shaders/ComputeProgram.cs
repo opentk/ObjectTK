@@ -24,8 +24,8 @@ namespace DerpGL.Shaders
     /// <summary>
     /// Represents a compute shader.
     /// </summary>
-    public class ComputeShader
-        : Shader
+    public class ComputeProgram
+        : Program
     {
         /// <summary>
         /// The work group size of the compute shader.
@@ -43,7 +43,7 @@ namespace DerpGL.Shaders
         /// </summary>
         public static Vector3i MaximumWorkGroupSize { get; protected set; }
 
-        static ComputeShader()
+        static ComputeProgram()
         {
             int x,y,z;
             GL.GetInteger((GetIndexedPName)All.MaxComputeWorkGroupCount, 0, out x);
@@ -56,9 +56,10 @@ namespace DerpGL.Shaders
         /// Initializes a new instance of this compute shader.<br/>
         /// Retrieves shader source filenames from ShaderSourceAttributes tagged to this type.
         /// </summary>
-        protected ComputeShader()
+        protected ComputeProgram()
         {
-            if (ShaderSourceAttribute.GetShaderSources(this).Any(_ => _.Key != ShaderType.ComputeShader))
+            //TODO: can not work like this
+            if (ShaderSourceAttribute.GetShaderSources(GetType()).Any(_ => _.Key != ShaderType.ComputeShader))
                 throw new ApplicationException("Invalid ShaderType supplied to compute shader via ShaderSourceAttribute(s).");
             // query the work group size
             var sizes = new int[3];
@@ -74,6 +75,7 @@ namespace DerpGL.Shaders
         /// </summary>
         public static Vector3i SplitWorkGroups(long groups)
         {
+            //TODO: add missing limitations. there is not only the limitation on workgroup size in each dimension but also for the total number of work groups
             if (groups > (long)MaximumWorkGroupSize.X * MaximumWorkGroupSize.Y * MaximumWorkGroupSize.Z)
                 throw new ArgumentException("Maximum work group size exceeded.");
             double n = groups;

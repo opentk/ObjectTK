@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System;
 using System.Collections.Generic;
+using DerpGL.Exceptions;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL
+namespace DerpGL.Queries
 {
     /// <summary>
     /// Base class for <see cref="QueryMapping{T}"/>.<br/>
@@ -56,7 +56,8 @@ namespace DerpGL
                 if (index > i) break;
                 i++;
             }
-            if (!IndexableTargets.Contains(target) && i > 0) throw new ApplicationException(string.Format("Query target already in use and not indexable: {0}", target));
+            if (!IndexableTargets.Contains(target) && i > 0) throw new QueryException(
+                string.Format("Query target not indexable and the single target it already in use: {0}", target));
             // remember index is in use
             TargetIndices[target].Add(i);
             return i;

@@ -21,8 +21,11 @@ using log4net;
 using OpenTK;
 using OpenTK.Input;
 
-namespace DerpGL
+namespace DerpGL.Utilities
 {
+    /// <summary>
+    /// TODO: needs a complete overhaul..
+    /// </summary>
     public class Camera
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Camera));
