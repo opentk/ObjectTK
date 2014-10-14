@@ -16,33 +16,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
-using System.Reflection;
+using DerpGL.Exceptions;
 
 namespace DerpGL.Shaders
 {
-    /// <summary>
-    /// Contains a mapping a <see cref="Type"/> to a function used to initialize an instance of that type.
-    /// </summary>
-    /// <typeparam name="T">The type to initialize.</typeparam>
-    public class Mapping<T>
-        : IMapping
+    public static class ProgramFactory
     {
-        private readonly Func<int, MemberInfo, T> _creator;
-
-        public Type MappedType { get { return typeof(T); } }
-
-        /// <summary>
-        /// Creates a new mapping.
-        /// </summary>
-        /// <param name="creator">The function used to initialize instances of the mapped type.</param>
-        public Mapping(Func<int, MemberInfo, T> creator)
+        public static T Create<T>()
+            where T : Program
         {
-            _creator = creator;
-        }
-
-        public object Create(int program, MemberInfo info)
-        {
-            return _creator(program, info);
+            // retrieve shader types and filenames from attributes
+            var shaders = ShaderSourceAttribute.GetShaderSources(typeof(T));
+            if (shaders.Count == 0) throw new DerpGLException("ShaderSourceAttribute(s) missing!");
+            // create program instance
+            var program = (T)Activator.CreateInstance(typeof(T));
+            // compile and attach all shaders
+            foreach (var pair in shaders)
+            {
+                program.Attach(pair.Key, pair.Value);
+            }
+            // link and return the program
+            program.Link();
+            return program;
         }
     }
 }

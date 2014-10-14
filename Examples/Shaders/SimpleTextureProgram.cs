@@ -8,8 +8,8 @@ namespace Examples.Shaders
 {
     [VertexShaderSource("SimpleTexture.vs")]
     [FragmentShaderSource("SimpleTexture.fs")]
-    public class SimpleTextureShader
-        : Shader
+    public class SimpleTextureProgram
+        : Program
     {
         [VertexAttrib(3, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }

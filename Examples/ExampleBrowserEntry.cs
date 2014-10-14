@@ -4,7 +4,7 @@ using log4net.Config;
 
 namespace Examples
 {
-    static class Program
+    public static class ExampleBrowserEntry
     {
         [STAThread]
         public static void Main()

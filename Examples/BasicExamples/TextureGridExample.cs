@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using DerpGL;
 using DerpGL.Buffers;
+using DerpGL.Shaders;
 using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
@@ -28,9 +29,10 @@ namespace Examples.BasicExamples
             }
         }
 
-        private TextureGridShader _gridShader;
+        private TextureGridProgram _gridProgram;
         private Texture2DArray _textureArray;
         private Buffer<Minefield> _buffer;
+        private VertexArray _vao;
 
         private readonly string[] _stateTextures = { "empty.png", "flag.png", "mine.png" };
 
@@ -41,14 +43,11 @@ namespace Examples.BasicExamples
             : base("Textured grid rendering")
         {
             Load += OnLoad;
-            Unload += OnUnload;
             RenderFrame += OnRenderFrame;
         }
 
         protected void OnLoad(object sender, EventArgs e)
         {
-            // load shader
-            _gridShader = new TextureGridShader();
             // load textures into array
             for (var i = 0; i < _stateTextures.Length; i++)
             {
@@ -67,15 +66,22 @@ namespace Examples.BasicExamples
             }
             _buffer = new Buffer<Minefield>();
             _buffer.Init(BufferTarget.ArrayBuffer, field);
+            // load program
+            _gridProgram = ProgramFactory.Create<TextureGridProgram>();
+            _gridProgram.Use();
+            // bind the texture and set uniform
+            _gridProgram.TextureData.BindTexture(TextureUnit.Texture0, _textureArray);
+            // set up vertex array and attributes
+            _vao = new VertexArray();
+            _vao.Bind();
+            _vao.BindAttribute(_gridProgram.InPosition, _buffer);
+            _vao.BindAttribute(_gridProgram.InTexture, _buffer, 8);
+            // set nice clear color
+            GL.ClearColor(Color.MidnightBlue);
             // initialize camera position
             Camera.Pitch = 0;
             Camera.Yaw = 0;
             Camera.Position = new Vector3(0, 0, 15);
-        }
-
-        private void OnUnload(object sender, EventArgs e)
-        {
-            GLResource.DisposeAll(this);
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs frameEventArgs)
@@ -85,18 +91,12 @@ namespace Examples.BasicExamples
 
             // setup stuff
             GL.Viewport(0, 0, Width, Height);
-            GL.ClearColor(Color.MidnightBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            GL.Enable(EnableCap.DepthTest);
             SetupPerspective();
 
-            // render grid
-            _gridShader.Use();
-            _gridShader.InPosition.Bind(_buffer);
-            _gridShader.InTexture.Bind(_buffer, 8);
-            _gridShader.TextureData.BindTexture(TextureUnit.Texture0, _textureArray);
-            _gridShader.ModelViewProjectionMatrix.Set(Matrix4.CreateTranslation(-500,-500,0) * ModelView * Projection);
-            GL.DrawArrays(PrimitiveType.Points, 0, _buffer.ElementCount);
+            // update MVP matrix and render grid
+            _gridProgram.ModelViewProjectionMatrix.Set(Matrix4.CreateTranslation(-500,-500,0) * ModelView * Projection);
+            _vao.DrawArrays(PrimitiveType.Points, _buffer.ElementCount);
 
             // swap buffers
             SwapBuffers();

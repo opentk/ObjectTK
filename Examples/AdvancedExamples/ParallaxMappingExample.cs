@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using DerpGL.Buffers;
+using DerpGL.Shaders;
 using DerpGL.Textures;
 using Examples.Shaders;
 using OpenTK;
@@ -23,8 +24,9 @@ namespace Examples.AdvancedExamples
             public Vector2 TexCoord;
         }
 
+        private VertexArray _vao;
         private Buffer<Vertex> _buffer;
-        private ParallaxShader _shader;
+        private ParallaxProgram _program;
         private Texture2D _textureDiffuseHeight;
         private Texture2D _textureNormalGloss;
         
@@ -139,7 +141,25 @@ namespace Examples.AdvancedExamples
             _buffer.Init(BufferTarget.ArrayBuffer, vertices);
 
             // load shader
-            _shader = new ParallaxShader();
+            _program = ProgramFactory.Create<ParallaxProgram>();
+            _program.Use();
+
+            // set up vertex array
+            _vao = new VertexArray();
+            _vao.Bind();
+            // bind vertex attributes
+            // the buffer layout is defined by the Vertex struct:
+            //   data X Y Z NX NY NZ TX TY TZ  U  V *next vertex*
+            // offset 0 4 8 12 16 20 24 28 32 36 40      44
+            // having to work with offsets could be prevented by using seperate buffer objects for each attribute,
+            // but that might reduce performance and can get annoying as well.
+            // performance increase could also be achieved by improving coherent read access
+            // by padding the struct so that each attribute begins at a multiple of 16 bytes, i.e. 4-floats
+            // because the GPU can then read all 4 floats at once. I did not do that here to keep it simple.
+            _vao.BindAttribute(_program.InPosition, _buffer);
+            _vao.BindAttribute(_program.InNormal, _buffer, 12);
+            _vao.BindAttribute(_program.InTangent, _buffer, 24);
+            _vao.BindAttribute(_program.InTexCoord, _buffer, 36);
 
             // set camera position
             Camera.DefaultPosition = new Vector3(0.0f, 0.0f, 3.0f);
@@ -156,7 +176,7 @@ namespace Examples.AdvancedExamples
         protected void OnUnload(object sender, EventArgs eventArgs)
         {
             // clean up resources
-            _shader.Dispose();
+            _program.Dispose();
             _textureDiffuseHeight.Dispose();
             _textureNormalGloss.Dispose();
         }
@@ -209,50 +229,27 @@ namespace Examples.AdvancedExamples
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
-            _shader.Use();
-            
             // first Material's uniforms
-            _shader.Material_DiffuseAndHeight.BindTexture(TextureUnit.Texture0, _textureDiffuseHeight);
-            _shader.Material_NormalAndGloss.BindTexture(TextureUnit.Texture1, _textureNormalGloss);
-            _shader.Material_ScaleBiasShininess.Set(_materialScaleAndBiasAndShininess);
+            _program.Material_DiffuseAndHeight.BindTexture(TextureUnit.Texture0, _textureDiffuseHeight);
+            _program.Material_NormalAndGloss.BindTexture(TextureUnit.Texture1, _textureNormalGloss);
+            _program.Material_ScaleBiasShininess.Set(_materialScaleAndBiasAndShininess);
 
             // the rest are vectors
-            _shader.Camera_Position.Set(Camera.Position);
-            _shader.Light_Position.Set(_lightPosition);
-            _shader.Light_DiffuseColor.Set(_lightDiffuse);
-            _shader.Light_SpecularColor.Set(_lightSpecular);
-
-            // bind vertex attributes
-            // the buffer layout is defined by the Vertex struct:
-            //   data X Y Z NX NY NZ TX TY TZ  U  V *next vertex*
-            // offset 0 4 8 12 16 20 24 28 32 36 40      44
-            // having to work with offsets could be prevented by using seperate buffer objects for each attribute,
-            // but that might reduce performance and can get annoying as well.
-            // performance increase could also be achieved by improving coherent read access
-            // by padding the struct so that each attribute begins at a multiple of 16 bytes, i.e. 4-floats
-            // because the GPU can then read all 4 floats at once. I did not do that here to keep it simple.
-            _shader.InPosition.Bind(_buffer);
-            _shader.InNormal.Bind(_buffer, 12);
-            _shader.InTangent.Bind(_buffer, 24);
-            _shader.InTexCoord.Bind(_buffer, 36);
+            _program.Camera_Position.Set(Camera.Position);
+            _program.Light_Position.Set(_lightPosition);
+            _program.Light_DiffuseColor.Set(_lightDiffuse);
+            _program.Light_SpecularColor.Set(_lightSpecular);
 
             // set up matrices
             SetupPerspective();
             var normalMatrix = new Matrix3(ModelView).Inverted();
             normalMatrix.Transpose();
-            _shader.NormalMatrix.Set(normalMatrix);
-            _shader.ModelViewMatrix.Set(ModelView);
-            _shader.ModelViewProjectionMatrix.Set(ModelView * Projection);
+            _program.NormalMatrix.Set(normalMatrix);
+            _program.ModelViewMatrix.Set(ModelView);
+            _program.ModelViewProjectionMatrix.Set(ModelView * Projection);
 
             // render
-            GL.DrawArrays(PrimitiveType.TriangleStrip, 0, _buffer.ElementCount);
-
-            // visualize the light position 'somehow'
-            GL.UseProgram(0);
-            GL.Begin(PrimitiveType.Points);
-            GL.Color3(_lightSpecular);
-            GL.Vertex3(_lightPosition);
-            GL.End();
+            _vao.DrawArrays(PrimitiveType.TriangleStrip, _buffer.ElementCount);
 
             SwapBuffers();
         }

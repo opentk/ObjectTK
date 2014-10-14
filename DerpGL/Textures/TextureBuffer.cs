@@ -61,7 +61,7 @@ namespace DerpGL.Textures
         public void BindBufferToTexture<T>(Buffer<T> buffer, SizedInternalFormat internalFormat)
             where T : struct
         {
-            if (!buffer.Initialized) throw new ApplicationException("Can not bind uninitialized buffer to buffer texture.");
+            if (!buffer.Initialized) throw new ArgumentException("Can not bind uninitialized buffer to buffer texture.", "buffer");
             GL.BindTexture(TextureTarget.TextureBuffer, Handle);
             GL.TexBuffer(TextureBufferTarget.TextureBuffer, internalFormat, buffer.Handle);
         }

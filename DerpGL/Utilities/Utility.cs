@@ -15,37 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
+using DerpGL.Exceptions;
+using log4net;
 using OpenTK.Graphics.OpenGL;
 
-namespace DerpGL.Buffers
+namespace DerpGL.Utilities
 {
-    /// <summary>
-    /// Represents a transform feedback object.
-    /// </summary>
-    public class TransformFeedbackBuffer
-        : GLResource
+    public static class Utility
     {
-        /// <summary>
-        /// Creates a new transform feedback buffer.
-        /// </summary>
-        public TransformFeedbackBuffer()
-            : base(GL.GenTransformFeedback())
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(Utility));
+
+        public static void Assert(string errorMessage)
         {
-            
+            Assert(GL.GetError(), ErrorCode.NoError, errorMessage);
         }
 
-        protected override void Dispose(bool manual)
+        public static void Assert(ErrorCode desiredErrorCode, string errorMessage)
         {
-            if (!manual) return;
-            GL.DeleteTransformFeedback(Handle);
+            Assert(GL.GetError(), desiredErrorCode, errorMessage);
         }
 
-        /// <summary>
-        /// Binds the transform feedback buffer.
-        /// </summary>
-        public void Bind()
+        public static void Assert<T>(T value, T desiredValue, string errorMessage)
         {
-            GL.BindTransformFeedback(TransformFeedbackTarget.TransformFeedback, Handle);
+            if (desiredValue.Equals(value)) return;
+            Logger.Error(string.Format("Assert failed: {0}\n{1}", value, errorMessage));
+            throw new DerpGLException(string.Format("ErrorCode: {0}\n{1}", value, errorMessage));
         }
     }
 }

@@ -15,37 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using OpenTK.Graphics.OpenGL;
-
-namespace DerpGL.Buffers
+namespace DerpGL.Exceptions
 {
-    /// <summary>
-    /// Represents a transform feedback object.
-    /// </summary>
-    public class TransformFeedbackBuffer
-        : GLResource
+    public class ObjectNotBoundException
+        : DerpGLException
     {
-        /// <summary>
-        /// Creates a new transform feedback buffer.
-        /// </summary>
-        public TransformFeedbackBuffer()
-            : base(GL.GenTransformFeedback())
+        public ObjectNotBoundException()
         {
-            
         }
 
-        protected override void Dispose(bool manual)
+        public ObjectNotBoundException(string message)
+            : base(message)
         {
-            if (!manual) return;
-            GL.DeleteTransformFeedback(Handle);
-        }
-
-        /// <summary>
-        /// Binds the transform feedback buffer.
-        /// </summary>
-        public void Bind()
-        {
-            GL.BindTransformFeedback(TransformFeedbackTarget.TransformFeedback, Handle);
         }
     }
 }

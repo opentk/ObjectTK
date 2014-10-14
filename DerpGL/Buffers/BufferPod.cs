@@ -21,7 +21,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents two OpenGL buffer objects which are bundled together to simplify ping-ponging.
+    /// Represents two buffer objects which are bundled together to simplify ping-ponging.
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer objects.</typeparam>
     public class BufferPod<T>

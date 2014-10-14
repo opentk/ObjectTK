@@ -9,8 +9,8 @@ namespace Examples.Shaders
     [VertexShaderSource("TextureGrid.vs")]
     [GeometryShaderSource("TextureGrid.gs")]
     [FragmentShaderSource("TextureGrid.fs")]
-    public class TextureGridShader
-        : Shader
+    public class TextureGridProgram
+        : Program
     {
         [VertexAttrib(2, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }

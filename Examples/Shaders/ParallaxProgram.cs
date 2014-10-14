@@ -8,8 +8,8 @@ namespace Examples.Shaders
 {
     [VertexShaderSource("Parallax.vs")]
     [FragmentShaderSource("Parallax.fs")]
-    public class ParallaxShader
-        : Shader
+    public class ParallaxProgram
+        : Program
     {
         [VertexAttrib(3, VertexAttribPointerType.Float)]
         public VertexAttrib InPosition { get; protected set; }

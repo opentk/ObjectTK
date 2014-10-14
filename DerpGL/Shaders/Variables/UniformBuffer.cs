@@ -25,11 +25,16 @@ namespace DerpGL.Shaders.Variables
     public sealed class UniformBuffer
         : BufferBinding
     {
-        internal UniformBuffer(int program, string name)
-            : base(program, name, BufferRangeTarget.UniformBuffer, ProgramInterface.UniformBlock)
+        internal UniformBuffer()
+            : base(BufferRangeTarget.UniformBuffer, ProgramInterface.UniformBlock)
         {
+        }
+
+        internal override void OnLink()
+        {
+            base.OnLink();
             // retrieve the default binding point
-            if (Active) GL.GetActiveUniformBlock(Program, Index, ActiveUniformBlockParameter.UniformBlockBinding, out Binding);
+            if (Active) GL.GetActiveUniformBlock(ProgramHandle, Index, ActiveUniformBlockParameter.UniformBlockBinding, out Binding);
         }
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace DerpGL.Shaders.Variables
         {
             base.ChangeBinding(binding);
             if (!Active) return;
-            GL.UniformBlockBinding(Program, Index, binding);
+            GL.UniformBlockBinding(ProgramHandle, Index, binding);
         }
 
         /// <summary>
@@ -50,7 +55,7 @@ namespace DerpGL.Shaders.Variables
         public int GetBlockSize()
         {
             int size;
-            GL.GetActiveUniformBlock(Program, Index, ActiveUniformBlockParameter.UniformBlockDataSize, out size);
+            GL.GetActiveUniformBlock(ProgramHandle, Index, ActiveUniformBlockParameter.UniformBlockDataSize, out size);
             return size;
         }
 
@@ -61,11 +66,11 @@ namespace DerpGL.Shaders.Variables
         public void GetBlockOffsets(out int[] offsets)
         {
             int uniforms;
-            GL.GetActiveUniformBlock(Program, Index, ActiveUniformBlockParameter.UniformBlockActiveUniforms, out uniforms);
+            GL.GetActiveUniformBlock(ProgramHandle, Index, ActiveUniformBlockParameter.UniformBlockActiveUniforms, out uniforms);
             var indices = new int[uniforms];
-            GL.GetActiveUniformBlock(Program, Index, ActiveUniformBlockParameter.UniformBlockActiveUniformIndices, indices);
+            GL.GetActiveUniformBlock(ProgramHandle, Index, ActiveUniformBlockParameter.UniformBlockActiveUniformIndices, indices);
             offsets = new int[uniforms];
-            GL.GetActiveUniforms(Program, uniforms, indices, ActiveUniformParameter.UniformOffset, offsets);
+            GL.GetActiveUniforms(ProgramHandle, uniforms, indices, ActiveUniformParameter.UniformOffset, offsets);
         }
     }
 }

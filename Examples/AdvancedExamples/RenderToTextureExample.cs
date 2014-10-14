@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using DerpGL.Buffers;
+using DerpGL.Shaders;
 using DerpGL.Shapes;
 using DerpGL.Textures;
 using Examples.Shaders;
@@ -20,11 +21,14 @@ namespace Examples.AdvancedExamples
         private RenderBuffer _depthBuffer;
         private Texture2D _texture;
 
-        private SimpleColorShader _colorShader;
-        private SimpleTextureShader _textureShader;
+        private SimpleColorProgram _colorProgram;
+        private SimpleTextureProgram _textureProgram;
         
         private ColorCube _cube;
         private TexturedQuad _quad;
+
+        private VertexArray _cubeVao;
+        private VertexArray _quadVao;
 
         public RenderToTextureExample()
             : base("Render to texture")
@@ -51,15 +55,28 @@ namespace Examples.AdvancedExamples
             _framebuffer.Attach(FramebufferAttachment.ColorAttachment0, _texture);
             _framebuffer.Unbind();
 
-            // initialize shaders
-            _colorShader = new SimpleColorShader();
-            _textureShader = new SimpleTextureShader();
-
             // initialize demonstration geometry
             _cube = new ColorCube();
             _cube.UpdateBuffers();
             _quad = new TexturedQuad();
             _quad.UpdateBuffers();
+
+            // initialize shaders
+            _colorProgram = ProgramFactory.Create<SimpleColorProgram>();
+            _textureProgram = ProgramFactory.Create<SimpleTextureProgram>();
+
+            // set up vertex attributes for the cube
+            _cubeVao = new VertexArray();
+            _cubeVao.Bind();
+            _cubeVao.BindAttribute(_colorProgram.InPosition, _cube.VertexBuffer);
+            _cubeVao.BindAttribute(_colorProgram.InColor, _cube.ColorBuffer);
+            _cubeVao.BindElements(_cube.IndexBuffer);
+
+            // set up vertex attributes for the quad
+            _quadVao = new VertexArray();
+            _quadVao.Bind();
+            _quadVao.BindAttribute(_textureProgram.InPosition, _quad.VertexBuffer);
+            _quadVao.BindAttribute(_textureProgram.InTexCoord, _quad.TexCoordBuffer);
 
             // enable depth testing
             GL.Enable(EnableCap.DepthTest);
@@ -83,16 +100,14 @@ namespace Examples.AdvancedExamples
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // render rotating cube to texture
-            _colorShader.Use();
-            _colorShader.ModelViewProjectionMatrix.Set(
+            _colorProgram.Use();
+            _colorProgram.ModelViewProjectionMatrix.Set(
                 Matrix4.CreateRotationX((float) FrameTimer.TimeRunning/1000)
                 * Matrix4.CreateRotationY((float) FrameTimer.TimeRunning/1000)
                 * Matrix4.CreateTranslation(0,0,-5)
                 * Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, FramebufferWidth/(float)FramebufferHeight, 0.1f, 100));
-            _colorShader.InPosition.Bind(_cube.VertexBuffer);
-            _colorShader.InColor.Bind(_cube.ColorBuffer);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _cube.IndexBuffer.Handle);
-            GL.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            _cubeVao.Bind();
+            _cubeVao.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount);
 
             // reset to default framebuffer
             _framebuffer.Unbind();
@@ -104,11 +119,10 @@ namespace Examples.AdvancedExamples
             SetupPerspective();
             
             // render quad with texture
-            _textureShader.Use();
-            _textureShader.ModelViewProjectionMatrix.Set(ModelView * Projection);
-            _textureShader.InPosition.Bind(_quad.VertexBuffer);
-            _textureShader.InTexCoord.Bind(_quad.TexCoordBuffer);
-            GL.DrawArrays(PrimitiveType.TriangleStrip, 0, _quad.VertexBuffer.ElementCount);
+            _textureProgram.Use();
+            _textureProgram.ModelViewProjectionMatrix.Set(ModelView * Projection);
+            _quadVao.Bind();
+            _quadVao.DrawArrays(PrimitiveType.TriangleStrip, _quad.VertexBuffer.ElementCount);
 
             // swap buffers
             SwapBuffers();

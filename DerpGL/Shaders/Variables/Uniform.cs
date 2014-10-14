@@ -26,20 +26,14 @@ namespace DerpGL.Shaders.Variables
     /// </summary>
     /// <typeparam name="T">The type of the uniform.</typeparam>
     public class Uniform<T>
-        : ShaderVariable
+        : ProgramVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Uniform<T>));
 
         /// <summary>
         /// The location of the uniform within the shader program.
         /// </summary>
-        public readonly int Location;
-
-        /// <summary>
-        /// Specifies whether the uniform is active.<br/>
-        /// Unused uniforms are generally removed by OpenGL and cause them to be inactive.
-        /// </summary>
-        public readonly bool Active;
+        public int Location { get; private set; }
         
         /// <summary>
         /// Action used to set the uniform.<br/>
@@ -67,28 +61,34 @@ namespace DerpGL.Shaders.Variables
             }
         }
 
-        internal Uniform(int program, string name, Action<int, T> setter)
-            : base(program, name)
+        internal Uniform()
+            : this(UniformSetter.Get<T>())
         {
-            Location = GL.GetUniformLocation(program, name);
-            Active = Location != -1;
-            if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", name);
+        }
+
+        public Uniform(Action<int, T> setter)
+        {
+            if (setter == null) throw new ArgumentNullException("setter");
             _setter = setter;
+        }
+
+        internal override void OnLink()
+        {
+            Location = GL.GetUniformLocation(ProgramHandle, Name);
+            Active = Location > -1;
+            if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", Name);
         }
 
         /// <summary>
         /// Sets the given value to the program uniform.<br/>
-        /// Must be called on an active shader, i.e. after <see cref="Shader"/>.<see cref="Shader.Use()"/>, otherwise an <see cref="InvalidOperationException"/> is thrown.
+        /// Must be called on an active program, i.e. after <see cref="Program"/>.<see cref="Program.Use()"/>.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        /// <returns>True if the uniform was successfully set, otherwise false.</returns>
-        public bool Set(T value)
+        public void Set(T value)
         {
-            AssertProgramActive();
+            Program.AssertActive();
             _value = value;
-            if (!Active) return false;
-            _setter(Location, value);
-            return true;
+            if (Active) _setter(Location, value);
         }
     }
 }

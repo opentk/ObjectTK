@@ -16,12 +16,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
+using System.Linq;
+using DerpGL.Utilities;
 using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents an OpenGL texture.
+    /// Represents a texture object.
     /// </summary>
     /// <remarks>
     /// <code>
@@ -132,8 +134,9 @@ namespace DerpGL.Textures
         protected static int GetLevels(int levels, params int[] dimensions)
         {
             var maxLevels = TextureFactory.CalculateMaxMipmapLevels(dimensions);
-            if (levels > maxLevels || levels < 0) throw new ArgumentException();
-            return levels > 0 ? levels : maxLevels;
+            if (levels > maxLevels || levels < 0) throw new ArgumentOutOfRangeException("levels", levels,
+                string.Format("The valid range of mipmapping levels for a maximum texture dimension of {0} is [0,{1}]", dimensions.Max(), maxLevels));
+            return levels == 0 ? maxLevels : levels;
         }
 
         /// <summary>

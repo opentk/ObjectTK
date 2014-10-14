@@ -23,7 +23,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace DerpGL
+namespace DerpGL.Utilities
 {
     /// <summary>
     /// Provides basic functionality to an OpenTK GameWindow such as camera controls,
