@@ -77,7 +77,7 @@
     <Compile Include="Shaders\Variables\FragData.cs" />
     <Compile Include="Shaders\Variables\ImageUniform.cs" />
     <Compile Include="Shaders\Variables\ShaderStorage.cs" />
-    <Compile Include="Shaders\Variables\ShaderVariable.cs" />
+    <Compile Include="Shaders\Variables\ProgramVariable.cs" />
     <Compile Include="Shaders\Variables\TextureUniform.cs" />
     <Compile Include="Shaders\Variables\TransformOut.cs" />
     <Compile Include="Shaders\Variables\Uniform.cs" />

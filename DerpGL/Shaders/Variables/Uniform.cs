@@ -26,7 +26,7 @@ namespace DerpGL.Shaders.Variables
     /// </summary>
     /// <typeparam name="T">The type of the uniform.</typeparam>
     public class Uniform<T>
-        : ShaderVariable
+        : ProgramVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Uniform<T>));
 
@@ -75,7 +75,7 @@ namespace DerpGL.Shaders.Variables
         internal override void OnLink()
         {
             Location = GL.GetUniformLocation(ProgramHandle, Name);
-            Active = Location != -1;
+            Active = Location > -1;
             if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", Name);
         }
 

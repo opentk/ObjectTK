@@ -26,7 +26,7 @@ namespace DerpGL.Shaders.Variables
     /// Represents a shader buffer binding point identified by its resource index.
     /// </summary>
     public abstract class BufferBinding
-        : ShaderVariable
+        : ProgramVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(BufferBinding));
 

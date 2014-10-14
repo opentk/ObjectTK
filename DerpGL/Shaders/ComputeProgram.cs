@@ -22,7 +22,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders
 {
     /// <summary>
-    /// Represents a compute shader.
+    /// Represents a compute program.
     /// </summary>
     public class ComputeProgram
         : Program
@@ -58,9 +58,13 @@ namespace DerpGL.Shaders
         /// </summary>
         protected ComputeProgram()
         {
-            //TODO: can not work like this
             if (ShaderSourceAttribute.GetShaderSources(GetType()).Any(_ => _.Key != ShaderType.ComputeShader))
                 throw new ApplicationException("Invalid ShaderType supplied to compute shader via ShaderSourceAttribute(s).");
+        }
+
+        public override void Link()
+        {
+            base.Link();
             // query the work group size
             var sizes = new int[3];
             GL.GetProgram(Handle, (GetProgramParameterName)All.ComputeWorkGroupSize, sizes);
@@ -77,7 +81,7 @@ namespace DerpGL.Shaders
         {
             //TODO: add missing limitations. there is not only the limitation on workgroup size in each dimension but also for the total number of work groups
             if (groups > (long)MaximumWorkGroupSize.X * MaximumWorkGroupSize.Y * MaximumWorkGroupSize.Z)
-                throw new ArgumentException("Maximum work group size exceeded.");
+                throw new ArgumentOutOfRangeException("groups", groups, "Maximum number of work groups exceeded.");
             double n = groups;
             // determine number of layers needed
             var z = (int)Math.Ceiling(n / ((long)MaximumWorkGroupSize.X * MaximumWorkGroupSize.Y));

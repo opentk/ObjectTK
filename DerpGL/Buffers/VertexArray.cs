@@ -84,7 +84,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer)
             where T : struct
         {
-            BindAttribute(attribute, buffer, attribute.Parameters.Components, attribute.Parameters.Type, buffer.ElementSize, 0, attribute.Parameters.Normalized);
+            BindAttribute(attribute, buffer, attribute.Components, attribute.Type, buffer.ElementSize, 0, attribute.Normalized);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer, int offset)
             where T : struct
         {
-            BindAttribute(attribute, buffer, attribute.Parameters.Components, attribute.Parameters.Type, buffer.ElementSize, offset, attribute.Parameters.Normalized);
+            BindAttribute(attribute, buffer, attribute.Components, attribute.Type, buffer.ElementSize, offset, attribute.Normalized);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer, int stride, int offset)
             where T : struct
         {
-            BindAttribute(attribute, buffer, attribute.Parameters.Components, attribute.Parameters.Type, stride, offset, attribute.Parameters.Normalized);
+            BindAttribute(attribute, buffer, attribute.Components, attribute.Type, stride, offset, attribute.Normalized);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer, int stride, int offset, bool normalized)
             where T : struct
         {
-            BindAttribute(attribute, buffer, attribute.Parameters.Components, attribute.Parameters.Type, stride, offset, normalized);
+            BindAttribute(attribute, buffer, attribute.Components, attribute.Type, stride, offset, normalized);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer, int components, int stride, int offset)
             where T : struct
         {
-            BindAttribute(attribute, buffer, components, attribute.Parameters.Type, stride, offset, attribute.Parameters.Normalized);
+            BindAttribute(attribute, buffer, components, attribute.Type, stride, offset, attribute.Normalized);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace DerpGL.Buffers
         public void BindAttribute<T>(VertexAttrib attribute, Buffer<T> buffer, int components, int stride, int offset, bool normalized)
             where T : struct
         {
-            BindAttribute(attribute, buffer, components, attribute.Parameters.Type, stride, offset, normalized);
+            BindAttribute(attribute, buffer, components, attribute.Type, stride, offset, normalized);
         }
 
         /// <summary>

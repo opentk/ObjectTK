@@ -25,7 +25,7 @@ namespace DerpGL.Shaders.Variables
     /// Represents a vertex attribute.
     /// </summary>
     public sealed class VertexAttrib
-        : ShaderVariable
+        : ProgramVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
 
@@ -35,10 +35,19 @@ namespace DerpGL.Shaders.Variables
         public int Index { get; private set; }
 
         /// <summary>
-        /// Default binding parameters attributed to this vertex attribute.<br/>
-        /// TODO: maybe just use to initialize defaults but don't keep the attribute here
+        /// The number components to read.
         /// </summary>
-        public VertexAttribAttribute Parameters { get; private set; }
+        public int Components { get; private set; }
+
+        /// <summary>
+        /// The type of each component.
+        /// </summary>
+        public VertexAttribPointerType Type { get; private set; }
+
+        /// <summary>
+        /// Specifies whether the components should be normalized.
+        /// </summary>
+        public bool Normalized { get; private set; }
 
         internal VertexAttrib()
         {
@@ -46,8 +55,11 @@ namespace DerpGL.Shaders.Variables
 
         protected override void Initialize()
         {
-            Parameters = Property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
-            if (Parameters.Index > 0) BindAttribLocation(Parameters.Index);
+            var attribute = Property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
+            Components = attribute.Components;
+            Type = attribute.Type;
+            Normalized = attribute.Normalized;
+            if (attribute.Index > 0) BindAttribLocation(attribute.Index);
         }
 
         public void BindAttribLocation(int index)
@@ -59,7 +71,7 @@ namespace DerpGL.Shaders.Variables
         internal override void OnLink()
         {
             Index = GL.GetAttribLocation(ProgramHandle, Name);
-            Active = Index != -1;
+            Active = Index > -1;
             if (!Active) Logger.WarnFormat("Vertex attribute not found or not active: {0}", Name);
         }
     }

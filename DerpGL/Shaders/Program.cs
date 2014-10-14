@@ -26,6 +26,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Represents a program object.
+    /// </summary>
     public class Program
         : GLResource
     {
@@ -38,7 +41,7 @@ namespace DerpGL.Shaders
 
         public string Name { get { return GetType().Name; } }
 
-        private List<ShaderVariable> _properties;
+        private List<ProgramVariable> _variables;
 
         static Program()
         {
@@ -49,7 +52,7 @@ namespace DerpGL.Shaders
             : base(GL.CreateProgram())
         {
             Logger.InfoFormat("Creating shader program: {0}", Name);
-            InitializePropertyMappings();
+            InitializeShaderVariables();
         }
 
         protected override void Dispose(bool manual)
@@ -58,19 +61,16 @@ namespace DerpGL.Shaders
             GL.DeleteProgram(Handle);
         }
 
-        /// <summary>
-        /// Initializes properties of the current shader instance.
-        /// </summary>
-        private void InitializePropertyMappings()
+        private void InitializeShaderVariables()
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly;
-            _properties = new List<ShaderVariable>();
-            foreach (var property in GetType().GetProperties(flags).Where(_ => typeof(ShaderVariable).IsAssignableFrom(_.PropertyType)))
+            _variables = new List<ProgramVariable>();
+            foreach (var property in GetType().GetProperties(flags).Where(_ => typeof(ProgramVariable).IsAssignableFrom(_.PropertyType)))
             {
-                var instance = (ShaderVariable)Activator.CreateInstance(property.PropertyType, true);
+                var instance = (ProgramVariable)Activator.CreateInstance(property.PropertyType, true);
                 instance.Initialize(this, property);
                 property.SetValue(this, instance, null);
-                _properties.Add(instance);
+                _variables.Add(instance);
             }
         }
 
@@ -98,13 +98,13 @@ namespace DerpGL.Shaders
             GL.DetachShader(Handle, shader.Handle);
         }
 
-        public void Link()
+        public virtual void Link()
         {
             Logger.DebugFormat("Linking program: {0}", Name);
             GL.LinkProgram(Handle);
             CheckLinkStatus();
             // call OnLink() on all ShaderVariables
-            _properties.ForEach(_ => _.OnLink());
+            _variables.ForEach(_ => _.OnLink());
         }
 
         private void CheckLinkStatus()

@@ -20,7 +20,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents an OpenGL sampler object.
+    /// Represents a sampler object.
     /// </summary>
     public sealed class Sampler
         : GLResource

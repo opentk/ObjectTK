@@ -24,6 +24,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DerpGL.Shaders
 {
+    /// <summary>
+    /// Represents a shader object.
+    /// </summary>
     public sealed class Shader
         : GLResource
     {

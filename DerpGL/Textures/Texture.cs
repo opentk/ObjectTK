@@ -23,7 +23,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Textures
 {
     /// <summary>
-    /// Represents an OpenGL texture.
+    /// Represents a texture object.
     /// </summary>
     /// <remarks>
     /// <code>

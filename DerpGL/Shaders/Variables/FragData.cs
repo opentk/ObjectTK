@@ -26,7 +26,7 @@ namespace DerpGL.Shaders.Variables
     /// see glBindFragDataLocation, glDrawBuffers and http://stackoverflow.com/questions/1733838/fragment-shaders-output-variables
     /// </summary>
     public sealed class FragData
-        : ShaderVariable
+        : ProgramVariable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(FragData));
 

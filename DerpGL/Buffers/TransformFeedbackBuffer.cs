@@ -20,7 +20,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents a transform feedback buffer.
+    /// Represents a transform feedback object.
     /// </summary>
     public class TransformFeedbackBuffer
         : GLResource
