@@ -28,11 +28,10 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Initializes a new instance of the FragmentShaderSourceAttribute.
         /// </summary>
-        /// <param name="file"></param>
-        public FragmentShaderSourceAttribute(string file)
-            : base(ShaderType.FragmentShader, file)
+        /// <param name="path">Specifies the path to the source file.</param>
+        public FragmentShaderSourceAttribute(string path)
+            : base(ShaderType.FragmentShader, path)
         {
-            
         }
     }
 }

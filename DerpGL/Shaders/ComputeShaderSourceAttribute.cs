@@ -28,11 +28,10 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Initializes a new instance of the ComputeShaderSourceAttribute.
         /// </summary>
-        /// <param name="file"></param>
-        public ComputeShaderSourceAttribute(string file)
-            : base(ShaderType.ComputeShader, file)
+        /// <param name="path">Specifies the path to the source file.</param>
+        public ComputeShaderSourceAttribute(string path)
+            : base(ShaderType.ComputeShader, path)
         {
-            
         }
     }
 }

@@ -32,32 +32,32 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Specifies the type of shader.
         /// </summary>
-        public ShaderType Type { get; protected set; }
+        public ShaderType Type { get; private set; }
 
         /// <summary>
         /// Specifies the path and filename to the source file.
         /// </summary>
-        public string File { get; protected set; }
+        public string Path { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ShaderSourceAttribute.
         /// </summary>
-        /// <param name="type">The type of the shader.</param>
-        /// <param name="file">The source filename.</param>
-        public ShaderSourceAttribute(ShaderType type, string file)
+        /// <param name="type">Specifies the type of the shader.</param>
+        /// <param name="path">Specifies the path to the source file.</param>
+        public ShaderSourceAttribute(ShaderType type, string path)
         {
             Type = type;
-            File = file;
+            Path = path;
         }
 
         /// <summary>
         /// Retrieves all shader sources from attributes tagged to the given program type.
         /// </summary>
-        /// <param name="programType">The type of the program of which sources are to be found.</param>
-        /// <returns>Mapping of ShaderType and source filename.</returns>
+        /// <param name="programType">Specifies the type of the program of which the shader sources are to be found.</param>
+        /// <returns>A mapping of ShaderType and source path.</returns>
         public static Dictionary<ShaderType, string> GetShaderSources(Type programType)
         {
-            return programType.GetCustomAttributes<ShaderSourceAttribute>(true).ToDictionary(_ => _.Type, _ => _.File);
+            return programType.GetCustomAttributes<ShaderSourceAttribute>(true).ToDictionary(_ => _.Type, _ => _.Path);
         }
     }
 }
