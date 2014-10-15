@@ -35,11 +35,14 @@ namespace DerpGL.Shaders
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Program));
 
         /// <summary>
-        /// Path used when looking for shader files.
+        /// The base path used when looking for shader files.
         /// </summary>
         public static string BasePath { get; set; }
 
-        private string Name { get { return GetType().Name; } }
+        /// <summary>
+        /// The name of this shader program.
+        /// </summary>
+        public string Name { get { return GetType().Name; } }
 
         private List<ProgramVariable> _variables;
 

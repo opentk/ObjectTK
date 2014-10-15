@@ -70,7 +70,7 @@ namespace Examples.AdvancedExamples
             _cubeVao.Bind();
             _cubeVao.BindAttribute(_colorProgram.InPosition, _cube.VertexBuffer);
             _cubeVao.BindAttribute(_colorProgram.InColor, _cube.ColorBuffer);
-            _cubeVao.BindElements(_cube.IndexBuffer);
+            _cubeVao.BindElementBuffer(_cube.IndexBuffer);
 
             // set up vertex attributes for the quad
             _quadVao = new VertexArray();
@@ -122,7 +122,7 @@ namespace Examples.AdvancedExamples
             _textureProgram.Use();
             _textureProgram.ModelViewProjectionMatrix.Set(ModelView * Projection);
             _quadVao.Bind();
-            _quadVao.DrawArrays(PrimitiveType.TriangleStrip, _quad.VertexBuffer.ElementCount);
+            _quadVao.DrawArrays(PrimitiveType.TriangleStrip, 0, _quad.VertexBuffer.ElementCount);
 
             // swap buffers
             SwapBuffers();

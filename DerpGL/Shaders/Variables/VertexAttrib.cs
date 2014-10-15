@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System.Linq;
+using System.Reflection;
 using log4net;
 using OpenTK.Graphics.OpenGL;
 
@@ -53,9 +54,10 @@ namespace DerpGL.Shaders.Variables
         {
         }
 
-        protected override void Initialize()
+        internal override void Initialize(Program program, PropertyInfo property)
         {
-            var attribute = Property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
+            base.Initialize(program, property);
+            var attribute = property.GetCustomAttributes<VertexAttribAttribute>(false).FirstOrDefault() ?? new VertexAttribAttribute();
             Components = attribute.Components;
             Type = attribute.Type;
             Normalized = attribute.Normalized;

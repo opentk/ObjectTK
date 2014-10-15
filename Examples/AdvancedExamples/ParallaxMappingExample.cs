@@ -249,7 +249,7 @@ namespace Examples.AdvancedExamples
             _program.ModelViewProjectionMatrix.Set(ModelView * Projection);
 
             // render
-            _vao.DrawArrays(PrimitiveType.TriangleStrip, _buffer.ElementCount);
+            _vao.DrawArrays(PrimitiveType.TriangleStrip, 0, _buffer.ElementCount);
 
             SwapBuffers();
         }

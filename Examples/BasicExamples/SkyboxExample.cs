@@ -38,7 +38,7 @@ namespace Examples.BasicExamples
             _vao = new VertexArray();
             _vao.Bind();
             _vao.BindAttribute(_program.InPosition, _cube.VertexBuffer);
-            _vao.BindElements(_cube.IndexBuffer);
+            _vao.BindElementBuffer(_cube.IndexBuffer);
             // create cubemap texture and load all faces
             for (var i = 0; i < 6; i++)
             {

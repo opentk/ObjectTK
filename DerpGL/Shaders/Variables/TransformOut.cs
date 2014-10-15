@@ -15,34 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System;
-using DerpGL.Buffers;
-using OpenTK.Graphics.OpenGL;
-
 namespace DerpGL.Shaders.Variables
 {
     /// <summary>
     /// TODO: Implemented in a completely strange way ..
     /// </summary>
     public sealed class TransformOut
+        : ProgramVariable
     {
-        public readonly int Index;
+        public int Index { get; internal set; }
 
-        internal TransformOut(int index)
+        public TransformOut()
         {
-            Index = index;
+            Index = -1;
+            Active = false;
         }
 
-        public void BindBuffer<T>(Buffer<T> buffer)
-            where T : struct
+        /// <summary>
+        /// Initialized a dummy instance of TransformOut used for the keywords introduced with advanced interleaving.
+        /// </summary>
+        /// <param name="name"></param>
+        internal TransformOut(string name)
         {
-            GL.BindBufferBase(BufferRangeTarget.TransformFeedbackBuffer, Index, buffer.Handle);
-        }
-
-        public void BindBuffer<T>(Buffer<T> buffer, int offset, int size)
-            where T : struct
-        {
-            GL.BindBufferRange(BufferRangeTarget.TransformFeedbackBuffer, Index, buffer.Handle, (IntPtr)offset, (IntPtr)size);
+            Name = name;
         }
     }
 }

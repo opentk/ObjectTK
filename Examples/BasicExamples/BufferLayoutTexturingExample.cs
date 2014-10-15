@@ -134,7 +134,7 @@ namespace Examples.BasicExamples
             // set transformation matrix
             _program.ModelViewProjectionMatrix.Set(ModelView*Projection);
             // render vertex data
-            _vao.DrawArrays(PrimitiveType.TriangleStrip, _vbo.ElementCount);
+            _vao.DrawArrays(PrimitiveType.TriangleStrip, 0, _vbo.ElementCount);
 
             // swap buffers
             SwapBuffers();

@@ -24,6 +24,7 @@ namespace DerpGL.Buffers
 {
     /// <summary>
     /// Represents a vertex array object.
+    /// TODO: add support for instanced vertex attributes with glVertexAttribDivisor (or maybe glVertexBindingDivisor)
     /// </summary>
     public class VertexArray
         : GLResource
@@ -54,22 +55,31 @@ namespace DerpGL.Buffers
         /// Render primitives from array data.
         /// </summary>
         /// <param name="mode">Specifies what kind of primitives to render.</param>
-        /// <param name="count">Specifies the number of indices to be rendered.</param>
-        public void DrawArrays(PrimitiveType mode, int count)
-        {
-            DrawArrays(mode, 0, count);
-        }
-
-        /// <summary>
-        /// Render primitives from array data.
-        /// </summary>
-        /// <param name="mode">Specifies what kind of primitives to render.</param>
         /// <param name="first">Specifies the starting index in the enabled arrays.</param>
         /// <param name="count">Specifies the number of indices to be rendered.</param>
         public void DrawArrays(PrimitiveType mode, int first, int count)
         {
             AssertActive();
             GL.DrawArrays(mode, first, count);
+        }
+
+        public void DrawArraysInstances(PrimitiveType mode, int first, int count, int instanceCount)
+        {
+            AssertActive();
+            GL.DrawArraysInstanced(mode, first, count, instanceCount);
+        }
+
+        public void DrawArraysIndirect(PrimitiveType mode, int offset = 0)
+        {
+            AssertActive();
+            GL.DrawArraysIndirect(mode, new IntPtr(offset));
+        }
+
+        public void MultiDrawArrays(PrimitiveType mode, int[] first, int[] count)
+        {
+            AssertActive();
+            if (first.Length != count.Length) throw new ArgumentException("The length of first and count must be equal.");
+            GL.MultiDrawArrays(mode, first, count, count.Length);
         }
 
         /// <summary>
@@ -84,10 +94,28 @@ namespace DerpGL.Buffers
             GL.DrawElements(mode, count, type, IntPtr.Zero);
         }
 
+        public void DrawElementsIndirect(PrimitiveType mode, DrawElementsType type = DrawElementsType.UnsignedInt, int offset = 0)
+        {
+            AssertActive();
+            GL.DrawElementsIndirect(mode, (All)type, new IntPtr(offset));
+        }
+
+        public void MultiDrawElements(PrimitiveType mode, int[] count, DrawElementsType type = DrawElementsType.UnsignedInt)
+        {
+            AssertActive();
+            GL.MultiDrawElements(mode, count, type, IntPtr.Zero, count.Length);
+        }
+
+        public void DrawTransformFeedback(PrimitiveType mode, TransformFeedback transformFeedback)
+        {
+            AssertActive();
+            GL.DrawTransformFeedback(mode, transformFeedback.Handle);
+        }
+
         /// <summary>
         /// Binds the given buffer to the element array buffer target.
         /// </summary>
-        public void BindElements<T>(Buffer<T> buffer)
+        public void BindElementBuffer<T>(Buffer<T> buffer)
             where T : struct
         {
             AssertActive();
@@ -97,7 +125,7 @@ namespace DerpGL.Buffers
         /// <summary>
         /// Unbinds any buffer bound to the element array buffer target.
         /// </summary>
-        public void UnbindElements()
+        public void UnbindElementBuffer()
         {
             AssertActive();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);

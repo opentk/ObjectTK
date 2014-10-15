@@ -32,17 +32,12 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// The handle of the program to which this variable relates.
         /// </summary>
-        protected PropertyInfo Property { get; private set; }
-
-        /// <summary>
-        /// The handle of the program to which this variable relates.
-        /// </summary>
         public int ProgramHandle { get { return Program.Handle; } }
 
         /// <summary>
         /// The name of this shader variable.
         /// </summary>
-        public string Name { get { return Property.Name; } }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Specifies whether this variable is active.<br/>
@@ -53,22 +48,20 @@ namespace DerpGL.Shaders.Variables
         /// <summary>
         /// Initializes this instance using the given Program and PropertyInfo.
         /// </summary>
-        internal void Initialize(Program program, PropertyInfo property)
+        internal virtual void Initialize(Program program, PropertyInfo property)
         {
             Program = program;
-            Property = property;
-            Initialize();
+            Name = property.Name;
         }
-
-        /// <summary>
-        /// When overridden in a derived class, handles initialization which depends on Program and PropertyInfo,
-        /// which are not available at construction.
-        /// </summary>
-        protected virtual void Initialize() { }
 
         /// <summary>
         /// When overridden in a derived class, handles initialization which must occur after the program object is linked.
         /// </summary>
         internal virtual void OnLink() { }
+
+        public override string ToString()
+        {
+            return string.Format("{0}.{1}", Program.Name, Name);
+        }
     }
 }

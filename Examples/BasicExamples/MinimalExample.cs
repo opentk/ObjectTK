@@ -60,7 +60,7 @@ namespace Examples.BasicExamples
             // calculate the MVP matrix and set it to the shaders uniform
             _program.ModelViewProjectionMatrix.Set(ModelView*Projection);
             // draw the buffer which contains the triangle
-            _vao.DrawArrays(PrimitiveType.Triangles, _vbo.ElementCount);
+            _vao.DrawArrays(PrimitiveType.Triangles, 0, _vbo.ElementCount);
 
             // swap buffers
             SwapBuffers();

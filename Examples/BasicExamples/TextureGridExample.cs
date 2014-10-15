@@ -95,7 +95,7 @@ namespace Examples.BasicExamples
 
             // update MVP matrix and render grid
             _gridProgram.ModelViewProjectionMatrix.Set(Matrix4.CreateTranslation(-500,-500,0) * ModelView * Projection);
-            _vao.DrawArrays(PrimitiveType.Points, _buffer.ElementCount);
+            _vao.DrawArrays(PrimitiveType.Points, 0, _buffer.ElementCount);
 
             // swap buffers
             SwapBuffers();

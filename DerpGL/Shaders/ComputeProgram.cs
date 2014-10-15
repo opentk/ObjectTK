@@ -22,7 +22,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders
 {
     /// <summary>
-    /// Represents a compute program.
+    /// Represents a program object which contains compute shaders.
     /// </summary>
     public class ComputeProgram
         : Program

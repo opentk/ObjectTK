@@ -51,7 +51,7 @@
     <Compile Include="Buffers\FrameBuffer.cs" />
     <Compile Include="Buffers\VertexArray.cs" />
     <Compile Include="Buffers\RenderBuffer.cs" />
-    <Compile Include="Buffers\TransformFeedbackBuffer.cs" />
+    <Compile Include="Buffers\TransformFeedback.cs" />
     <Compile Include="Exceptions\DerpGLException.cs" />
     <Compile Include="Exceptions\ObjectNotBoundException.cs" />
     <Compile Include="Exceptions\ProgramException.cs" />
@@ -73,6 +73,7 @@
     <Compile Include="Shaders\ProgramFactory.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\TransformProgram.cs" />
     <Compile Include="Shaders\Variables\BufferBinding.cs" />
     <Compile Include="Shaders\Variables\FragData.cs" />
     <Compile Include="Shaders\Variables\ImageUniform.cs" />
