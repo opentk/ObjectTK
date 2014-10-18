@@ -18,23 +18,25 @@
 namespace DerpGL.Shaders.Variables
 {
     /// <summary>
-    /// TODO: Implemented in a completely strange way ..
+    /// Represents a transform feedback output varying.
     /// </summary>
     public sealed class TransformOut
         : ProgramVariable
     {
+        /// <summary>
+        /// Specifies the transform feedback buffer binding index of this output.
+        /// </summary>
         public int Index { get; internal set; }
 
-        public TransformOut()
+        internal TransformOut()
         {
             Index = -1;
             Active = false;
         }
 
         /// <summary>
-        /// Initialized a dummy instance of TransformOut used for the keywords introduced with advanced interleaving.
+        /// Initializes a dummy instance of TransformOut used for the keywords introduced with advanced interleaving.
         /// </summary>
-        /// <param name="name"></param>
         internal TransformOut(string name)
         {
             Name = name;

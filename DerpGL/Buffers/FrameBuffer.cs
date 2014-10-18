@@ -47,7 +47,6 @@ namespace DerpGL.Buffers
         /// </summary>
         public void Bind()
         {
-            // bind this framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, Handle);
         }
 
