@@ -14,13 +14,13 @@ void main()
 	// calculate acceleration by gravity G*m/r^2
 	// define G to be 1 or include it in CenterMass, doesn't matter
 	float acceleration = CenterMass / dot(InPosition, InPosition);
-	// perform simple forward integration
-	vec3 velocity = InVelocity + acceleration * TimeStep * -normalize(InPosition);
-	vec3 position = InPosition + velocity * TimeStep;
-	// stream position and velocity via transform feedback
-	OutPosition = position;
-	OutVelocity = velocity;
+	
+	// perform simple forward euler integration and
+	// stream position and velocity via transform feedback into the pong buffer
+	OutVelocity = InVelocity + acceleration * TimeStep * -normalize(InPosition);
+	OutPosition = InPosition + OutVelocity * TimeStep;
+	
 	// pass through current position
-	gl_Position = ModelViewProjectionMatrix * vec4(position,1);
+	gl_Position = ModelViewProjectionMatrix * vec4(OutPosition,1);
 	gl_PointSize = clamp(length(acceleration)*2, 4, 10);
 }

@@ -11,7 +11,7 @@ using OpenTK.Input;
 namespace Examples.AdvancedExamples
 {
     [ExampleProject("Transform feedback example with gravity simulation")]
-    public class FeedbackExample
+    public class FeedbackGravityExample
         : ExampleWindow
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -33,7 +33,7 @@ namespace Examples.AdvancedExamples
         private float _centerMass = 0.65f;
         private int _particleCount = 16000;
 
-        public FeedbackExample()
+        public FeedbackGravityExample()
             : base("Transform feedback example with gravity simulation")
         {
             _random = new Random();
@@ -75,7 +75,7 @@ namespace Examples.AdvancedExamples
             // enable modification of the point sprite size from the program (vertex shader in this case)
             GL.Enable(EnableCap.ProgramPointSize);
             // set a nice clear color
-            GL.ClearColor(Color.MidnightBlue);
+            GL.ClearColor(Color.Black);
 
             // set a nice camera angle
             Camera.DefaultPitch = 27;
