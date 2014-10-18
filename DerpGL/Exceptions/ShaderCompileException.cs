@@ -15,12 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
+using System;
+
 namespace DerpGL.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when a shader compile error occurs.
+    /// </summary>
+    [Serializable]
     public class ShaderCompileException
         : ProgramException
     {
-        public ShaderCompileException(string message, string infoLog)
+        internal ShaderCompileException(string message, string infoLog)
             : base(message, infoLog)
         {
         }

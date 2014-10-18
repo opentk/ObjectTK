@@ -16,18 +16,33 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 using System;
+using System.Runtime.Serialization;
+using DerpGL.Shaders.Variables;
 
 namespace DerpGL.Exceptions
 {
-    internal class UniformTypeNotSupportedException
+    /// <summary>
+    /// The exception that is thrown when the generic type parameter used for an instance of <see cref="Uniform{T}"/> is not supported.
+    /// </summary>
+    [Serializable]
+    public class UniformTypeNotSupportedException
         : DerpGLException
     {
+        /// <summary>
+        /// The unsupported type parameter to <see cref="Uniform{T}"/> which caused the initialization to fail.
+        /// </summary>
         public readonly Type UniformType;
-        
-        public UniformTypeNotSupportedException(Type uniformType)
+
+        internal UniformTypeNotSupportedException(Type uniformType)
             : base(string.Format("Uniforms of type {0} are not supported", uniformType.Name))
         {
             UniformType = uniformType;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("UniformType", UniformType);
         }
     }
 }

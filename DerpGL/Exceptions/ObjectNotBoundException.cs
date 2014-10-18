@@ -15,16 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
+using System;
+
 namespace DerpGL.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when an object is used which must be bound before usage.
+    /// </summary>
+    [Serializable]
     public class ObjectNotBoundException
         : DerpGLException
     {
-        public ObjectNotBoundException()
-        {
-        }
-
-        public ObjectNotBoundException(string message)
+        internal ObjectNotBoundException(string message)
             : base(message)
         {
         }

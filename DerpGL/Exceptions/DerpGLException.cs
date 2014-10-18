@@ -19,14 +19,14 @@ using System;
 
 namespace DerpGL.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when a DerpGL related error occurs.
+    /// </summary>
+    [Serializable]
     public class DerpGLException
         : Exception
     {
-        public DerpGLException()
-        {
-        }
-
-        public DerpGLException(string message)
+        internal DerpGLException(string message)
             : base(message)
         {
         }
