@@ -119,7 +119,14 @@ namespace DerpGL.Buffers
             CurrentElementIndex = 0;
         }
 
-        protected virtual void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
+        /// <summary>
+        /// Allocates buffer memory and initializes it to the given data.
+        /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="elementCount">The number of elements to allocate memory for.</param>
+        /// <param name="data">The data to upload into the buffer.</param>
+        /// <param name="usageHint">The usage hint of the buffer object.</param>
+        protected void Init(BufferTarget bufferTarget, int elementCount, T[] data, BufferUsageHint usageHint)
         {
             Initialized = true;
             ElementCount = elementCount;
