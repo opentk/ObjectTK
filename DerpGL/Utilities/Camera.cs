@@ -33,7 +33,7 @@ namespace DerpGL.Utilities
         public Vector3 Position;
         public float Yaw = 0;
         public float Pitch = 0;
-        public float Roll;
+        public float Roll = 0;
 
         public Vector3 DefaultPosition = new Vector3(0,0,3);
         public float DefaultYaw = 0;

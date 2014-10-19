@@ -20,7 +20,6 @@ namespace Examples.BasicExamples
         private Cube _cube;
 
         public SkyboxExample()
-            : base("Skybox rendering with cube map texture")
         {
             Load += OnLoad;
             Unload += OnUnload;

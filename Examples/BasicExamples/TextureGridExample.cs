@@ -35,11 +35,10 @@ namespace Examples.BasicExamples
 
         private readonly string[] _stateTextures = { "empty.png", "flag.png", "mine.png" };
 
-        const int FieldWidth = 1000;
-        const int FieldHeight = 1000;
+        const int FieldWidth = 100;
+        const int FieldHeight = 100;
 
         public TextureGridExample()
-            : base("Textured grid rendering")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
@@ -78,9 +77,9 @@ namespace Examples.BasicExamples
             // set nice clear color
             GL.ClearColor(Color.MidnightBlue);
             // initialize camera position
-            Camera.Pitch = 0;
-            Camera.Yaw = 0;
-            Camera.Position = new Vector3(0, 0, 15);
+            Camera.DefaultPitch = 27;
+            Camera.DefaultPosition = new Vector3(0, 0, 15);
+            Camera.ResetToDefault();
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs frameEventArgs)
@@ -91,7 +90,12 @@ namespace Examples.BasicExamples
             SetupPerspective();
 
             // update MVP matrix and render grid
-            _gridProgram.ModelViewProjectionMatrix.Set(Matrix4.CreateTranslation(-500,-500,0) * ModelView * Projection);
+            // also move camera rotation center to the center of the plane
+            // and rotate the plane from the x-y plane to the x-z plane
+            _gridProgram.ModelViewProjectionMatrix.Set(
+                Matrix4.CreateTranslation(-FieldWidth/2, -FieldHeight/2, 0)
+                * Matrix4.CreateRotationX(-(float)Math.PI/2)
+                * ModelView * Projection);
             _vao.DrawArrays(PrimitiveType.Points, 0, _buffer.ElementCount);
 
             // swap buffers

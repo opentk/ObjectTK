@@ -41,7 +41,6 @@ namespace Examples.BasicExamples
         private bool _enableMipmapping;
 
         public BufferLayoutTexturingExample()
-            : base("Custom buffer memory layout and texturing")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
@@ -113,7 +112,7 @@ namespace Examples.BasicExamples
             //_vao.BindAttribute(_program.InTexCoord, _vbo, 2, VertexAttribPointerType.Float, Marshal.SizeOf(typeof(Vertex)), 12, false);
 
             // set default camera
-            Camera.DefaultPosition.Y = 0.5f;
+            Camera.DefaultPosition = new Vector3(0, 0.5f, 3);
             Camera.ResetToDefault();
 
             // set a nice clear color

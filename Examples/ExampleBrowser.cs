@@ -65,6 +65,7 @@ namespace Examples
             // run the example
             using (var exampleWindow = (GameWindow)Activator.CreateInstance(type))
             {
+                exampleWindow.Title = node.Text;
                 exampleWindow.Run();
             }
             // show the browser again

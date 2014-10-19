@@ -14,13 +14,11 @@ namespace Examples
     public class ExampleWindow
         : DerpWindow
     {
-        protected string OriginalTitle;
+        protected string OriginalTitle { get; private set; }
 
-        public ExampleWindow(string title)
+        public ExampleWindow()
             : base(800, 600, GraphicsMode.Default, "")
         {
-            OriginalTitle = string.Format("DerpGL example: {0}", title);
-            Title = OriginalTitle;
             Load += OnLoad;
             Unload += OnUnload;
             KeyDown += OnKeyDown;
@@ -29,6 +27,8 @@ namespace Examples
 
         private void OnLoad(object sender, EventArgs e)
         {
+            // remember original title
+            OriginalTitle = Title;
             // set search path for shader files
             Program.BasePath = "Data/Shaders/";
         }
@@ -42,7 +42,7 @@ namespace Examples
         private void OnRenderFrame(object sender, FrameEventArgs e)
         {
             // display FPS in the window title
-            Title = string.Format("{0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
+            Title = string.Format("DerpGL example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
         private void OnKeyDown(object sender, KeyboardKeyEventArgs e)

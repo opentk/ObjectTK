@@ -10,7 +10,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.AdvancedExamples
 {
-    [ExampleProject("Render to 2D texture via framebuffer")]
+    [ExampleProject("Render to texture")]
     public class RenderToTextureExample
         : ExampleWindow
     {
@@ -31,7 +31,6 @@ namespace Examples.AdvancedExamples
         private VertexArray _quadVao;
 
         public RenderToTextureExample()
-            : base("Render to texture")
         {
             Load += OnLoad;
             Unload += OnUnload;

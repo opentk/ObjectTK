@@ -42,7 +42,6 @@ namespace Examples.AdvancedExamples
         private Vector3 _materialScaleAndBiasAndShininess = new Vector3(0.04f, 0.0f, 92.0f); // for Rock tex
 
         public ParallaxMappingExample()
-            : base("Swizzled Parallax Mapping")
         {
             Load += OnLoad;
             Unload += OnUnload;
@@ -162,7 +161,7 @@ namespace Examples.AdvancedExamples
             _vao.BindAttribute(_program.InTexCoord, _buffer, 36);
 
             // set camera position
-            Camera.DefaultPosition = new Vector3(0.0f, 0.0f, 3.0f);
+            Camera.DefaultPosition = new Vector3(0,0,3);
 
             // set state
             GL.ClearColor(0.2f, 0f, 0.4f, 0f);

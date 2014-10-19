@@ -10,7 +10,7 @@ using OpenTK.Input;
 
 namespace Examples.AdvancedExamples
 {
-    [ExampleProject("Transform feedback example with gravity simulation")]
+    [ExampleProject("Transform feedback with gravity simulation")]
     public class FeedbackGravityExample
         : ExampleWindow
     {
@@ -34,7 +34,6 @@ namespace Examples.AdvancedExamples
         private int _particleCount = 64000;
 
         public FeedbackGravityExample()
-            : base("Transform feedback example with gravity simulation")
         {
             _random = new Random();
             Load += OnLoad;
@@ -81,7 +80,7 @@ namespace Examples.AdvancedExamples
 
             // set a nice camera angle
             Camera.DefaultPitch = 27;
-            Camera.DefaultPosition.Z = 8;
+            Camera.DefaultPosition = new Vector3(0,0,8);
             Camera.ResetToDefault();
         }
 

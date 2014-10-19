@@ -17,7 +17,6 @@ namespace Examples.BasicExamples
         private Buffer<Vector3> _vbo;
 
         public MinimalExample()
-            : base("Shader and buffer usage")
         {
             Load += OnLoad;
             RenderFrame += OnRenderFrame;
