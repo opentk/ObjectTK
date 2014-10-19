@@ -30,8 +30,8 @@ namespace Examples.AdvancedExamples
         private TransformFeedback _feedback;
 
         // simulation parameters
-        private float _centerMass = 0.65f;
-        private int _particleCount = 16000;
+        private float _centerMass = 0.8309f; //0.65f;
+        private int _particleCount = 64000;
 
         public FeedbackGravityExample()
             : base("Transform feedback example with gravity simulation")
@@ -74,6 +74,8 @@ namespace Examples.AdvancedExamples
             GL.Enable(EnableCap.PointSprite);
             // enable modification of the point sprite size from the program (vertex shader in this case)
             GL.Enable(EnableCap.ProgramPointSize);
+            // enable depth testing
+            GL.Enable(EnableCap.DepthTest);
             // set a nice clear color
             GL.ClearColor(Color.Black);
 

@@ -85,9 +85,6 @@ namespace Examples.BasicExamples
 
         protected void OnRenderFrame(object sender, FrameEventArgs frameEventArgs)
         {
-            // display FPS in the window title
-            Title = string.Format("{0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
-
             // setup stuff
             GL.Viewport(0, 0, Width, Height);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

@@ -2,6 +2,7 @@
 using DerpGL;
 using DerpGL.Shaders;
 using DerpGL.Utilities;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 
@@ -23,6 +24,7 @@ namespace Examples
             Load += OnLoad;
             Unload += OnUnload;
             KeyDown += OnKeyDown;
+            RenderFrame += OnRenderFrame;
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -35,6 +37,12 @@ namespace Examples
         {
             // release all gl resources on unload
             GLResource.DisposeAll(this);
+        }
+
+        private void OnRenderFrame(object sender, FrameEventArgs e)
+        {
+            // display FPS in the window title
+            Title = string.Format("{0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
         private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
