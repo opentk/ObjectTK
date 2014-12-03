@@ -67,12 +67,15 @@
     <Compile Include="Queries\QueryMapping.cs" />
     <Compile Include="Shaders\ComputeProgram.cs" />
     <Compile Include="Shaders\ComputeShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\Effect.cs" />
     <Compile Include="Shaders\FragmentShaderSourceAttribute.cs" />
     <Compile Include="Shaders\GeometryShaderSourceAttribute.cs" />
     <Compile Include="Shaders\Program.cs" />
     <Compile Include="Shaders\ProgramFactory.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\TessControlShaderSourceAttribute.cs" />
+    <Compile Include="Shaders\TessEvaluationShaderSourceAttribute.cs" />
     <Compile Include="Shaders\TransformProgram.cs" />
     <Compile Include="Shaders\Variables\BufferBinding.cs" />
     <Compile Include="Shaders\Variables\FragData.cs" />

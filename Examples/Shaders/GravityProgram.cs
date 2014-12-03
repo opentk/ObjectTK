@@ -5,8 +5,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("Gravity.vs")]
-    [FragmentShaderSource("Gravity.fs")]
+    [VertexShaderSource("Gravity.Vertex")]
+    [FragmentShaderSource("Gravity.Fragment")]
     public class GravityProgram
         : TransformProgram
     {

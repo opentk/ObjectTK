@@ -6,9 +6,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("TextureGrid.vs")]
-    [GeometryShaderSource("TextureGrid.gs")]
-    [FragmentShaderSource("TextureGrid.fs")]
+    [VertexShaderSource("TextureGrid.Vertex")]
+    [GeometryShaderSource("TextureGrid.Geometry")]
+    [FragmentShaderSource("TextureGrid.Fragment")]
     public class TextureGridProgram
         : Program
     {

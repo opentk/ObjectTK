@@ -20,17 +20,17 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders
 {
     /// <summary>
-    /// Specifies the source of a compute shader.
+    /// Specifies the source of a vertex shader.
     /// </summary>
-    public class ComputeShaderSourceAttribute
+    public class TessControlShaderSourceAttribute
         : ShaderSourceAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the ComputeShaderSourceAttribute.
+        /// Initializes a new instance of the TessControlShaderSourceAttribute.
         /// </summary>
         /// <param name="effectKey">Specifies the effect key for this shader.</param>
-        public ComputeShaderSourceAttribute(string effectKey)
-            : base(ShaderType.ComputeShader, effectKey)
+        public TessControlShaderSourceAttribute(string effectKey)
+            : base(ShaderType.TessControlShader, effectKey)
         {
         }
     }

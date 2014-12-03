@@ -6,8 +6,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("Parallax.vs")]
-    [FragmentShaderSource("Parallax.fs")]
+    [VertexShaderSource("Parallax.Vertex")]
+    [FragmentShaderSource("Parallax.Fragment")]
     public class ParallaxProgram
         : Program
     {

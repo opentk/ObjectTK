@@ -72,22 +72,14 @@
     <Compile Include="Shaders\TextureGridProgram.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Shaders\Gravity.fs.glsl" />
-    <None Include="Data\Shaders\Gravity.vs.glsl" />
-    <None Include="Data\Shaders\Parallax.fs.glsl" />
-    <None Include="Data\Shaders\Parallax.vs.glsl" />
-    <None Include="Data\Shaders\SimpleColor.fs.glsl" />
-    <None Include="Data\Shaders\SimpleColor.vs.glsl" />
-    <None Include="Data\Shaders\SimpleTexture.fs.glsl" />
-    <None Include="Data\Shaders\SimpleTexture.vs.glsl" />
+    <None Include="Data\Shaders\ExampleShader.glsl" />
+    <None Include="Data\Shaders\Gravity.glsl" />
+    <None Include="Data\Shaders\Parallax.glsl" />
+    <None Include="Data\Shaders\SimpleColor.glsl" />
+    <None Include="Data\Shaders\SimpleTexture.glsl" />
     <None Include="app.config" />
-    <None Include="Data\Shaders\ExampleShader.fs.glsl" />
-    <None Include="Data\Shaders\ExampleShader.vs.glsl" />
-    <None Include="Data\Shaders\Skybox.fs.glsl" />
-    <None Include="Data\Shaders\Skybox.vs.glsl" />
-    <None Include="Data\Shaders\TextureGrid.fs.glsl" />
-    <None Include="Data\Shaders\TextureGrid.gs.glsl" />
-    <None Include="Data\Shaders\TextureGrid.vs.glsl" />
+    <None Include="Data\Shaders\Skybox.glsl" />
+    <None Include="Data\Shaders\TextureGrid.glsl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

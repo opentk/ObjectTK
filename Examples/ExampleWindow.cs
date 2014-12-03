@@ -29,8 +29,9 @@ namespace Examples
         {
             // remember original title
             OriginalTitle = Title;
-            // set search path for shader files
-            Program.BasePath = "Data/Shaders/";
+            // set search path for shader files and extension
+            ProgramFactory.BasePath = "Data/Shaders/";
+            ProgramFactory.Extension = "glsl";
         }
 
         private void OnUnload(object sender, EventArgs e)

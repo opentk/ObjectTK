@@ -28,9 +28,9 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Initializes a new instance of the FragmentShaderSourceAttribute.
         /// </summary>
-        /// <param name="path">Specifies the path to the source file.</param>
-        public FragmentShaderSourceAttribute(string path)
-            : base(ShaderType.FragmentShader, path)
+        /// <param name="effectKey">Specifies the effect key for this shader.</param>
+        public FragmentShaderSourceAttribute(string effectKey)
+            : base(ShaderType.FragmentShader, effectKey)
         {
         }
     }

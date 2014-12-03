@@ -6,8 +6,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("Skybox.vs")]
-    [FragmentShaderSource("Skybox.fs")]
+    [VertexShaderSource("Skybox.Vertex")]
+    [FragmentShaderSource("Skybox.Fragment")]
     public class SkyboxProgram
         : Program
     {

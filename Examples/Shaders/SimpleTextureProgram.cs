@@ -6,8 +6,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("SimpleTexture.vs")]
-    [FragmentShaderSource("SimpleTexture.fs")]
+    [VertexShaderSource("SimpleTexture.Vertex")]
+    [FragmentShaderSource("SimpleTexture.Fragment")]
     public class SimpleTextureProgram
         : Program
     {

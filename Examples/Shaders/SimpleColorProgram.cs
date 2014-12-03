@@ -5,8 +5,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("SimpleColor.vs")]
-    [FragmentShaderSource("SimpleColor.fs")]
+    [VertexShaderSource("SimpleColor.Vertex")]
+    [FragmentShaderSource("SimpleColor.Fragment")]
     public class SimpleColorProgram
         : Program
     {

@@ -35,21 +35,11 @@ namespace DerpGL.Shaders
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Program));
 
         /// <summary>
-        /// The base path used when looking for shader files.
-        /// </summary>
-        public static string BasePath { get; set; }
-
-        /// <summary>
         /// The name of this shader program.
         /// </summary>
         public string Name { get { return GetType().Name; } }
 
         private List<ProgramVariable> _variables;
-
-        static Program()
-        {
-            BasePath = "Data/Shaders/";
-        }
 
         /// <summary>
         /// Initializes a new program object.
@@ -88,20 +78,6 @@ namespace DerpGL.Shaders
             GL.UseProgram(Handle);
         }
 
-        /// <summary>
-        /// Attach shader object.
-        /// </summary>
-        /// <param name="type">Specifies the type of the shader object.</param>
-        /// <param name="path">Specifies the path to the shader source file.</param>
-        public void Attach(ShaderType type, string path)
-        {
-            using (var shader = new Shader(type))
-            {
-                shader.CompileSource(path);
-                Attach(shader);
-            }
-        }
-        
         /// <summary>
         /// Attach shader object.
         /// </summary>

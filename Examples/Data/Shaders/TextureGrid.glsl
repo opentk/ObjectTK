@@ -1,4 +1,19 @@
-﻿#version 150
+﻿-- Vertex
+#version 140
+in vec2 InPosition;
+in int InTexture;
+
+flat out vec2 Position;
+flat out int Texture;
+
+void main()
+{	
+	Position = InPosition;
+	Texture = InTexture;
+}
+
+-- Geometry
+#version 150
 
 // this shader processes points and outputs two triangles (a quad)
 layout (points) in;
@@ -30,4 +45,19 @@ void main()
 	TextureCoordinates = vec2(1,1);
     EmitVertex();
     EndPrimitive();
+}
+
+-- Fragment
+#version 140
+smooth in vec2 TextureCoordinates;
+flat in int TextureLayer;
+
+out vec4 FragColor;
+
+uniform sampler2DArray TextureData;
+
+void main()
+{
+	FragColor = texture(TextureData, vec3(TextureCoordinates, TextureLayer));
+    //FragColor = vec4(TextureCoordinates.rg, TextureLayer/220.0, 1);
 }

@@ -23,9 +23,9 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Shaders
 {
     /// <summary>
-    /// Specifies a shader type and the path to its source.
+    /// Specifies a source file which contains a single shader of predefined type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class ShaderSourceAttribute
         : Attribute
     {
@@ -35,19 +35,20 @@ namespace DerpGL.Shaders
         public ShaderType Type { get; private set; }
 
         /// <summary>
-        /// Specifies the path and filename to the source file.
+        /// Specifies the effect key for this shader.<br/>
+        /// Example: Path/to/file/CoolShader.Fragment.Diffuse
         /// </summary>
-        public string Path { get; private set; }
+        public string EffectKey { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the ShaderSourceAttribute.
         /// </summary>
         /// <param name="type">Specifies the type of the shader.</param>
-        /// <param name="path">Specifies the path to the source file.</param>
-        public ShaderSourceAttribute(ShaderType type, string path)
+        /// <param name="effectKey">Specifies the effect key for this shader.</param>
+        protected ShaderSourceAttribute(ShaderType type, string effectKey)
         {
             Type = type;
-            Path = path;
+            EffectKey = effectKey;
         }
 
         /// <summary>
@@ -55,9 +56,9 @@ namespace DerpGL.Shaders
         /// </summary>
         /// <param name="programType">Specifies the type of the program of which the shader sources are to be found.</param>
         /// <returns>A mapping of ShaderType and source path.</returns>
-        public static Dictionary<ShaderType, string> GetShaderSources(Type programType)
+        public static List<ShaderSourceAttribute> GetShaderSources(Type programType)
         {
-            return programType.GetCustomAttributes<ShaderSourceAttribute>(true).ToDictionary(_ => _.Type, _ => _.Path);
+            return programType.GetCustomAttributes<ShaderSourceAttribute>(true).ToList();
         }
     }
 }

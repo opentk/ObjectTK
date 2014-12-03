@@ -28,9 +28,9 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Initializes a new instance of the GeometryShaderSourceAttribute.
         /// </summary>
-        /// <param name="path">Specifies the path to the source file.</param>
-        public GeometryShaderSourceAttribute(string path)
-            : base(ShaderType.GeometryShader, path)
+        /// <param name="effectKey">Specifies the effect key for this shader.</param>
+        public GeometryShaderSourceAttribute(string effectKey)
+            : base(ShaderType.GeometryShader, effectKey)
         {
         }
     }

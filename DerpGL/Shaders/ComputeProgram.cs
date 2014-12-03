@@ -58,7 +58,7 @@ namespace DerpGL.Shaders
         /// </summary>
         protected ComputeProgram()
         {
-            if (ShaderSourceAttribute.GetShaderSources(GetType()).Any(_ => _.Key != ShaderType.ComputeShader))
+            if (ShaderSourceAttribute.GetShaderSources(GetType()).Any(_ => _.Type != ShaderType.ComputeShader))
                 throw new ApplicationException("Invalid ShaderType supplied to compute shader via ShaderSourceAttribute(s).");
         }
 

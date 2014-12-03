@@ -1,3 +1,4 @@
+-- Vertex
 #version 140
 in vec3 InPosition;
 in vec4 InColor;
@@ -10,4 +11,15 @@ void main()
 {
 	gl_Position = ModelViewProjectionMatrix * vec4(InPosition,1);
 	Color = InColor;
+}
+
+-- Fragment
+#version 140
+smooth in vec4 Color;
+
+out vec4 FragColor;
+
+void main()
+{
+	FragColor = Color;
 }

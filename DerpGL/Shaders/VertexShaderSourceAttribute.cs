@@ -28,9 +28,9 @@ namespace DerpGL.Shaders
         /// <summary>
         /// Initializes a new instance of the VertexShaderSourceAttribute.
         /// </summary>
-        /// <param name="path">Specifies the path to the source file.</param>
-        public VertexShaderSourceAttribute(string path)
-            : base(ShaderType.VertexShader, path)
+        /// <param name="effectKey">Specifies the effect key for this shader.</param>
+        public VertexShaderSourceAttribute(string effectKey)
+            : base(ShaderType.VertexShader, effectKey)
         {
         }
     }

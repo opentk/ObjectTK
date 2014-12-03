@@ -5,8 +5,8 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Examples.Shaders
 {
-    [VertexShaderSource("ExampleShader.vs")]
-    [FragmentShaderSource("ExampleShader.fs")]
+    [VertexShaderSource("ExampleShader.Vertex")]
+    [FragmentShaderSource("ExampleShader.Fragment")]
     public class ExampleProgram
         : Program
     {
