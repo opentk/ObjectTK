@@ -43,6 +43,10 @@ namespace Examples.BasicExamples
             // set up binding of the shader variable to the buffer object
             _vao.BindAttribute(_program.InPosition, _vbo);
 
+            // set camera position
+            Camera.DefaultPosition = new Vector3(0,0,3);
+            Camera.ResetToDefault();
+
             // set a nice clear color
             GL.ClearColor(Color.MidnightBlue);
         }

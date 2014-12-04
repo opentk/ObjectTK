@@ -77,7 +77,7 @@ namespace Examples.BasicExamples
             // set nice clear color
             GL.ClearColor(Color.MidnightBlue);
             // initialize camera position
-            Camera.DefaultPitch = 27;
+            Camera.DefaultPitch = 0.5f;
             Camera.DefaultPosition = new Vector3(0, 0, 15);
             Camera.ResetToDefault();
         }

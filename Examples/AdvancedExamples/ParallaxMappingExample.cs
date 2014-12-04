@@ -162,6 +162,7 @@ namespace Examples.AdvancedExamples
 
             // set camera position
             Camera.DefaultPosition = new Vector3(0,0,3);
+            Camera.ResetToDefault();
 
             // set state
             GL.ClearColor(0.2f, 0f, 0.4f, 0f);
@@ -234,7 +235,7 @@ namespace Examples.AdvancedExamples
             _program.Material_ScaleBiasShininess.Set(_materialScaleAndBiasAndShininess);
 
             // the rest are vectors
-            _program.Camera_Position.Set(Camera.Position);
+            _program.Camera_Position.Set(Camera.GetEyePosition());
             _program.Light_Position.Set(_lightPosition);
             _program.Light_DiffuseColor.Set(_lightDiffuse);
             _program.Light_SpecularColor.Set(_lightSpecular);
