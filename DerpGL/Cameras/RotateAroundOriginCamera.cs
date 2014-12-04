@@ -60,9 +60,10 @@ namespace DerpGL.Cameras
         {
             var transformation = Matrix4.Identity;
             ApplyCamera(ref transformation);
+            transformation.Invert();
             var position = Vector4.UnitW;
             Vector4.Transform(ref position, ref transformation, out position);
-            return -position.Xyz;
+            return position.Xyz;
         }
 
         public override void Enable(GameWindow window)
