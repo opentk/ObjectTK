@@ -68,6 +68,8 @@ namespace DerpGL.Cameras
             if (state.IsKeyDown(Key.S)) Position += new Vector3(MathF.Sin(-Yaw) * MathF.Cos(Pitch), MathF.Sin(Pitch), MathF.Cos(Yaw) * MathF.Cos(Pitch)) * speed;
             if (state.IsKeyDown(Key.A)) Position -= new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2)) * speed;
             if (state.IsKeyDown(Key.D)) Position += new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2)) * speed;
+            if (state.IsKeyDown(Key.Space)) Position += new Vector3(0, 1, 0) * speed;
+            if (state.IsKeyDown(Key.LControl)) Position -= new Vector3(0, 1, 0) * speed;
         }
     }
 }
