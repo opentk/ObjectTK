@@ -32,14 +32,26 @@ namespace DerpGL.Shaders
 
         private static readonly Dictionary<string, Effect> Cache = new Dictionary<string, Effect>();
 
+        /// <summary>
+        /// Specifies the Path to the effects source file.
+        /// </summary>
+        public string Path { get; private set; }
+
+        /// <summary>
+        /// Holds all sections contained within this effect.
+        /// </summary>
         private readonly Dictionary<string, Section> _sections;
-        private string _path;
 
         /// <summary>
         /// Represents a section within an effect file.
         /// </summary>
         public class Section
         {
+            /// <summary>
+            /// Holds a reference to the effect which contains this section.
+            /// </summary>
+            public Effect Effect;
+
             /// <summary>
             /// The shader key to this section.
             /// </summary>
@@ -58,7 +70,7 @@ namespace DerpGL.Shaders
         
         private Effect(string path)
         {
-            _path = path;
+            Path = path;
             _sections = new Dictionary<string, Section>();
         }
 
@@ -129,6 +141,7 @@ namespace DerpGL.Shaders
                         // start new section
                         section = new Section
                         {
+                            Effect = effect,
                             ShaderKey = line.Substring(sectionSeparator.Length).Trim(),
                             FirstLineNumber = lineNumber
                         };

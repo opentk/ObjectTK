@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using DerpGL.Exceptions;
 using log4net;
@@ -63,12 +64,20 @@ namespace DerpGL.Shaders
             // create program instance
             var program = (T)Activator.CreateInstance(typeof(T));
             // compile and attach all shaders
-            foreach (var source in shaders)
+            foreach (var attribute in shaders)
             {
-                using (var shader = new Shader(source.Type))
+                // create a new shader of the appropriate type
+                using (var shader = new Shader(attribute.Type))
                 {
-                    Logger.DebugFormat("Compiling {0}: {1}", source.Type, source.EffectKey);
-                    shader.CompileSource(GetShaderSource(source.EffectKey));
+                    Logger.DebugFormat("Compiling {0}: {1}", attribute.Type, attribute.EffectKey);
+                    // load the source from effect(s)
+                    var included = new List<Effect.Section>();
+                    var source = GetShaderSource(attribute.EffectKey, included);
+                    // assign source filenames for proper information log output
+                    shader.SourceFiles = included.Select(_ => _.Effect.Path).ToList();
+                    // compile shader source
+                    shader.CompileSource(source);
+                    // attach shader to the program
                     program.Attach(shader);
                 }
             }
@@ -84,9 +93,8 @@ namespace DerpGL.Shaders
         /// <param name="effectKey">Specifies the effect key to load.</param>
         /// <param name="included">Holds the effectKeys of all shaders already loaded to prevent multiple inclusions.</param>
         /// <returns>The fully assembled shader source.</returns>
-        private static string GetShaderSource(string effectKey, List<Effect.Section> included = null)
+        private static string GetShaderSource(string effectKey, List<Effect.Section> included)
         {
-            if (included == null) included = new List<Effect.Section>();
             // retrieve effect section
             Effect.Section section;
             try

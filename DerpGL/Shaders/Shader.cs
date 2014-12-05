@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DerpGL.Exceptions;
 using log4net;
 using OpenTK.Graphics.OpenGL;
@@ -33,6 +35,16 @@ namespace DerpGL.Shaders
         /// Specifies the type of this shader.
         /// </summary>
         public readonly ShaderType Type;
+
+        /// <summary>
+        /// Specifies a list of source filenames which are used to improve readability of the the information log in case of an error.
+        /// </summary>
+        public List<string> SourceFiles;
+
+        /// <summary>
+        /// Used to match and replace the source filenames into the information log.
+        /// </summary>
+        private static readonly Regex Regenechse = new Regex(@"^ERROR: (\d+):", RegexOptions.Multiline);
 
         /// <summary>
         /// Initializes a new shader object of the given type.
@@ -71,12 +83,19 @@ namespace DerpGL.Shaders
             Logger.DebugFormat("Compile status: {0}", compileStatus);
             // check shader info log
             var info = GL.GetShaderInfoLog(Handle);
+            if (SourceFiles != null) info = Regenechse.Replace(info, GetSource);
             if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
             // log message and throw exception on compile error
             if (compileStatus == 1) return;
             const string msg = "Error compiling shader.";
             Logger.Error(msg);
             throw new ShaderCompileException(msg, info);
+        }
+
+        private string GetSource(Match match)
+        {
+            var index = int.Parse(match.Groups[1].Value);
+            return index < SourceFiles.Count ? string.Format("ERROR: {0}:", SourceFiles[index]) : match.ToString();
         }
     }
 }
