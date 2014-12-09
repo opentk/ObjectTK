@@ -108,8 +108,9 @@ namespace DerpGL.Shaders
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Invalid effect key: {0}", effectKey), ex);
+                throw new Exception(string.Format("Invalid effect key: {0}", effectKey), ex);
             }
+            if (section == null) throw new Exception(string.Format("Shader source not found: {0}", effectKey));
             // check for multiple includes of the same section
             if (included.Contains(section))
             {

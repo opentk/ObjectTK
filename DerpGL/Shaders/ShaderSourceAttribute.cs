@@ -25,7 +25,7 @@ namespace DerpGL.Shaders
     /// <summary>
     /// Specifies a source file which contains a single shader of predefined type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class ShaderSourceAttribute
         : Attribute
     {

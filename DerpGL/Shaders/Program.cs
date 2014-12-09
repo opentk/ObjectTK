@@ -59,7 +59,7 @@ namespace DerpGL.Shaders
 
         private void InitializeShaderVariables()
         {
-            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly;
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
             _variables = new List<ProgramVariable>();
             foreach (var property in GetType().GetProperties(flags).Where(_ => typeof(ProgramVariable).IsAssignableFrom(_.PropertyType)))
             {
