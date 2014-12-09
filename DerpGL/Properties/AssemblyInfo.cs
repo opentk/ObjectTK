@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JcBernack")]
 [assembly: AssemblyProduct("DerpGL")]
-[assembly: AssemblyCopyright("Copyright ©  2013-2014")]
+[assembly: AssemblyCopyright("Copyright © 2013-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

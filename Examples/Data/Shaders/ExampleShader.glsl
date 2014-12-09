@@ -2,7 +2,7 @@
 #version 140
 
 -- Vertex
-#include ExampleShader.Version.asdads.wuggel
+#include ExampleShader.Version
 in vec3 InPosition;
 uniform mat4 ModelViewProjectionMatrix;
 
@@ -12,7 +12,7 @@ void main()
 }
 
 -- Fragment
-#include ExampleShader.Version.wtf.kek.lolwut
+#include ExampleShader.Version
 out vec4 FragColor;
 
 void main()
