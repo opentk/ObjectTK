@@ -24,7 +24,7 @@ namespace DerpGL.Cameras
     /// Camera which is centered on and rotates around an origin.<br/>
     /// The cameras position is relative to the origin, use <see cref="GetEyePosition"/> to get the position in world coordinates.
     /// </summary>
-    public class RotateAroundOriginCamera
+    public class ThirdPersonCamera
         : CameraBase
     {
         /// <summary>
@@ -48,9 +48,9 @@ namespace DerpGL.Cameras
         public float WheelSpeed = 0.1f;
 
         /// <summary>
-        /// Initializes a new instance of RotateAroundOriginCamera. 
+        /// Initializes a new instance of ThirdPersonCamera.
         /// </summary>
-        public RotateAroundOriginCamera()
+        public ThirdPersonCamera()
         {
             // prevent the position from starting at zero because the zoom mechanism below then fail
             DefaultPosition.Z = 1;

@@ -63,26 +63,34 @@ namespace DerpGL.Shaders
             if (shaders.Count == 0) throw new DerpGLException("ShaderSourceAttribute(s) missing!");
             // create program instance
             var program = (T)Activator.CreateInstance(typeof(T));
-            // compile and attach all shaders
-            foreach (var attribute in shaders)
+            try
             {
-                // create a new shader of the appropriate type
-                using (var shader = new Shader(attribute.Type))
+                // compile and attach all shaders
+                foreach (var attribute in shaders)
                 {
-                    Logger.DebugFormat("Compiling {0}: {1}", attribute.Type, attribute.EffectKey);
-                    // load the source from effect(s)
-                    var included = new List<Effect.Section>();
-                    var source = GetShaderSource(attribute.EffectKey, included);
-                    // assign source filenames for proper information log output
-                    shader.SourceFiles = included.Select(_ => _.Effect.Path).ToList();
-                    // compile shader source
-                    shader.CompileSource(source);
-                    // attach shader to the program
-                    program.Attach(shader);
+                    // create a new shader of the appropriate type
+                    using (var shader = new Shader(attribute.Type))
+                    {
+                        Logger.DebugFormat("Compiling {0}: {1}", attribute.Type, attribute.EffectKey);
+                        // load the source from effect(s)
+                        var included = new List<Effect.Section>();
+                        var source = GetShaderSource(attribute.EffectKey, included);
+                        // assign source filenames for proper information log output
+                        shader.SourceFiles = included.Select(_ => _.Effect.Path).ToList();
+                        // compile shader source
+                        shader.CompileSource(source);
+                        // attach shader to the program
+                        program.Attach(shader);
+                    }
                 }
+                // link and return the program
+                program.Link();
             }
-            // link and return the program
-            program.Link();
+            catch
+            {
+                program.Dispose();
+                throw;
+            }
             return program;
         }
 

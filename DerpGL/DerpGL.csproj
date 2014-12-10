@@ -54,7 +54,7 @@
     <Compile Include="Buffers\TransformFeedback.cs" />
     <Compile Include="Cameras\CameraBase.cs" />
     <Compile Include="Cameras\FirstPersonCamera.cs" />
-    <Compile Include="Cameras\RotateAroundOriginCamera.cs" />
+    <Compile Include="Cameras\ThirdPersonCamera.cs" />
     <Compile Include="Exceptions\DerpGLException.cs" />
     <Compile Include="Exceptions\ObjectNotBoundException.cs" />
     <Compile Include="Exceptions\ProgramException.cs" />

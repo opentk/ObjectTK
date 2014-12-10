@@ -26,7 +26,7 @@ namespace Examples
             // disable vsync
             VSync = VSyncMode.Off;
             // set up camera
-            Camera = new RotateAroundOriginCamera();
+            Camera = new ThirdPersonCamera();
             Camera.Enable(this);
             ResetMatrices();
             // hook up events
