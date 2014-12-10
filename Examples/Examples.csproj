@@ -83,6 +83,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DerpGLC\DerpGLC.csproj">
+      <Project>{abd0be84-792d-4f52-82e2-c869585b3c29}</Project>
+      <Name>DerpGLC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DerpGL\DerpGL.csproj">
       <Project>{0ee3347b-1bbe-44ca-8295-22da13ae914a}</Project>
       <Name>DerpGL</Name>
@@ -106,7 +110,7 @@
   <PropertyGroup>
     <PostBuildEvent>rd /Q /S "$(TargetDir)Data"
 xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /E /R /K /Y /I /D /H
-</PostBuildEvent>
+"$(TargetDir)DerpGLC.exe" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
