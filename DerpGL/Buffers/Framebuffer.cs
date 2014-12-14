@@ -25,15 +25,14 @@ namespace DerpGL.Buffers
 {
     /// <summary>
     /// Represents a framebuffer object.
-    /// TODO: rename to Framebuffer
     /// </summary>
-    public class FrameBuffer
+    public class Framebuffer
         : GLResource
     {
         /// <summary>
         /// Creates a new framebuffer object.
         /// </summary>
-        public FrameBuffer()
+        public Framebuffer()
             : base(GL.GenFramebuffer())
         {
         }
@@ -136,7 +135,7 @@ namespace DerpGL.Buffers
         /// <param name="target">The framebuffer target to bind to.</param>
         /// <param name="attachment">The attachment point to attach to.</param>
         /// <param name="renderbuffer">Render buffer to attach.</param>
-        public void Attach(FramebufferTarget target, FramebufferAttachment attachment, RenderBuffer renderbuffer)
+        public void Attach(FramebufferTarget target, FramebufferAttachment attachment, Renderbuffer renderbuffer)
         {
             AssertActive(target);
             GL.FramebufferRenderbuffer(target, attachment, RenderbufferTarget.Renderbuffer, renderbuffer.Handle);
@@ -196,7 +195,7 @@ namespace DerpGL.Buffers
                 default: throw new ArgumentOutOfRangeException();
             }
             GL.GetInteger(binding, out activeHandle);
-            if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call FrameBuffer.Bind() first.");
+            if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call Framebuffer.Bind() first.");
 #endif
         }
     }

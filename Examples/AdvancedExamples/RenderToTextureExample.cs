@@ -17,8 +17,8 @@ namespace Examples.AdvancedExamples
         private const int FramebufferWidth = 400;
         private const int FramebufferHeight = 400;
         
-        private FrameBuffer _framebuffer;
-        private RenderBuffer _depthBuffer;
+        private Framebuffer _framebuffer;
+        private Renderbuffer _depthBuffer;
         private Texture2D _texture;
 
         private SimpleColorProgram _colorProgram;
@@ -40,19 +40,19 @@ namespace Examples.AdvancedExamples
         private void OnLoad(object sender, EventArgs e)
         {
             // initialize and bind framebuffer
-            _framebuffer = new FrameBuffer();
+            _framebuffer = new Framebuffer();
             _framebuffer.Bind(FramebufferTarget.Framebuffer);
 
             // initialize a renderbuffer and bind it to the depth attachment
             // to support depth testing while rendering to the texture
-            _depthBuffer = new RenderBuffer();
+            _depthBuffer = new Renderbuffer();
             _depthBuffer.Init(RenderbufferStorage.DepthComponent, FramebufferWidth, FramebufferHeight);
             _framebuffer.Attach(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, _depthBuffer);
 
             // initialize texture and bind it to the color attachment
             _texture = new Texture2D(SizedInternalFormat.Rgba8, FramebufferWidth, FramebufferHeight, 1);
             _framebuffer.Attach(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, _texture);
-            FrameBuffer.Unbind(FramebufferTarget.Framebuffer);
+            Framebuffer.Unbind(FramebufferTarget.Framebuffer);
 
             // initialize demonstration geometry
             _cube = new ColorCube();
@@ -113,7 +113,7 @@ namespace Examples.AdvancedExamples
             _cubeVao.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount);
 
             // reset to default framebuffer
-            FrameBuffer.Unbind(FramebufferTarget.Framebuffer);
+            Framebuffer.Unbind(FramebufferTarget.Framebuffer);
             
             // set up viewport for the window
             GL.Viewport(0, 0, Width, Height);
