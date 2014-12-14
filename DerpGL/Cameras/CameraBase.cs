@@ -21,6 +21,7 @@ namespace DerpGL.Cameras
 {
     /// <summary>
     /// Base class for camera implementations.
+    /// TODO: somehow seperate camera properties from the different implementations to enable switching between different cameras.
     /// </summary>
     public abstract class CameraBase
     {

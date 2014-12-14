@@ -41,18 +41,18 @@ namespace Examples.AdvancedExamples
         {
             // initialize and bind framebuffer
             _framebuffer = new FrameBuffer();
-            _framebuffer.Bind();
+            _framebuffer.Bind(FramebufferTarget.Framebuffer);
 
             // initialize a renderbuffer and bind it to the depth attachment
             // to support depth testing while rendering to the texture
             _depthBuffer = new RenderBuffer();
             _depthBuffer.Init(RenderbufferStorage.DepthComponent, FramebufferWidth, FramebufferHeight);
-            _framebuffer.Attach(FramebufferAttachment.DepthAttachment, _depthBuffer);
+            _framebuffer.Attach(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, _depthBuffer);
 
             // initialize texture and bind it to the color attachment
             _texture = new Texture2D(SizedInternalFormat.Rgba8, FramebufferWidth, FramebufferHeight, 1);
-            _framebuffer.Attach(FramebufferAttachment.ColorAttachment0, _texture);
-            _framebuffer.Unbind();
+            _framebuffer.Attach(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, _texture);
+            FrameBuffer.Unbind(FramebufferTarget.Framebuffer);
 
             // initialize demonstration geometry
             _cube = new ColorCube();
@@ -97,7 +97,7 @@ namespace Examples.AdvancedExamples
         private void OnRenderFrame(object sender, FrameEventArgs e)
         {
             // set up render to texture
-            _framebuffer.Bind();
+            _framebuffer.Bind(FramebufferTarget.Framebuffer);
             GL.Viewport(0, 0, FramebufferWidth, FramebufferHeight);
             GL.ClearColor(Color.Black);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -113,7 +113,7 @@ namespace Examples.AdvancedExamples
             _cubeVao.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount);
 
             // reset to default framebuffer
-            _framebuffer.Unbind();
+            FrameBuffer.Unbind(FramebufferTarget.Framebuffer);
             
             // set up viewport for the window
             GL.Viewport(0, 0, Width, Height);

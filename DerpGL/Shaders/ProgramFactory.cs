@@ -101,8 +101,9 @@ namespace DerpGL.Shaders
         /// <param name="effectKey">Specifies the effect key to load.</param>
         /// <param name="included">Holds the effectKeys of all shaders already loaded to prevent multiple inclusions.</param>
         /// <returns>The fully assembled shader source.</returns>
-        private static string GetShaderSource(string effectKey, List<Effect.Section> included)
+        private static string GetShaderSource(string effectKey, List<Effect.Section> included = null)
         {
+            if (included == null) included = new List<Effect.Section>();
             // retrieve effect section
             Effect.Section section;
             try

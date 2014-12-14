@@ -21,6 +21,7 @@ namespace DerpGL.Buffers
 {
     /// <summary>
     /// Represents a renderbuffer object.
+    /// TODO: rename to Renderbuffer
     /// </summary>
     public class RenderBuffer
         : GLResource

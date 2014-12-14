@@ -22,7 +22,7 @@ using OpenTK.Input;
 namespace DerpGL.Cameras
 {
     /// <summary>
-    /// Camera which can move freely but is constrained in its orientation to mimic the perspective of a person:<br/>
+    /// First person camera which can move freely but is constrained in its orientation to mimic the perspective of a person:<br/>
     /// - Roll angle is ignored<br/>
     /// - Pitch angle is constrained to "straight up" and "straight down", i.e. abs(Pitch) &#8804; PI/2
     /// </summary>
@@ -77,16 +77,22 @@ namespace DerpGL.Cameras
             if (Math.Abs(Pitch) > MathHelper.PiOver2) Pitch = Math.Sign(Pitch) * MathHelper.PiOver2;
         }
 
-        private void UpdateFrame(object sender, FrameEventArgs e)
+        protected Vector3 GetStep(float timeStep)
         {
-            var speed = (float) (MoveSpeed * e.Time);
             var state = Keyboard.GetState();
-            if (state.IsKeyDown(Key.W)) Position -= new Vector3(MathF.Sin(-Yaw) * MathF.Cos(Pitch), MathF.Sin(Pitch), MathF.Cos(Yaw) * MathF.Cos(Pitch)) * speed;
-            if (state.IsKeyDown(Key.S)) Position += new Vector3(MathF.Sin(-Yaw) * MathF.Cos(Pitch), MathF.Sin(Pitch), MathF.Cos(Yaw) * MathF.Cos(Pitch)) * speed;
-            if (state.IsKeyDown(Key.A)) Position -= new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2)) * speed;
-            if (state.IsKeyDown(Key.D)) Position += new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2)) * speed;
-            if (state.IsKeyDown(Key.Space)) Position += new Vector3(0, 1, 0) * speed;
-            if (state.IsKeyDown(Key.LControl)) Position -= new Vector3(0, 1, 0) * speed;
+            var step = Vector3.Zero;
+            if (state.IsKeyDown(Key.W)) step -= new Vector3(MathF.Sin(-Yaw) * MathF.Cos(Pitch), MathF.Sin(Pitch), MathF.Cos(Yaw) * MathF.Cos(Pitch));
+            if (state.IsKeyDown(Key.S)) step += new Vector3(MathF.Sin(-Yaw) * MathF.Cos(Pitch), MathF.Sin(Pitch), MathF.Cos(Yaw) * MathF.Cos(Pitch));
+            if (state.IsKeyDown(Key.A)) step -= new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2));
+            if (state.IsKeyDown(Key.D)) step += new Vector3(MathF.Sin(-Yaw + MathHelper.PiOver2), 0, MathF.Cos(Yaw - MathHelper.PiOver2));
+            if (state.IsKeyDown(Key.Space)) step += Vector3.UnitY;
+            if (state.IsKeyDown(Key.LControl)) step -= Vector3.UnitY;
+            return step * MoveSpeed * timeStep;
+        }
+
+        protected virtual void UpdateFrame(object sender, FrameEventArgs e)
+        {
+            Position += GetStep((float)e.Time);
         }
     }
 }

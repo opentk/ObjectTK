@@ -25,6 +25,8 @@ namespace DerpGL
     /// <summary>
     /// Represents an OpenGL resource.<br/>
     /// Must be explicitly disposed, otherwise there will be a memory leak which will be logged as a warning.
+    /// TODO: refactoring: switch the inheritance order with GLObject: GLResource -> GLObject -> All wrapper types
+    /// that would enable other types to use GLResource as their base and reuse the dispose behavior
     /// </summary>
     public abstract class GLResource
         : GLObject
