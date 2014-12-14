@@ -33,7 +33,6 @@ namespace Examples.AdvancedExamples
         public RenderToTextureExample()
         {
             Load += OnLoad;
-            Unload += OnUnload;
             RenderFrame += OnRenderFrame;
         }
 
@@ -83,15 +82,6 @@ namespace Examples.AdvancedExamples
 
             // enable depth testing
             GL.Enable(EnableCap.DepthTest);
-        }
-
-        private void OnUnload(object sender, EventArgs e)
-        {
-            _cube.VertexBuffer.Dispose();
-            _cube.ColorBuffer.Dispose();
-            _cube.IndexBuffer.Dispose();
-            _quad.VertexBuffer.Dispose();
-            _quad.TexCoordBuffer.Dispose();
         }
 
         private void OnRenderFrame(object sender, FrameEventArgs e)

@@ -26,7 +26,7 @@ namespace DerpGL.Buffers
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer object.</typeparam>
     public class Buffer<T>
-        : GLResource
+        : GLObject
         where T : struct
     {
         /// <summary>

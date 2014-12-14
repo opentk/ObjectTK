@@ -43,7 +43,7 @@ namespace DerpGL.Textures
     /// </code>
     /// </remarks>
     public abstract class Texture
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Specifies the texture target.

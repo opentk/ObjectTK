@@ -27,7 +27,7 @@ namespace DerpGL.Buffers
     /// TODO: add support for instanced vertex attributes with glVertexAttribDivisor (or maybe glVertexBindingDivisor)
     /// </summary>
     public class VertexArray
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Initializes a new vertex array object.

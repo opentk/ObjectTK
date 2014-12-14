@@ -30,7 +30,7 @@ namespace DerpGL.Shaders
     /// Represents a program object.
     /// </summary>
     public class Program
-        : GLResource
+        : GLObject
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Program));
 

@@ -34,9 +34,9 @@ namespace DerpGL.Shapes
             TexCoordBuffer.Init(BufferTarget.ArrayBuffer, TexCoords);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool manual)
         {
-            base.Dispose();
+            base.Dispose(manual);
             if (TexCoordBuffer != null) TexCoordBuffer.Dispose();
         }
     }

@@ -19,6 +19,7 @@ namespace Examples.BasicExamples
         public MinimalExample()
         {
             Load += OnLoad;
+            Unload += OnUnload;
             RenderFrame += OnRenderFrame;
         }
 
@@ -49,6 +50,18 @@ namespace Examples.BasicExamples
 
             // set a nice clear color
             GL.ClearColor(Color.MidnightBlue);
+        }
+
+        private void OnUnload(object sender, EventArgs e)
+        {
+            // Always make sure to properly dispose gl resources to prevent memory leaks.
+            // Most of the examples do not explicitly dispose resources, because
+            // the base class (ExampleWindow) calls GLResource.DisposeAll(this).
+            // This will automatically dispose all objects referenced by class fields
+            // which derive from GLResource. Everything else still has to be disposed manually.
+            _program.Dispose();
+            _vao.Dispose();
+            _vbo.Dispose();
         }
 
         private void OnRenderFrame(object sender, FrameEventArgs e)

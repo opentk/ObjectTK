@@ -24,26 +24,23 @@ namespace DerpGL
 {
     /// <summary>
     /// Represents an OpenGL resource.<br/>
-    /// Must be explicitly disposed, otherwise there will be a memory leak which will be logged as a warning.
-    /// TODO: refactoring: switch the inheritance order with GLObject: GLResource -> GLObject -> All wrapper types
-    /// that would enable other types to use GLResource as their base and reuse the dispose behavior
+    /// Must be disposed explicitly, otherwise a warning will be logged indicating a memory leak.<br/>
+    /// Can be derived to inherit the dispose pattern.
     /// </summary>
     public abstract class GLResource
-        : GLObject
-        , IDisposable
+        : IDisposable
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(GLResource));
-        
+
         /// <summary>
         /// Gets a values specifying if this resource has already been disposed.
         /// </summary>
         public bool IsDisposed { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the GLResource class.
+        /// Initializes a new instance of the GLObject class.
         /// </summary>
-        protected GLResource(int handle)
-            : base(handle)
+        protected GLResource()
         {
             IsDisposed = false;
         }

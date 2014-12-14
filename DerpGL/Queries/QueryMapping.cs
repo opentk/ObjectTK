@@ -36,7 +36,7 @@ namespace DerpGL.Queries
         /// Represents an OpenGL query.
         /// </summary>
         private class QueryMap
-            : GLResource
+            : GLObject
         {
             internal bool Active;
             internal QueryTarget Target;

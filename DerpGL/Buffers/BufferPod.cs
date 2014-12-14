@@ -25,7 +25,7 @@ namespace DerpGL.Buffers
     /// </summary>
     /// <typeparam name="T">The type of elements in the buffer objects.</typeparam>
     public class BufferPod<T>
-        : IDisposable
+        : GLResource
         where T : struct
     {
         /// <summary>
@@ -47,8 +47,9 @@ namespace DerpGL.Buffers
             Pong = new Buffer<T>();
         }
 
-        public void Dispose()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             Ping.Dispose();
             Pong.Dispose();
         }

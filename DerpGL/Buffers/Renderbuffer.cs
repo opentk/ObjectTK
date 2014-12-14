@@ -23,7 +23,7 @@ namespace DerpGL.Buffers
     /// Represents a renderbuffer object.
     /// </summary>
     public class Renderbuffer
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Creates a new renderbuffer object.

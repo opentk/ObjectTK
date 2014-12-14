@@ -33,9 +33,10 @@ namespace DerpGL.Shapes
             ColorBuffer.Init(BufferTarget.ArrayBuffer, Colors);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool manual)
         {
-            base.Dispose();
+            base.Dispose(manual);
+            if (!manual) return;
             if (ColorBuffer != null) ColorBuffer.Dispose();
         }
     }

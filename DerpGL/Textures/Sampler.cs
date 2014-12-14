@@ -23,7 +23,7 @@ namespace DerpGL.Textures
     /// Represents a sampler object.
     /// </summary>
     public sealed class Sampler
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Initializes a new sampler object.

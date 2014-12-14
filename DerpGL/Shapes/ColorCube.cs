@@ -30,9 +30,11 @@ namespace DerpGL.Shapes
             DefaultMode = PrimitiveType.Triangles;
 
             // use default cube
-            var cube = new Cube();
-            Vertices = cube.Vertices;
-            Indices = cube.Indices;
+            using (var cube = new Cube())
+            {
+                Vertices = cube.Vertices;
+                Indices = cube.Indices;
+            }
 
             // add color to the vertices
             Colors = new List<Color>

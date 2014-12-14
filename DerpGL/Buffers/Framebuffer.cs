@@ -27,7 +27,7 @@ namespace DerpGL.Buffers
     /// Represents a framebuffer object.
     /// </summary>
     public class Framebuffer
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Creates a new framebuffer object.

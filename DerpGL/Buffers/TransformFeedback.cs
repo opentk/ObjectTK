@@ -26,7 +26,7 @@ namespace DerpGL.Buffers
     /// Represents a transform feedback object.
     /// </summary>
     public class TransformFeedback
-        : GLResource
+        : GLObject
     {
         /// <summary>
         /// Creates a new transform feedback buffer.

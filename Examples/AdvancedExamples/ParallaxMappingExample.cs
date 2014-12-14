@@ -44,7 +44,6 @@ namespace Examples.AdvancedExamples
         public ParallaxMappingExample()
         {
             Load += OnLoad;
-            Unload += OnUnload;
             Resize += OnResize;
             UpdateFrame += OnUpdateFrame;
             RenderFrame += OnRenderFrame;
@@ -171,14 +170,6 @@ namespace Examples.AdvancedExamples
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
             GL.PolygonMode(MaterialFace.Back, PolygonMode.Line);
-        }
-
-        protected void OnUnload(object sender, EventArgs eventArgs)
-        {
-            // clean up resources
-            _program.Dispose();
-            _textureDiffuseHeight.Dispose();
-            _textureNormalGloss.Dispose();
         }
 
         protected void OnResize(object sender, EventArgs e)

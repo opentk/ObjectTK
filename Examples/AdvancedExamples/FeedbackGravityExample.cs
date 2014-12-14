@@ -37,7 +37,6 @@ namespace Examples.AdvancedExamples
         {
             _random = new Random();
             Load += OnLoad;
-            Unload += OnUnload;
             RenderFrame += OnRenderFrame;
             Keyboard.KeyDown += OnKeyDown;
         }
@@ -100,12 +99,6 @@ namespace Examples.AdvancedExamples
             }
             // upload data into the Ping buffer and initialize the pong buffer to the same size
             _buffers.Init(BufferTarget.ArrayBuffer, particles);
-        }
-
-        private void OnUnload(object sender, EventArgs e)
-        {
-            // release the buffers
-            _buffers.Dispose();
         }
 
         private void OnRenderFrame(object sender, FrameEventArgs e)

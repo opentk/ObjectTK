@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
-using System;
 using DerpGL.Buffers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -32,7 +31,7 @@ namespace DerpGL.Shapes
     /// there may be a colored shape with vertices and colors but no indices...
     /// </summary>
     public abstract class Shape
-        : IDisposable
+        : GLResource
     {
         public PrimitiveType DefaultMode { get; set; }
         public Vector3[] Vertices { get; protected set; }
@@ -44,8 +43,9 @@ namespace DerpGL.Shapes
             VertexBuffer.Init(BufferTarget.ArrayBuffer, Vertices);
         }
 
-        public virtual void Dispose()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             if (VertexBuffer != null) VertexBuffer.Dispose();
         }
     }

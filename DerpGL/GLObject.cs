@@ -20,10 +20,12 @@ using System;
 namespace DerpGL
 {
     /// <summary>
-    /// Represents an OpenGL handle.
+    /// Represents an OpenGL handle.<br/>
+    /// Must be disposed explicitly, otherwise there will be a memory leak which will be logged as a warning.
     /// </summary>
-    public class GLObject
-        : IEquatable<GLObject>
+    public abstract class GLObject
+        : GLResource
+        , IEquatable<GLObject>
     {
         /// <summary>
         /// The OpenGL handle.
@@ -31,9 +33,9 @@ namespace DerpGL
         public readonly int Handle;
 
         /// <summary>
-        /// Initializes a new instance of the GLObject class.
+        /// Initializes a new instance of the GLResource class.
         /// </summary>
-        public GLObject(int handle)
+        protected GLObject(int handle)
         {
             Handle = handle;
         }
@@ -45,7 +47,7 @@ namespace DerpGL
 
         public override bool Equals(object obj)
         {
-            return obj is GLObject && Equals(obj as GLObject);
+            return obj is GLObject && Equals((GLObject) obj);
         }
 
         public override int GetHashCode()

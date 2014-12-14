@@ -33,9 +33,10 @@ namespace DerpGL.Shapes
             IndexBuffer.Init(BufferTarget.ElementArrayBuffer, Indices);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool manual)
         {
-            base.Dispose();
+            base.Dispose(manual);
+            if (!manual) return;
             if (IndexBuffer != null) IndexBuffer.Dispose();
         }
     }

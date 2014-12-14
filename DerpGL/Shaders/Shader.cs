@@ -27,7 +27,7 @@ namespace DerpGL.Shaders
     /// Represents a shader object.
     /// </summary>
     public class Shader
-        : GLResource
+        : GLObject
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Shader));
 
