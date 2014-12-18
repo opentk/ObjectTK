@@ -46,7 +46,7 @@ namespace DerpGL.Shaders
 
         static ProgramFactory()
         {
-            BasePath = "Data/Shaders/";
+            BasePath = Path.Combine("Data", "Shaders");
             Extension = "glsl";
         }
 
