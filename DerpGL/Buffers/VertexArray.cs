@@ -23,7 +23,7 @@ using OpenTK.Graphics.OpenGL;
 namespace DerpGL.Buffers
 {
     /// <summary>
-    /// Represents a vertex array object.
+    /// Represents a vertex array object.<br/>
     /// TODO: add support for instanced vertex attributes with glVertexAttribDivisor (or maybe glVertexBindingDivisor)
     /// </summary>
     public class VertexArray

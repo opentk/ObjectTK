@@ -29,7 +29,6 @@ namespace DerpGL.Queries
     /// <typeparam name="T">An enum type containing the query names.</typeparam>
     public class QueryMapping<T>
         : QueryIndexer
-        , IDisposable
         where T : struct, IConvertible
     {
         /// <summary>
@@ -101,8 +100,9 @@ namespace DerpGL.Queries
             _queries = Enum.GetValues(typeof (T)).Cast<T>().ToDictionary(_ => _, _ => new QueryMap());
         }
 
-        public void Dispose()
+        protected override void Dispose(bool manual)
         {
+            if (!manual) return;
             foreach (var queryMap in _queries.Values)
             {
                 queryMap.Dispose();

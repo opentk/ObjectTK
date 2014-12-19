@@ -26,6 +26,7 @@ namespace DerpGL.Queries
     /// Provides methods to prevent query collisions on standard and indexable <see cref="QueryTarget"/>s.
     /// </summary>
     public abstract class QueryIndexer
+        : GLResource
     {
         /// <summary>
         /// Stores indices currently in use for each QueryTarget.
