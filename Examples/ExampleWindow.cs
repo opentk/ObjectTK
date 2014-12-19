@@ -1,8 +1,8 @@
 ﻿using System;
-using DerpGL;
-using DerpGL.Cameras;
-using DerpGL.Shaders;
-using DerpGL.Utilities;
+using ObjectTK;
+using ObjectTK.Cameras;
+using ObjectTK.Shaders;
+using ObjectTK.Utilities;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
@@ -56,7 +56,7 @@ namespace Examples
         private void OnRenderFrame(object sender, FrameEventArgs e)
         {
             // display FPS in the window title
-            Title = string.Format("DerpGL example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
+            Title = string.Format("ObjectTK example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
         private void OnKeyDown(object sender, KeyboardKeyEventArgs e)

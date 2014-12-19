@@ -83,13 +83,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DerpGLC\DerpGLC.csproj">
+    <ProjectReference Include="..\ObjectTKC\ObjectTKC.csproj">
       <Project>{abd0be84-792d-4f52-82e2-c869585b3c29}</Project>
-      <Name>DerpGLC</Name>
+      <Name>ObjectTKC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DerpGL\DerpGL.csproj">
+    <ProjectReference Include="..\ObjectTK\ObjectTK.csproj">
       <Project>{0ee3347b-1bbe-44ca-8295-22da13ae914a}</Project>
-      <Name>DerpGL</Name>
+      <Name>ObjectTK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -106,11 +106,16 @@
     <Content Include="Data\Textures\swizzled-rock-diffuse-height.dds" />
     <Content Include="Data\Textures\swizzled-rock-normal-gloss.dds" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExampleBrowser.resx">
+      <DependentUpon>ExampleBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rd /Q /S "$(TargetDir)Data"
 xcopy "$(ProjectDir)Data" "$(TargetDir)Data" /E /R /K /Y /I /D /H
-"$(TargetDir)DerpGLC.exe" "$(TargetPath)"</PostBuildEvent>
+"$(TargetDir)ObjectTKC.exe" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

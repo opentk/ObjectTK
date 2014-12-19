@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using DerpGL.Buffers;
-using DerpGL.Shaders;
-using DerpGL.Textures;
+using ObjectTK.Buffers;
+using ObjectTK.Shaders;
+using ObjectTK.Textures;
 using Examples.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

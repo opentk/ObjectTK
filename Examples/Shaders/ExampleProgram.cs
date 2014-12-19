@@ -1,5 +1,5 @@
-﻿using DerpGL.Shaders;
-using DerpGL.Shaders.Variables;
+﻿using ObjectTK.Shaders;
+using ObjectTK.Shaders.Variables;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

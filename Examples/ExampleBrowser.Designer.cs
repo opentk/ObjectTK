@@ -62,7 +62,7 @@
             this.Controls.Add(this.treeViewExamples);
             this.KeyPreview = true;
             this.Name = "ExampleBrowser";
-            this.Text = "DerpGL example projects";
+            this.Text = "ObjectTK example projects";
             this.Load += new System.EventHandler(this.ExampleBrowser_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ExampleBrowser_KeyDown);
             this.ResumeLayout(false);

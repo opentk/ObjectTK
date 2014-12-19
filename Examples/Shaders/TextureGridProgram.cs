@@ -1,6 +1,6 @@
-using DerpGL.Shaders;
-using DerpGL.Shaders.Variables;
-using DerpGL.Textures;
+using ObjectTK.Shaders;
+using ObjectTK.Shaders.Variables;
+using ObjectTK.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
