@@ -5,7 +5,7 @@ DerpGL is a thin abstraction layer on top of OpenTK to provide OpenGL features i
 It is fully aimed at modern OpenGL and compatible to the OpenGL4 core profile.
 
 Currently there are types for the following OpenGL features:
-* Programs and Shaders (Vertex, Geometry, Fragment, Compute)
+* Programs and Shaders
 * Textures
 * Vertex array objects
 * Buffer objects
@@ -20,6 +20,7 @@ The main advantages of using these types are:
 * Removes the necessary but error-prone boilerplate code from your project.
 * Immediate detection of leaked resources.
 * Information log via log4net.
+* The Debug-Build also includes additional sanity-checks which help tracking down common errors.
 
 DerpGL does not force you to use its functionality and skip the OpenGL API at all. It is perfectly fine to use the OpenGL API directly and the DerpGL types side-by-side, because DerpGL does not explicitly keep track of any OpenGL state which might get corrupted when you call the OpenGL API without it knowing. This is an essential feature which makes DerpGL very usable even if it is not a "complete" wrapper around every corner of OpenGL.
 
