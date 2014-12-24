@@ -26,11 +26,6 @@ namespace ObjectTK
     public static class MathF
     {
         /// <summary>
-        /// Represents PI with float precision.
-        /// </summary>
-        public const float PI = (float) Math.PI;
-
-        /// <summary>
         /// Returns the sine of the specified angle.
         /// </summary>
         /// <param name="angle">An angle, measured in radians.</param>

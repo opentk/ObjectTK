@@ -160,7 +160,7 @@ namespace Examples.AdvancedExamples
             _vao.BindAttribute(_program.InTexCoord, _buffer, 36);
 
             // set camera position
-            Camera.DefaultPosition = new Vector3(0,0,3);
+            Camera.DefaultState.Position = new Vector3(0,0,3);
             Camera.ResetToDefault();
 
             // set state
@@ -226,7 +226,7 @@ namespace Examples.AdvancedExamples
             _program.Material_ScaleBiasShininess.Set(_materialScaleAndBiasAndShininess);
 
             // the rest are vectors
-            _program.Camera_Position.Set(Camera.GetEyePosition());
+            _program.Camera_Position.Set(Camera.State.Position);
             _program.Light_Position.Set(_lightPosition);
             _program.Light_DiffuseColor.Set(_lightDiffuse);
             _program.Light_SpecularColor.Set(_lightSpecular);

@@ -78,8 +78,7 @@ namespace Examples.AdvancedExamples
             GL.ClearColor(Color.Black);
 
             // set a nice camera angle
-            Camera.DefaultPitch = 0.5f;
-            Camera.DefaultPosition = new Vector3(0,0,8);
+            Camera.DefaultState.Position = new Vector3(0,2,-8);
             Camera.ResetToDefault();
         }
 

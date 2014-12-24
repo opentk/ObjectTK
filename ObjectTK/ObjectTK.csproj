@@ -52,9 +52,13 @@
     <Compile Include="Buffers\VertexArray.cs" />
     <Compile Include="Buffers\RenderBuffer.cs" />
     <Compile Include="Buffers\TransformFeedback.cs" />
-    <Compile Include="Cameras\CameraBase.cs" />
-    <Compile Include="Cameras\FirstPersonCamera.cs" />
-    <Compile Include="Cameras\ThirdPersonCamera.cs" />
+    <Compile Include="Cameras\Camera.cs" />
+    <Compile Include="Cameras\CameraBehavior.cs" />
+    <Compile Include="Cameras\CameraState.cs" />
+    <Compile Include="Cameras\FreeLookAlignedBehavior.cs" />
+    <Compile Include="Cameras\FreeLookBehavior.cs" />
+    <Compile Include="Cameras\GimbalBehavior.cs" />
+    <Compile Include="Cameras\ThirdPersonBehavior.cs" />
     <Compile Include="Exceptions\ObjectTKException.cs" />
     <Compile Include="Exceptions\ObjectNotBoundException.cs" />
     <Compile Include="Exceptions\ProgramException.cs" />

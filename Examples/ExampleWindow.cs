@@ -15,7 +15,7 @@ namespace Examples
     public class ExampleWindow
         : DerpWindow
     {
-        protected CameraBase Camera;
+        protected Camera Camera;
         protected Matrix4 ModelView;
         protected Matrix4 Projection;
         protected string OriginalTitle { get; private set; }
@@ -26,7 +26,10 @@ namespace Examples
             // disable vsync
             VSync = VSyncMode.Off;
             // set up camera
-            Camera = new ThirdPersonCamera();
+            Camera = new Camera();
+            Camera.SetBehavior(new ThirdPersonBehavior());
+            Camera.DefaultState.Position.Z = 5;
+            Camera.ResetToDefault();
             Camera.Enable(this);
             ResetMatrices();
             // hook up events
@@ -86,7 +89,7 @@ namespace Examples
             Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 0.1f, 1000);
             ModelView = Matrix4.Identity;
             // apply camera transform
-            Camera.ApplyCamera(ref ModelView);
+            ModelView = Camera.GetCameraTransform();
         }
     }
 }

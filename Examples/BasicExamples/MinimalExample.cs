@@ -45,7 +45,7 @@ namespace Examples.BasicExamples
             _vao.BindAttribute(_program.InPosition, _vbo);
 
             // set camera position
-            Camera.DefaultPosition = new Vector3(0,0,3);
+            Camera.DefaultState.Position = new Vector3(0,0,3);
             Camera.ResetToDefault();
 
             // set a nice clear color

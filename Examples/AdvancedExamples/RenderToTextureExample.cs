@@ -77,7 +77,7 @@ namespace Examples.AdvancedExamples
             _quadVao.BindAttribute(_textureProgram.InTexCoord, _quad.TexCoordBuffer);
 
             // set camera position
-            Camera.DefaultPosition = new Vector3(0,0,3);
+            Camera.DefaultState.Position = new Vector3(0,0,3);
             Camera.ResetToDefault();
 
             // enable depth testing
