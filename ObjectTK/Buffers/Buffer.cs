@@ -211,7 +211,23 @@ namespace ObjectTK.Buffers
         {
             SubData(bufferTarget, new T[ElementCount], 0, ElementCount);
         }
-        
+
+        /// <summary>
+        /// "Orphan" the buffer by calling glBufferData() with the exact same size and usage hint,
+        /// but with a NULL pointer as the new data. This will let OpenGL allocate a new buffer
+        /// under the same handle and continue using it without synchronization, even if the old
+        /// buffer may still be in use by commands remaining in the queue.
+        /// </summary>
+        /// <param name="bufferTarget">The BufferTarget to use when binding the buffer.</param>
+        /// <param name="usageHint">The usage hint of the buffer object.</param>
+        public void Orphan(BufferTarget bufferTarget, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        {
+            if (!Initialized) throw new InvalidOperationException("Can not orphan uninitialized buffer.");
+            Init(bufferTarget, ElementCount, usageHint);
+            // GL 4.3
+            //GL.InvalidateBufferData(Handle);
+        }
+
         /// <summary>
         /// Copies elements from the source buffer to this buffer.
         /// Copied on server-side only, no synchronization or transfer of data to host required.
