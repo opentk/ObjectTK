@@ -17,6 +17,7 @@
 #endregion
 using System;
 using System.Linq;
+using ObjectTK.Shaders.Sources;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Shaders

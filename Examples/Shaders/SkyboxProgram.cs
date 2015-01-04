@@ -1,4 +1,5 @@
 ﻿using ObjectTK.Shaders;
+using ObjectTK.Shaders.Sources;
 using ObjectTK.Shaders.Variables;
 using ObjectTK.Textures;
 using OpenTK;

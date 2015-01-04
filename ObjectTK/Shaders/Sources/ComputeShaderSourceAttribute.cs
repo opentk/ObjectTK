@@ -17,7 +17,7 @@
 #endregion
 using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Shaders
+namespace ObjectTK.Shaders.Sources
 {
     /// <summary>
     /// Specifies the source of a compute shader.

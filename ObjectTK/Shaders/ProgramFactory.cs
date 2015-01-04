@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using log4net;
 using ObjectTK.Exceptions;
+using ObjectTK.Shaders.Sources;
 
 namespace ObjectTK.Shaders
 {

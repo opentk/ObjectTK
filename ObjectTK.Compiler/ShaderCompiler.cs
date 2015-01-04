@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using ObjectTK.Exceptions;
 using ObjectTK.Shaders;
+using ObjectTK.Shaders.Sources;
 using OpenTK;
 
 namespace ObjectTK.Compiler

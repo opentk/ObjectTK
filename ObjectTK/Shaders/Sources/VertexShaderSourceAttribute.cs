@@ -17,20 +17,20 @@
 #endregion
 using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Shaders
+namespace ObjectTK.Shaders.Sources
 {
     /// <summary>
-    /// Specifies the source of a geometry shader.
+    /// Specifies the source of a vertex shader.
     /// </summary>
-    public class GeometryShaderSourceAttribute
+    public class VertexShaderSourceAttribute
         : ShaderSourceAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the GeometryShaderSourceAttribute.
+        /// Initializes a new instance of the VertexShaderSourceAttribute.
         /// </summary>
         /// <param name="effectKey">Specifies the effect key for this shader.</param>
-        public GeometryShaderSourceAttribute(string effectKey)
-            : base(ShaderType.GeometryShader, effectKey)
+        public VertexShaderSourceAttribute(string effectKey)
+            : base(ShaderType.VertexShader, effectKey)
         {
         }
     }
