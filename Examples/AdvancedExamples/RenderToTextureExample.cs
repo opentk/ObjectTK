@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
-using ObjectTK.Shapes;
 using ObjectTK.Textures;
-using Examples.Shaders;
+using ObjectTK.Tools.Shapes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

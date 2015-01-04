@@ -2,10 +2,10 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using ObjectTK.Textures;
-using Examples.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using ObjectTK.Textures;
-using Examples.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;

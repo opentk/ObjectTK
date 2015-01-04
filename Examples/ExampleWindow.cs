@@ -1,8 +1,8 @@
 ﻿using System;
 using ObjectTK;
-using ObjectTK.Cameras;
 using ObjectTK.Shaders;
-using ObjectTK.Utilities;
+using ObjectTK.Tools;
+using ObjectTK.Tools.Cameras;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;

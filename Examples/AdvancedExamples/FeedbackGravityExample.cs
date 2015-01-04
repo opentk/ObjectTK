@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
-using Examples.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
