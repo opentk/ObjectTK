@@ -64,7 +64,7 @@ namespace ObjectTK.Compiler
         public static void Main(string[] args)
         {
             // create a hidden GameWindow to initialize an OpenGL context
-            using (var window = new GameWindow())
+            using (new GameWindow())
             {
                 // iterate over given arguments
                 foreach (var path in args)
@@ -80,19 +80,19 @@ namespace ObjectTK.Compiler
                     var assembly = Assembly.LoadFrom(path);
                     // set working directory
                     Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
-                    // iterate over all defined shader programs
-                    foreach (var type in assembly.GetTypes().Where(_ => typeof (Program).IsAssignableFrom(_)))
+                    // iterate over all non-abstract shader programs
+                    foreach (var type in assembly.GetTypes().Where(_ => !_.IsAbstract && typeof(Program).IsAssignableFrom(_)))
                     {
                         // check if the program has any shader sources tagged to it
                         if (ShaderSourceAttribute.GetShaderSources(type).Count == 0) continue;
                         Console.Out.WriteLine("Compiling: {0}", type.FullName);
                         // get generic program factory method
-                        var method = typeof (ProgramFactory).GetMethod("Create");
+                        var method = typeof(ProgramFactory).GetMethod("Create");
                         var generic = method.MakeGenericMethod(type);
                         try
                         {
                             // invoke program factory
-                            var program = (Program) generic.Invoke(null, null);
+                            var program = (Program)generic.Invoke(null, null);
                             program.Dispose();
                         }
                         catch (TargetInvocationException ex)
