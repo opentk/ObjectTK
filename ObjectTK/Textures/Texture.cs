@@ -150,6 +150,16 @@ namespace ObjectTK.Textures
         }
 
         /// <summary>
+        /// Sets texture parameters.
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="value"></param>
+        public void SetParameter(TextureParameterName parameterName, int value)
+        {
+            GL.TexParameter(TextureTarget, parameterName, value);
+        }
+
+        /// <summary>
         /// Sets the given wrap mode on all dimensions R, S and T.
         /// </summary>
         /// <param name="wrapMode">The wrap mode to apply.</param>
@@ -162,17 +172,19 @@ namespace ObjectTK.Textures
         }
 
         /// <summary>
-        /// Sets texture parameters.
+        /// Sets the given texture minification and magnification filters.
         /// </summary>
-        /// <param name="parameterName"></param>
-        /// <param name="value"></param>
-        public void SetParameter(TextureParameterName parameterName, int value)
+        /// <param name="minFilter"></param>
+        /// <param name="magFilter"></param>
+        public void SetFilter(TextureMinFilter minFilter, TextureMagFilter magFilter)
         {
-            GL.TexParameter(TextureTarget, parameterName, value);
+            SetParameter(TextureParameterName.TextureMinFilter, (int)minFilter);
+            SetParameter(TextureParameterName.TextureMagFilter, (int)magFilter);
         }
 
         /// <summary>
-        /// Sets default texture parameters to ensure texture completeness.
+        /// Sets default texture parameters to ensure texture completeness.<br/>
+        /// Enables mipmapping if the texture supports it, otherwise filtering is set to linear interpolation.
         /// </summary>
         public virtual void SetDefaultTexParameters()
         {
