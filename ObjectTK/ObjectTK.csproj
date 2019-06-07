@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Buffers\Buffer.cs" />
     <Compile Include="Buffers\BufferPod.cs" />
-    <Compile Include="Buffers\FrameBuffer.cs" />
+    <Compile Include="Buffers\Framebuffer.cs" />
     <Compile Include="Buffers\VertexArray.cs" />
-    <Compile Include="Buffers\RenderBuffer.cs" />
+    <Compile Include="Buffers\Renderbuffer.cs" />
     <Compile Include="Buffers\TransformFeedback.cs" />
     <Compile Include="Exceptions\ObjectTKException.cs" />
     <Compile Include="Exceptions\ObjectNotBoundException.cs" />
