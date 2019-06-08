@@ -1,20 +1,12 @@
-#region License
-// ObjectTK License
-// Copyright (C) 2013-2015 J.C.Bernack
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
-#endregion
+//
+// CameraBehavior.cs
+//
+// Copyright (C) 2018 OpenTK
+//
+// This software may be modified and distributed under the terms
+// of the MIT license. See the LICENSE file for details.
+//
+
 using OpenTK;
 
 namespace ObjectTK.Tools.Cameras
@@ -38,7 +30,7 @@ namespace ObjectTK.Tools.Cameras
             Vector3.Transform(ref state.LookAt, ref rot, out state.LookAt);
             // renormalize to prevent summing up of floating point errors
             state.LookAt.Normalize();
-            // flip up vector when pitched more than +/-90° from the forward direction
+            // flip up vector when pitched more than +/-90ï¿½ from the forward direction
             if (Vector3.Dot(state.LookAt, forward) < 0) state.Up *= -1;
         }
     }
