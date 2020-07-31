@@ -8,7 +8,6 @@
 //
 
 using System;
-using log4net;
 using ObjectTK.Buffers;
 using OpenTK.Graphics.OpenGL;
 
@@ -20,7 +19,7 @@ namespace ObjectTK.Shaders.Variables
     public abstract class BufferBinding
         : ProgramVariable
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(BufferBinding));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(BufferBinding));
 
         /// <summary>
         /// The target to use when binding to this point.
@@ -49,7 +48,7 @@ namespace ObjectTK.Shaders.Variables
         {
             Index = GL.GetProgramResourceIndex(ProgramHandle, _programInterface, Name);
             Active = Index > -1;
-            if (!Active) Logger.WarnFormat("Binding block not found or not active: {0}", Name);
+            if (!Active) Logger?.WarnFormat("Binding block not found or not active: {0}", Name);
             Binding = -1;
         }
 

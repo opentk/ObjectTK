@@ -8,7 +8,6 @@
 //
 
 using System;
-using log4net;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -22,7 +21,7 @@ namespace ObjectTK.Tools
     public abstract class DerpWindow
         : GameWindow
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(DerpWindow));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(DerpWindow));
 
         protected readonly FrameTimer FrameTimer;
 
@@ -33,16 +32,16 @@ namespace ObjectTK.Tools
             : base(width, height, mode, title)
         {
             // log some OpenGL information
-            Logger.Info("OpenGL context information:");
-            Logger.InfoFormat("{0}: {1}", StringName.Vendor, GL.GetString(StringName.Vendor));
-            Logger.InfoFormat("{0}: {1}", StringName.Renderer, GL.GetString(StringName.Renderer));
-            Logger.InfoFormat("{0}: {1}", StringName.Version, GL.GetString(StringName.Version));
-            Logger.InfoFormat("{0}: {1}", StringName.ShadingLanguageVersion, GL.GetString(StringName.ShadingLanguageVersion));
+            Logger?.Info("OpenGL context information:");
+            Logger?.InfoFormat("{0}: {1}", StringName.Vendor, GL.GetString(StringName.Vendor));
+            Logger?.InfoFormat("{0}: {1}", StringName.Renderer, GL.GetString(StringName.Renderer));
+            Logger?.InfoFormat("{0}: {1}", StringName.Version, GL.GetString(StringName.Version));
+            Logger?.InfoFormat("{0}: {1}", StringName.ShadingLanguageVersion, GL.GetString(StringName.ShadingLanguageVersion));
             int numExtensions;
             GL.GetInteger(GetPName.NumExtensions, out numExtensions);
-            Logger.DebugFormat("Number available extensions: {0}", numExtensions);
-            for (var i = 0; i < numExtensions; i++) Logger.DebugFormat("{0}: {1}", i, GL.GetString(StringNameIndexed.Extensions, i));
-            Logger.InfoFormat("Initializing game window: {0}", title);
+            Logger?.DebugFormat("Number available extensions: {0}", numExtensions);
+            for (var i = 0; i < numExtensions; i++) Logger?.DebugFormat("{0}: {1}", i, GL.GetString(StringNameIndexed.Extensions, i));
+            Logger?.InfoFormat("Initializing game window: {0}", title);
             // set up GameWindow events
             Resize += OnResize;
             UpdateFrame += OnUpdateFrame;
@@ -52,7 +51,7 @@ namespace ObjectTK.Tools
 
         private void OnResize(object sender, EventArgs eventArgs)
         {
-            Logger.InfoFormat("Window resized to: {0}x{1}", Width, Height);
+            Logger?.InfoFormat("Window resized to: {0}x{1}", Width, Height);
         }
 
         private void OnUpdateFrame(object sender, FrameEventArgs e)

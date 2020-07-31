@@ -9,7 +9,6 @@
 
 using System.Linq;
 using System.Reflection;
-using log4net;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Shaders.Variables
@@ -20,7 +19,7 @@ namespace ObjectTK.Shaders.Variables
     public sealed class VertexAttrib
         : ProgramVariable
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(VertexAttrib));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(VertexAttrib));
 
         /// <summary>
         /// The vertex attributes location within the shader.
@@ -66,7 +65,7 @@ namespace ObjectTK.Shaders.Variables
         {
             Index = GL.GetAttribLocation(ProgramHandle, Name);
             Active = Index > -1;
-            if (!Active) Logger.WarnFormat("Vertex attribute not found or not active: {0}", Name);
+            if (!Active) Logger?.WarnFormat("Vertex attribute not found or not active: {0}", Name);
         }
     }
 }

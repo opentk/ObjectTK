@@ -9,7 +9,6 @@
 
 using System;
 using System.Reflection;
-using log4net;
 using ObjectTK.Exceptions;
 
 namespace ObjectTK
@@ -22,7 +21,7 @@ namespace ObjectTK
     public abstract class GLResource
         : IDisposable
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(GLResource));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(GLResource));
 
         /// <summary>
         /// Gets a values specifying if this resource has already been disposed.
@@ -42,7 +41,7 @@ namespace ObjectTK
         /// </summary>
         ~GLResource()
         {
-            Logger.WarnFormat("GLResource leaked: {0}", this);
+            Logger?.WarnFormat("GLResource leaked: {0}", this);
             Dispose(false);
 #if DEBUG
             throw new ObjectTKException(string.Format("GLResource leaked: {0}", this));

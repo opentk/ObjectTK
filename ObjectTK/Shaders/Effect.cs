@@ -10,7 +10,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using log4net;
 
 namespace ObjectTK.Shaders
 {
@@ -20,7 +19,7 @@ namespace ObjectTK.Shaders
     /// </summary>
     public class Effect
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Effect));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(Effect));
 
         private static readonly Dictionary<string, Effect> Cache = new Dictionary<string, Effect>();
 
@@ -149,7 +148,7 @@ namespace ObjectTK.Shaders
             }
             catch (FileNotFoundException ex)
             {
-                Logger.Error("Effect source file not found.", ex);
+                Logger?.Error("Effect source file not found.", ex);
                 throw;
             }
         }

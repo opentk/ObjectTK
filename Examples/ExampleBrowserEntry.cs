@@ -9,13 +9,20 @@ namespace Examples
         [STAThread]
         public static void Main()
         {
-            // initialize log4net via app.config
-            XmlConfigurator.Configure();
+            // initialize log4net via app.config if available
+            if (ObjectTK.Logging.LogFactory.IsAvailable)
+                ConfigureLogging();
+
             // show example browser
             using (var browser = new ExampleBrowser())
             {
                 Application.Run(browser);
             }
+        }
+
+        public static void ConfigureLogging()
+        {
+            XmlConfigurator.Configure();
         }
     }
 }
