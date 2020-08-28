@@ -61,6 +61,7 @@
     <Compile Include="Shapes\Quad.cs" />
     <Compile Include="Shapes\Rect.cs" />
     <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\TexturedCube.cs" />
     <Compile Include="Shapes\TexturedQuad.cs" />
     <Compile Include="Shapes\TexturedShape.cs" />
   </ItemGroup>

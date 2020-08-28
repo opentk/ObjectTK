@@ -50,6 +50,7 @@
     <Compile Include="AdvancedExamples\LoaderDDS.cs" />
     <Compile Include="AdvancedExamples\LoaderStatics.cs" />
     <Compile Include="AdvancedExamples\ParallaxMappingExample.cs" />
+    <Compile Include="BasicExamples\RotatingTexturedCubeExample.cs" />
     <Compile Include="BasicExamples\TextureGridExample.cs" />
     <Compile Include="BasicExamples\SkyboxExample.cs" />
     <Compile Include="ExampleProjectAttribute.cs" />
@@ -106,6 +107,7 @@
     <Content Include="Data\Textures\city3.jpg" />
     <Content Include="Data\Textures\city4.jpg" />
     <Content Include="Data\Textures\city5.jpg" />
+    <Content Include="Data\Textures\crate.png" />
     <Content Include="Data\Textures\empty.png" />
     <Content Include="Data\Textures\flag.png" />
     <Content Include="Data\Textures\mine.png" />
