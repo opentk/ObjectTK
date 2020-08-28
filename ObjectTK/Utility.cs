@@ -7,7 +7,6 @@
 // of the MIT license. See the LICENSE file for details.
 //
 
-using log4net;
 using ObjectTK.Exceptions;
 using OpenTK.Graphics.OpenGL;
 
@@ -15,7 +14,7 @@ namespace ObjectTK
 {
     internal static class Utility
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Utility));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(Utility));
 
         public static void Assert(string errorMessage)
         {
@@ -30,7 +29,7 @@ namespace ObjectTK
         public static void Assert<T>(T value, T desiredValue, string errorMessage)
         {
             if (desiredValue.Equals(value)) return;
-            Logger.Error(string.Format("Assert failed: {0}\n{1}", value, errorMessage));
+            Logger?.Error(string.Format("Assert failed: {0}\n{1}", value, errorMessage));
             throw new ObjectTKException(string.Format("ErrorCode: {0}\n{1}", value, errorMessage));
         }
     }

@@ -8,7 +8,6 @@
 //
 
 using System;
-using log4net;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Shaders.Variables
@@ -20,7 +19,7 @@ namespace ObjectTK.Shaders.Variables
     public class Uniform<T>
         : ProgramVariable
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Uniform<T>));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(Uniform<T>));
 
         /// <summary>
         /// The location of the uniform within the shader program.
@@ -68,7 +67,7 @@ namespace ObjectTK.Shaders.Variables
         {
             Location = GL.GetUniformLocation(ProgramHandle, Name);
             Active = Location > -1;
-            if (!Active) Logger.WarnFormat("Uniform not found or not active: {0}", Name);
+            if (!Active) Logger?.WarnFormat("Uniform not found or not active: {0}", Name);
         }
 
         /// <summary>

@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using log4net;
 using ObjectTK.Exceptions;
 using ObjectTK.Shaders.Variables;
 using OpenTK.Graphics.OpenGL;
@@ -24,7 +23,7 @@ namespace ObjectTK.Shaders
     public class Program
         : GLObject
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Program));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(Program));
 
         /// <summary>
         /// The name of this shader program.
@@ -39,7 +38,7 @@ namespace ObjectTK.Shaders
         protected Program()
             : base(GL.CreateProgram())
         {
-            Logger.InfoFormat("Creating shader program: {0}", Name);
+            Logger?.InfoFormat("Creating shader program: {0}", Name);
             InitializeShaderVariables();
         }
 
@@ -93,7 +92,7 @@ namespace ObjectTK.Shaders
         /// </summary>
         public virtual void Link()
         {
-            Logger.DebugFormat("Linking program: {0}", Name);
+            Logger?.DebugFormat("Linking program: {0}", Name);
             GL.LinkProgram(Handle);
             CheckLinkStatus();
             // call OnLink() on all ShaderVariables
@@ -108,14 +107,14 @@ namespace ObjectTK.Shaders
             // check link status
             int linkStatus;
             GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out linkStatus);
-            Logger.DebugFormat("Link status: {0}", linkStatus);
+            Logger?.DebugFormat("Link status: {0}", linkStatus);
             // check program info log
             var info = GL.GetProgramInfoLog(Handle);
-            if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Link log:\n{0}", info);
+            if (!string.IsNullOrEmpty(info)) Logger?.InfoFormat("Link log:\n{0}", info);
             // log message and throw exception on link error
             if (linkStatus == 1) return;
             var msg = string.Format("Error linking program: {0}", Name);
-            Logger.Error(msg);
+            Logger?.Error(msg);
             throw new ProgramLinkException(msg, info);
         }
 

@@ -7,7 +7,6 @@
 // of the MIT license. See the LICENSE file for details.
 //
 
-using log4net;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Shaders.Variables
@@ -20,7 +19,7 @@ namespace ObjectTK.Shaders.Variables
     public sealed class FragData
         : ProgramVariable
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(FragData));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(FragData));
 
         /// <summary>
         /// The location of the output.
@@ -35,7 +34,7 @@ namespace ObjectTK.Shaders.Variables
         {
             //TODO: find out what GL.GetFragDataIndex(); does
             Location = GL.GetFragDataLocation(ProgramHandle, Name);
-            if (Location == -1) Logger.WarnFormat("Output variable not found or not active: {0}", Name);
+            if (Location == -1) Logger?.WarnFormat("Output variable not found or not active: {0}", Name);
         }
     }
 }

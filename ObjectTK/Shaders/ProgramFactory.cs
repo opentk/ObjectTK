@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using log4net;
 using ObjectTK.Exceptions;
 using ObjectTK.Shaders.Sources;
 
@@ -23,7 +22,7 @@ namespace ObjectTK.Shaders
     /// </summary>
     public static class ProgramFactory
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ProgramFactory));
+        private static readonly Logging.IObjectTKLogger Logger = Logging.LogFactory.GetLogger(typeof(ProgramFactory));
 
         /// <summary>
         /// The base path used when looking for shader files.<br/>
@@ -64,7 +63,7 @@ namespace ObjectTK.Shaders
                     // create a new shader of the appropriate type
                     using (var shader = new Shader(attribute.Type))
                     {
-                        Logger.DebugFormat("Compiling {0}: {1}", attribute.Type, attribute.EffectKey);
+                        Logger?.DebugFormat("Compiling {0}: {1}", attribute.Type, attribute.EffectKey);
                         // load the source from effect(s)
                         var included = new List<Effect.Section>();
                         var source = GetShaderSource(attribute.EffectKey, included);
@@ -116,7 +115,7 @@ namespace ObjectTK.Shaders
             // check for multiple includes of the same section
             if (included.Contains(section))
             {
-                Logger.WarnFormat("Shader already included: {0}", effectKey);
+                Logger?.WarnFormat("Shader already included: {0}", effectKey);
                 return "";
             }
             included.Add(section);
