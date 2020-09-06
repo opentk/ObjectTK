@@ -1,5 +1,5 @@
 -- Version
-#version 140
+#version 330
 
 -- Vertex
 #include ExampleShader.Version

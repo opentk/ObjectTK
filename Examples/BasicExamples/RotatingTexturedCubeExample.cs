@@ -9,6 +9,9 @@ using ObjectTK.Tools.Shapes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 namespace Examples.BasicExamples
 {
@@ -32,14 +35,7 @@ namespace Examples.BasicExamples
         private int _rotateIndex = _defaultRotateIndex;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        public RotatingTexturedCubeExample()
-        {
-            Load += OnLoad;
-            RenderFrame += OnRenderFrame;
-            KeyDown += OnKeyDown;
-        }
-
-        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -97,8 +93,7 @@ namespace Examples.BasicExamples
             GL.CullFace(CullFaceMode.Back);
 
             // initialize camera position
-            Camera.DefaultState.Position = new Vector3(0, 0, 4);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0, 0, 4);
 
             // set nice clear color
             GL.ClearColor(Color.MidnightBlue);
@@ -106,10 +101,10 @@ namespace Examples.BasicExamples
             _stopwatch.Restart();
         }
 
-        private void OnRenderFrame(object sender, OpenTK.FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             // set up viewport
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
 

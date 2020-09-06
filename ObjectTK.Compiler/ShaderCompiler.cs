@@ -16,6 +16,7 @@ using ObjectTK.Exceptions;
 using ObjectTK.Shaders;
 using ObjectTK.Shaders.Sources;
 using OpenTK;
+using OpenTK.Windowing.Desktop;
 
 namespace ObjectTK.Compiler
 {
@@ -56,14 +57,11 @@ namespace ObjectTK.Compiler
         public static void Main(string[] args)
         {
             // create a hidden GameWindow to initialize an OpenGL context
-            using (new GameWindow())
-            {
+            using (new GameWindow(new GameWindowSettings(), new NativeWindowSettings())) {
                 // iterate over given arguments
-                foreach (var path in args)
-                {
+                foreach (var path in args) {
                     // check if file exists
-                    if (!File.Exists(path))
-                    {
+                    if (!File.Exists(path)) {
                         Console.Out.WriteLine("{0}: error 0: ShaderCompiler: file not found", path);
                         continue;
                     }
@@ -73,22 +71,18 @@ namespace ObjectTK.Compiler
                     // set working directory
                     Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
                     // iterate over all non-abstract shader programs
-                    foreach (var type in assembly.GetTypes().Where(_ => !_.IsAbstract && typeof(Program).IsAssignableFrom(_)))
-                    {
+                    foreach (var type in assembly.GetTypes().Where(_ => !_.IsAbstract && typeof(Program).IsAssignableFrom(_))) {
                         // check if the program has any shader sources tagged to it
                         if (ShaderSourceAttribute.GetShaderSources(type).Count == 0) continue;
                         Console.Out.WriteLine("Compiling: {0}", type.FullName);
                         // get generic program factory method
                         var method = typeof(ProgramFactory).GetMethod("Create");
                         var generic = method.MakeGenericMethod(type);
-                        try
-                        {
+                        try {
                             // invoke program factory
                             var program = (Program)generic.Invoke(null, null);
                             program.Dispose();
-                        }
-                        catch (TargetInvocationException ex)
-                        {
+                        } catch (TargetInvocationException ex) {
                             Console.Out.WriteLine(ex.InnerException.Message);
                             // reformat OpenGL information log if existing
                             var exception = ex.InnerException as ProgramException;

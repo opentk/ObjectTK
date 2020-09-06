@@ -9,6 +9,7 @@
 
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
 namespace ObjectTK.Tools.Shapes
 {

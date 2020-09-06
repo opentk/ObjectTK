@@ -7,6 +7,8 @@ using ObjectTK.Textures;
 using ObjectTK.Tools.Shapes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 
 namespace Examples.BasicExamples
 {
@@ -19,15 +21,7 @@ namespace Examples.BasicExamples
         private VertexArray _vao;
         private Cube _cube;
 
-        public SkyboxExample()
-        {
-            Load += OnLoad;
-            Unload += OnUnload;
-            RenderFrame += OnRender;
-        }
-
-        private void OnLoad(object sender, EventArgs e)
-        {
+		protected override void OnLoad() {
             // initialize shader
             _program = ProgramFactory.Create<SkyboxProgram>();
             // initialize cube shape
@@ -68,10 +62,10 @@ namespace Examples.BasicExamples
             _cube.IndexBuffer.Dispose();
         }
 
-        private void OnRender(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             // set up viewport
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
 

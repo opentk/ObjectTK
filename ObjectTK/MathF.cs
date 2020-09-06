@@ -9,6 +9,7 @@
 
 using System;
 using OpenTK;
+using OpenTK.Mathematics;
 
 namespace ObjectTK
 {

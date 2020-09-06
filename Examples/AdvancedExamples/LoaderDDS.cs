@@ -424,33 +424,34 @@ namespace Examples.AdvancedExamples
                             #endregion Prepare Array for TexImage
 
                             #region Create TexImage
-                            switch ( dimension )
-                            {
-                            case TextureTarget.Texture2D:
-                                GL.CompressedTexImage2D( TextureTarget.Texture2D,
-                                                         Level,
-                                                         _PixelInternalFormat,
-                                                         Width,
-                                                         Height,
-                                                        TextureLoaderParameters.Border,
-                                                         SurfaceSizeInBytes,
-                                                         RawDataOfSurface );
-                                break;
-                            case TextureTarget.TextureCubeMap:
-                                GL.CompressedTexImage2D( TextureTarget.TextureCubeMapPositiveX + Slices,
-                                                         Level,
-                                                         _PixelInternalFormat,
-                                                         Width,
-                                                         Height,
-                                                         TextureLoaderParameters.Border,
-                                                         SurfaceSizeInBytes,
-                                                         RawDataOfSurface );
-                                break;
-                            case TextureTarget.Texture1D: // Untested
-                            case TextureTarget.Texture3D: // Untested
-                            default:
-                                throw new ArgumentException( "ERROR: Use DXT for 2D Images only. Cannot evaluate " + dimension );
-                            }
+                            throw new NotImplementedException("AH!");
+                            //switch ( dimension )
+                            //{
+                            //case TextureTarget.Texture2D:
+                            //    GL.CompressedTexImage2D( TextureTarget.Texture2D,
+                            //                             Level,
+                            //                             _PixelInternalFormat,
+                            //                             Width,
+                            //                             Height,
+                            //                            TextureLoaderParameters.Border,
+                            //                             SurfaceSizeInBytes,
+                            //                             RawDataOfSurface );
+                            //    break;
+                            //case TextureTarget.TextureCubeMap:
+                            //    GL.CompressedTexImage2D( TextureTarget.TextureCubeMapPositiveX + Slices,
+                            //                             Level,
+                            //                             _PixelInternalFormat,
+                            //                             Width,
+                            //                             Height,
+                            //                             TextureLoaderParameters.Border,
+                            //                             SurfaceSizeInBytes,
+                            //                             RawDataOfSurface );
+                            //    break;
+                            //case TextureTarget.Texture1D: // Untested
+                            //case TextureTarget.Texture3D: // Untested
+                            //default:
+                            //    throw new ArgumentException( "ERROR: Use DXT for 2D Images only. Cannot evaluate " + dimension );
+                            //}
                             GL.Finish( );
                             #endregion Create TexImage
 

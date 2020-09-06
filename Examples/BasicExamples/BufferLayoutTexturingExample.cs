@@ -8,6 +8,9 @@ using ObjectTK.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 namespace Examples.BasicExamples
 {
@@ -112,8 +115,7 @@ namespace Examples.BasicExamples
             //_vao.BindAttribute(_program.InTexCoord, _vbo, 2, VertexAttribPointerType.Float, Marshal.SizeOf(typeof(Vertex)), 12, false);
 
             // set default camera
-            Camera.DefaultState.Position = new Vector3(0, 0.5f, 3);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0, 0.5f, 3);
 
             // set a nice clear color
             GL.ClearColor(Color.MidnightBlue);
@@ -122,7 +124,7 @@ namespace Examples.BasicExamples
         private void OnRenderFrame(object sender, FrameEventArgs e)
         {
             // set up viewport
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
 

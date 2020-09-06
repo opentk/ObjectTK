@@ -8,6 +8,8 @@ using ObjectTK.Shaders;
 using ObjectTK.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 
 namespace Examples.BasicExamples
 {
@@ -77,14 +79,13 @@ namespace Examples.BasicExamples
             // set nice clear color
             GL.ClearColor(Color.MidnightBlue);
             // initialize camera position
-            Camera.DefaultState.Position = new Vector3(0, 5, 15);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0, 5, 15);
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs frameEventArgs)
         {
             // setup stuff
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
 

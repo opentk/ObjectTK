@@ -7,6 +7,9 @@ using ObjectTK.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 namespace Examples.AdvancedExamples
 {
@@ -36,9 +39,8 @@ namespace Examples.AdvancedExamples
         public FeedbackGravityExample()
         {
             _random = new Random();
-            Load += OnLoad;
             RenderFrame += OnRenderFrame;
-            Keyboard.KeyDown += OnKeyDown;
+            KeyDown += OnKeyDown;
         }
 
         private float Rand(float range)
@@ -46,7 +48,7 @@ namespace Examples.AdvancedExamples
             return (float)(_random.NextDouble() * 2 * range - range);
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        protected override void OnLoad()
         {
             // initialize shader (load sources, create/compile/link shader program, error checking)
             // when using the factory method the shader sources are retrieved from the ShaderSourceAttributes
@@ -78,8 +80,7 @@ namespace Examples.AdvancedExamples
             GL.ClearColor(Color.Black);
 
             // set a nice camera angle
-            Camera.DefaultState.Position = new Vector3(0,2,-8);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0,2,-8);
         }
 
         private void InitializeParticles(int n)
@@ -100,10 +101,10 @@ namespace Examples.AdvancedExamples
             _buffers.Init(BufferTarget.ArrayBuffer, particles);
         }
 
-        private void OnRenderFrame(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             // set up viewport
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             // clear the back buffer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             // set up modelview and perspective matrix
@@ -135,7 +136,7 @@ namespace Examples.AdvancedExamples
             SwapBuffers();
         }
 
-        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             const float up = 1.1f;
             const float down = 0.9f;

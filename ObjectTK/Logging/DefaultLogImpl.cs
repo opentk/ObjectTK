@@ -37,7 +37,7 @@ namespace ObjectTK.Logging
 
         private void Log(Level level, object message, Exception exception = null)
         {
-            if (!_logger.IsEnabledFor(level)) return;
+            //if (!_logger.IsEnabledFor(level)) return;
             _logger.Log(ThisDeclaringType, level, message, exception);
         }
 

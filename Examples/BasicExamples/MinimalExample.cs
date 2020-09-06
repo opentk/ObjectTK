@@ -5,6 +5,8 @@ using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 
 namespace Examples.BasicExamples
 {
@@ -16,15 +18,9 @@ namespace Examples.BasicExamples
         private VertexArray _vao;
         private Buffer<Vector3> _vbo;
 
-        public MinimalExample()
+        protected override void OnLoad()
         {
-            Load += OnLoad;
-            Unload += OnUnload;
-            RenderFrame += OnRenderFrame;
-        }
-
-        private void OnLoad(object sender, EventArgs e)
-        {
+            base.OnLoad();
             // initialize shader (load sources, create/compile/link shader program, error checking)
             // when using the factory method the shader sources are retrieved from the ShaderSourceAttributes
             _program = ProgramFactory.Create<ExampleProgram>();
@@ -45,8 +41,7 @@ namespace Examples.BasicExamples
             _vao.BindAttribute(_program.InPosition, _vbo);
 
             // set camera position
-            Camera.DefaultState.Position = new Vector3(0,0,3);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0,0,3);
 
             // set a nice clear color
             GL.ClearColor(Color.MidnightBlue);
@@ -54,6 +49,7 @@ namespace Examples.BasicExamples
 
         private void OnUnload(object sender, EventArgs e)
         {
+            base.OnUnload();
             // Always make sure to properly dispose gl resources to prevent memory leaks.
             // Most of the examples do not explicitly dispose resources, because
             // the base class (ExampleWindow) calls GLResource.DisposeAll(this).
@@ -64,10 +60,11 @@ namespace Examples.BasicExamples
             _vbo.Dispose();
         }
 
-        private void OnRenderFrame(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             // set up viewport
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             // clear the back buffer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             // set up modelview and perspective matrix

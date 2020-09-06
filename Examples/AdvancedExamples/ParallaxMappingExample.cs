@@ -8,6 +8,9 @@ using ObjectTK.Textures;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 namespace Examples.AdvancedExamples
 {
@@ -160,8 +163,7 @@ namespace Examples.AdvancedExamples
             _vao.BindAttribute(_program.InTexCoord, _buffer, 36);
 
             // set camera position
-            Camera.DefaultState.Position = new Vector3(0,0,3);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0,0,3);
 
             // set state
             GL.ClearColor(0.2f, 0f, 0.4f, 0f);
@@ -174,46 +176,46 @@ namespace Examples.AdvancedExamples
 
         protected void OnResize(object sender, EventArgs e)
         {
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
         }
 
         protected void OnUpdateFrame(object sender, FrameEventArgs e)
         {
-            if (Keyboard[Key.Space]) Trace.WriteLine("GL: " + GL.GetError());
+            if (KeyboardState[Key.Space]) Trace.WriteLine("GL: " + GL.GetError());
             var factor = (float)e.Time;
-            if (Keyboard[Key.Q])
+            if (KeyboardState[Key.Q])
             {
                 _materialScaleAndBiasAndShininess.X += factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (Keyboard[Key.A])
+            if (KeyboardState[Key.A])
             {
                 _materialScaleAndBiasAndShininess.X -= factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (Keyboard[Key.W])
+            if (KeyboardState[Key.W])
             {
                 _materialScaleAndBiasAndShininess.Y += factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (Keyboard[Key.S])
+            if (KeyboardState[Key.S])
             {
                 _materialScaleAndBiasAndShininess.Y -= factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (Keyboard[Key.E])
+            if (KeyboardState[Key.E])
             {
                 _materialScaleAndBiasAndShininess.Z += factor*100;
                 Trace.WriteLine("Shininess: " + _materialScaleAndBiasAndShininess.Z);
             }
-            if (Keyboard[Key.D])
+            if (KeyboardState[Key.D])
             {
                 _materialScaleAndBiasAndShininess.Z -= factor*100;
                 Trace.WriteLine("Shininess: " + _materialScaleAndBiasAndShininess.Z);
             }
 
-            _lightPosition.X = (-(Width / 2) + Mouse.X) / 100f;
-            _lightPosition.Y = ((Height / 2) - Mouse.Y) / 100f;
+            _lightPosition.X = (-(Size.X / 2) + MouseState.X) / 100f;
+            _lightPosition.Y = ((Size.Y / 2) - MouseState.Y) / 100f;
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs e)
@@ -226,7 +228,7 @@ namespace Examples.AdvancedExamples
             _program.Material_ScaleBiasShininess.Set(_materialScaleAndBiasAndShininess);
 
             // the rest are vectors
-            _program.Camera_Position.Set(Camera.State.Position);
+            _program.Camera_Position.Set(ActiveCamera.Position);
             _program.Light_Position.Set(_lightPosition);
             _program.Light_DiffuseColor.Set(_lightDiffuse);
             _program.Light_SpecularColor.Set(_lightSpecular);

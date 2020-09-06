@@ -6,6 +6,9 @@ using ObjectTK.Tools.Cameras;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
 
 namespace Examples
 {
@@ -13,33 +16,19 @@ namespace Examples
     /// Provides common functionality for the examples.
     /// </summary>
     public class ExampleWindow
-        : DerpWindow
+        : CameraWindow
     {
-        protected Camera Camera;
         protected Matrix4 ModelView;
         protected Matrix4 Projection;
         protected string OriginalTitle { get; private set; }
 
         public ExampleWindow()
-            : base(800, 600, GraphicsMode.Default, "")
+            : base(800, 600, "Meow")
         {
-            // disable vsync
-            VSync = VSyncMode.Off;
-            // set up camera
-            Camera = new Camera();
-            Camera.SetBehavior(new ThirdPersonBehavior());
-            Camera.DefaultState.Position.Z = 5;
-            Camera.ResetToDefault();
-            Camera.Enable(this);
             ResetMatrices();
-            // hook up events
-            Load += OnLoad;
-            Unload += OnUnload;
-            KeyDown += OnKeyDown;
-            RenderFrame += OnRenderFrame;
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        protected override void OnLoad()
         {
             // maximize window
             WindowState = WindowState.Maximized;
@@ -48,26 +37,25 @@ namespace Examples
             // set search path for shader files and extension
             ProgramFactory.BasePath = "Data/Shaders/";
             ProgramFactory.Extension = "glsl";
+            MakeCurrent();
         }
 
-        private void OnUnload(object sender, EventArgs e)
+        protected override void OnUnload()
         {
             // release all gl resources on unload
             GLResource.DisposeAll(this);
         }
 
-        private void OnRenderFrame(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             // display FPS in the window title
             Title = string.Format("ObjectTK example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
-        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             // close window on escape press
             if (e.Key == Key.Escape) Close();
-            // reset camera to default position and orientation on R press
-            if (e.Key == Key.R) Camera.ResetToDefault();
         }
 
         /// <summary>
@@ -85,11 +73,11 @@ namespace Examples
         protected void SetupPerspective()
         {
             // setup perspective projection
-            var aspectRatio = Width / (float)Height;
+            var aspectRatio = Size.X / (float)Size.Y;
             Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 0.1f, 1000);
             ModelView = Matrix4.Identity;
             // apply camera transform
-            ModelView = Camera.GetCameraTransform();
+            ModelView = ActiveCamera.GetCameraTransform();
         }
     }
 }

@@ -10,89 +10,33 @@
 using System;
 using OpenTK;
 using OpenTK.Input;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.Desktop;
 
-namespace ObjectTK.Tools.Cameras
-{
-    public class Camera
-    {
-        public CameraState State;
-        public CameraState DefaultState;
-        protected CameraBehavior Behavior;
+namespace ObjectTK.Tools.Cameras {
+	public class Camera {
+		public Vector3 Position { get; set; }
+		public Vector3 Forward { get; private set; } = -Vector3.UnitZ;
+		public Vector3 Up { get; private set; } = Vector3.UnitY;
+		public Vector3 Right => Vector3.Cross(Forward, Up);
+		
+		public Matrix4 GetCameraTransform() {
+			// kind of hack: prevent look-at and up directions to be parallel
+			if (Math.Abs(Vector3.Dot(Up, Forward)) > 0.99999999999) Forward += 0.001f * new Vector3(3, 5, 4);
+			return Matrix4.LookAt(Position, Position + Forward, Up);
+		}
 
-        public float MouseMoveSpeed = 0.005f;
-        public float MouseWheelSpeed = 0.1f;
-        public float MoveSpeed = 60;
+		public void Rotate(Vector3 EulerAngles) {
+			Forward = Vector3.Transform(Forward, Quaternion.FromEulerAngles(EulerAngles)).Normalized();
+		}
 
-        public Camera()
-        {
-            State = new CameraState();
-            DefaultState = new CameraState();
-        }
+		public void LookAt(Vector3 Point) {
+			Forward = (Point - Position).Normalized();
+		}
 
-        public void ResetToDefault()
-        {
-            State.Position = DefaultState.Position;
-            State.LookAt = DefaultState.LookAt;
-            State.Up = DefaultState.Up;
-            Update();
-        }
-
-        public void SetBehavior(CameraBehavior behavior)
-        {
-            Behavior = behavior;
-            Update();
-        }
-
-        public void Enable(GameWindow window)
-        {
-            if (Behavior == null) throw new InvalidOperationException("Can not enable Camera while the Behavior is not set.");
-            window.UpdateFrame += UpdateFrame;
-            window.Mouse.Move += MouseMove;
-            window.Mouse.WheelChanged += MouseWheelChanged;
-        }
-
-        public void Disable(GameWindow window)
-        {
-            window.UpdateFrame -= UpdateFrame;
-            window.Mouse.Move -= MouseMove;
-            window.Mouse.WheelChanged -= MouseWheelChanged;
-        }
-
-        public void Update()
-        {
-            if (Behavior != null) Behavior.Initialize(State);
-        }
-
-        private void UpdateFrame(object sender, FrameEventArgs e)
-        {
-            Behavior.UpdateFrame(State, (float) e.Time * MoveSpeed);
-        }
-
-        private void MouseMove(object sender, MouseMoveEventArgs e)
-        {
-            Behavior.MouseMove(State, MouseMoveSpeed * new Vector2(e.XDelta, e.YDelta));
-        }
-        
-        private void MouseWheelChanged(object sender, MouseWheelEventArgs e)
-        {
-            Behavior.MouseWheelChanged(State, MouseWheelSpeed * e.DeltaPrecise);
-        }
-
-        /// <summary>
-        /// TODO: add smooth transitions for the CameraState variables
-        /// </summary>
-        public Matrix4 GetCameraTransform()
-        {
-            // kind of hack: prevent look-at and up directions to be parallel
-            if (Math.Abs(Vector3.Dot(State.Up, State.LookAt)) > 0.99999999999) State.LookAt += 0.001f * new Vector3(3,5,4);
-            return Matrix4.LookAt(State.Position, State.Position + State.LookAt, State.Up);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("({0},{1})", State, Behavior);
-        }
-    }
+	}
 }
 
 // for later use..

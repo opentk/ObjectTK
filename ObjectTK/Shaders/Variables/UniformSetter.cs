@@ -14,6 +14,7 @@ using System.Linq;
 using ObjectTK.Exceptions;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
 namespace ObjectTK.Shaders.Variables
 {

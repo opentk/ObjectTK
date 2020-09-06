@@ -7,6 +7,8 @@ using ObjectTK.Textures;
 using ObjectTK.Tools.Shapes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 
 namespace Examples.AdvancedExamples
 {
@@ -30,13 +32,7 @@ namespace Examples.AdvancedExamples
         private VertexArray _cubeVao;
         private VertexArray _quadVao;
 
-        public RenderToTextureExample()
-        {
-            Load += OnLoad;
-            RenderFrame += OnRenderFrame;
-        }
-
-        private void OnLoad(object sender, EventArgs e)
+        protected override void OnLoad()
         {
             // initialize and bind framebuffer
             _framebuffer = new Framebuffer();
@@ -77,14 +73,13 @@ namespace Examples.AdvancedExamples
             _quadVao.BindAttribute(_textureProgram.InTexCoord, _quad.TexCoordBuffer);
 
             // set camera position
-            Camera.DefaultState.Position = new Vector3(0,0,3);
-            Camera.ResetToDefault();
+            ActiveCamera.Position = new Vector3(0,0,3);
 
             // enable depth testing
             GL.Enable(EnableCap.DepthTest);
         }
 
-        private void OnRenderFrame(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             // set up render to texture
             _framebuffer.Bind(FramebufferTarget.Framebuffer);
@@ -106,7 +101,7 @@ namespace Examples.AdvancedExamples
             Framebuffer.Unbind(FramebufferTarget.Framebuffer);
             
             // set up viewport for the window
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
             GL.ClearColor(Color.MidnightBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             SetupPerspective();
