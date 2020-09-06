@@ -29,7 +29,9 @@ namespace ObjectTK.Tools.Cameras {
 		}
 
 		public void Rotate(Vector3 EulerAngles) {
-			Forward = Vector3.Transform(Forward, Quaternion.FromEulerAngles(EulerAngles)).Normalized();
+			//TODO: clamp pitch
+			Quaternion rotation = (Matrix4.CreateFromAxisAngle(Right, EulerAngles.X) * Matrix4.CreateFromAxisAngle(Vector3.UnitY, EulerAngles.Y)).ExtractRotation();
+			Forward = Vector3.Transform(Forward, rotation).Normalized();
 		}
 
 		public void LookAt(Vector3 Point) {

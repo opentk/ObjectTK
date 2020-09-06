@@ -83,7 +83,7 @@ namespace ObjectTK.Tools
 		protected override void OnMouseMove(MouseMoveEventArgs e) {
 			base.OnMouseMove(e);
 
-            ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.05f);
+            ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
 
 		}
 
