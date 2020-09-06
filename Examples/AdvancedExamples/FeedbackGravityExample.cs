@@ -108,12 +108,11 @@ namespace Examples.AdvancedExamples
             // clear the back buffer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             // set up modelview and perspective matrix
-            SetupPerspective();
 
             // set uniforms
             _program.CenterMass.Set(_centerMass);
             _program.TimeStep.Set((float)e.Time);
-            _program.ModelViewProjectionMatrix.Set(ModelView * Projection);
+            _program.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
 
             // set up binding of the shader variable to the buffer object
             _vao.BindAttribute(_program.InPosition, _buffers.Ping);

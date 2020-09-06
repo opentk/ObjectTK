@@ -109,7 +109,6 @@ namespace Examples.BasicExamples
             // set up viewport
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            SetupPerspective();
 
             // determinate object view rotation vectors and apply them
             _objectView = _baseView;
@@ -119,7 +118,7 @@ namespace Examples.BasicExamples
 
             // set transformation matrix
             _textureProgram.Use();
-            _textureProgram.ModelViewProjectionMatrix.Set(_objectView * ModelView * Projection);
+            _textureProgram.ModelViewProjectionMatrix.Set(_objectView * ActiveCamera.ViewProjectionMatrix);
 
             // render cube with texture
             _cubeVao.Bind();

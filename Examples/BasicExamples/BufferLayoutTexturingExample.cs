@@ -126,14 +126,13 @@ namespace Examples.BasicExamples
             // set up viewport
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            SetupPerspective();
 
             // enable/disable mipmapping on the sampler
             _sampler.SetParameter(SamplerParameterName.TextureMinFilter,
                 (int)(_enableMipmapping ? TextureMinFilter.NearestMipmapLinear : TextureMinFilter.Nearest));
             
             // set transformation matrix
-            _program.ModelViewProjectionMatrix.Set(ModelView*Projection);
+            _program.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
             // render vertex data
             _vao.DrawArrays(PrimitiveType.TriangleStrip, 0, _vbo.ElementCount);
 

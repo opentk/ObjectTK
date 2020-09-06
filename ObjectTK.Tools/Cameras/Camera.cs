@@ -8,6 +8,7 @@
 //
 
 using System;
+using ObjectTK.Tools.Mathematics;
 using OpenTK;
 using OpenTK.Input;
 using OpenTK.Mathematics;
@@ -18,51 +19,49 @@ using OpenTK.Windowing.Desktop;
 namespace ObjectTK.Tools.Cameras {
 	public class Camera {
 		public Vector3 Position { get; set; }
-		public Vector3 Forward { get; private set; } = -Vector3.UnitZ;
-		public Vector3 Up { get; private set; } = Vector3.UnitY;
+		public Quaternion Rotation { get; set; } = Quaternion.Identity;
+		public Vector3 Forward => Vector3.Transform(Vector3.UnitZ, Rotation).Normalized();
+		public Vector3 Up => Vector3.UnitY;
 		public Vector3 Right => Vector3.Cross(Forward, Up);
-		
+		public float FieldOfView { get; set; } = MathHelper.PiOver3;
+		public float AspectRatio { get; set; } = 1.0f;
+		public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Forward, Up);
+		public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance);
+		public Matrix4 ViewProjectionMatrix => ViewMatrix * ProjectionMatrix;
+
+		public float NearClippingPlaneDistance => 0.1f;
+		public float FarClippingPlaneDistance => 1000.0f;
+
 		public Matrix4 GetCameraTransform() {
 			// kind of hack: prevent look-at and up directions to be parallel
-			if (Math.Abs(Vector3.Dot(Up, Forward)) > 0.99999999999) Forward += 0.001f * new Vector3(3, 5, 4);
+			//if (Math.Abs(Vector3.Dot(Up, Forward)) > 0.99999999999) Forward += 0.001f * new Vector3(3, 5, 4);
 			return Matrix4.LookAt(Position, Position + Forward, Up);
 		}
 
 		public void Rotate(Vector3 EulerAngles) {
-			//TODO: clamp pitch
-			Quaternion rotation = (Matrix4.CreateFromAxisAngle(Right, EulerAngles.X) * Matrix4.CreateFromAxisAngle(Vector3.UnitY, EulerAngles.Y)).ExtractRotation();
-			Forward = Vector3.Transform(Forward, rotation).Normalized();
+			Quaternion Delta = (Matrix4.CreateFromAxisAngle(Right, EulerAngles.X) * Matrix4.CreateFromAxisAngle(Vector3.UnitY, EulerAngles.Y)).ExtractRotation();
+			Rotation = Delta * Rotation;
 		}
 
 		public void LookAt(Vector3 Point) {
-			Forward = (Point - Position).Normalized();
+			Rotation = Matrix4.LookAt(Position, Point, Up).ExtractRotation();
+		}
+
+		public Ray GetPickingRay(Vector2 normalizedMousePos) {
+
+			Vector4 screenPos = new Vector4(normalizedMousePos.X, normalizedMousePos.Y, -NearClippingPlaneDistance, 1.0f);
+
+			Matrix4 Unview = Matrix4.Invert(Matrix4.Transpose(ViewMatrix));
+			Matrix4 Unproject = Matrix4.Invert(Matrix4.Transpose(ProjectionMatrix));
+
+			Vector4 Unprojected = Unproject * screenPos;
+			Unprojected.Z = -1;
+			Unprojected.W = 0;
+			Vector3 direction = (Unview * Unprojected).Xyz;
+			direction.Normalize();
+			
+			return new Ray { Origin = Position, Direction = direction, Length = 1.0f };
 		}
 
 	}
 }
-
-// for later use..
-//public Vector3 GetPickingRay(int mouseX, int mouseY)
-//{
-//    const float fieldOfView = MathHelper.PiOver4;
-//    const float nearClippingPaneDistance = 1;
-//    var view = -Position;
-//    view.Normalize();
-//    var cameraUp = Vector3.UnitY;
-//    var h = Vector3.Cross(view, cameraUp);
-//    h.Normalize();
-//    var v = Vector3.Cross(h, view);
-//    v.Normalize();
-//    var vLength = (float)Math.Tan(fieldOfView / 2) * nearClippingPaneDistance;
-//    var hLength = vLength * ((float)_window.Width / _window.Height);
-//    v = v * vLength;
-//    h = h * hLength;
-//    //Vector3.Multiply(ref v, vLength, out v);
-//    //Vector3.Multiply(ref h, hLength, out h);
-//    // scale mouse position to [-1,1]
-//    var x = 2f * mouseX / _window.Width - 1;
-//    var y = 1 - 2f * mouseY / _window.Height;
-//    var pos = Position + view * nearClippingPaneDistance + h * x + v * y;
-//    var dir = pos - Position;
-//    return dir;
-//}

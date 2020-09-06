@@ -83,7 +83,6 @@ namespace Examples.BasicExamples
             // setup stuff
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            SetupPerspective();
 
             // update MVP matrix and render grid
             // also move camera rotation center to the center of the plane
@@ -91,7 +90,7 @@ namespace Examples.BasicExamples
             _gridProgram.ModelViewProjectionMatrix.Set(
                 Matrix4.CreateTranslation(-FieldWidth/2, -FieldHeight/2, 0)
                 * Matrix4.CreateRotationX(-(float)Math.PI/2)
-                * ModelView * Projection);
+                * ActiveCamera.ViewProjectionMatrix);
             _vao.DrawArrays(PrimitiveType.Points, 0, _buffer.ElementCount);
 
             // swap buffers

@@ -18,14 +18,12 @@ namespace Examples
     public class ExampleWindow
         : CameraWindow
     {
-        protected Matrix4 ModelView;
-        protected Matrix4 Projection;
         protected string OriginalTitle { get; private set; }
 
         public ExampleWindow()
             : base(800, 600, "Meow")
         {
-            ResetMatrices();
+
         }
 
         protected override void OnLoad()
@@ -38,6 +36,8 @@ namespace Examples
             // set search path for shader files and extension
             ProgramFactory.BasePath = "Data/Shaders/";
             ProgramFactory.Extension = "glsl";
+
+            ActiveCamera.Rotate(new Vector3(0, 180, 0));
         }
 
         protected override void OnUnload()
@@ -68,6 +68,7 @@ namespace Examples
                 if (KeyboardState.IsKeyDown(Key.LControl)) dir -= ActiveCamera.Up;
                 // normalize dir to enforce consistent movement speed, independent of the number of keys pressed
                 if (dir.LengthSquared > 0) ActiveCamera.Position += dir.Normalized() * (float)frameEventArgs.Time;
+
             }
         }
 
@@ -78,26 +79,10 @@ namespace Examples
             if (e.Key == Key.Escape) Close();
         }
 
-        /// <summary>
-        /// Resets the ModelView and Projection matrices to the identity.
-        /// </summary>
-        protected void ResetMatrices()
-        {
-            ModelView = Matrix4.Identity;
-            Projection = Matrix4.Identity;
+		protected override void OnMouseMove(MouseMoveEventArgs e) {
+			base.OnMouseMove(e);
+            ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
         }
 
-        /// <summary>
-        /// Sets a perspective projection matrix and applies the camera transformation on the modelview matrix.
-        /// </summary>
-        protected void SetupPerspective()
-        {
-            // setup perspective projection
-            var aspectRatio = Size.X / (float)Size.Y;
-            Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 0.1f, 1000);
-            ModelView = Matrix4.Identity;
-            // apply camera transform
-            ModelView = ActiveCamera.GetCameraTransform();
-        }
-    }
+	}
 }

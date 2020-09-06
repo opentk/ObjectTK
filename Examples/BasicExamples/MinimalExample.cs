@@ -67,7 +67,6 @@ namespace Examples.BasicExamples
             GL.Viewport(0, 0, Size.X, Size.Y);
             // clear the back buffer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            // set up modelview and perspective matrix
             SetupPerspective();
 
             // calculate the MVP matrix and set it to the shaders uniform

@@ -17,6 +17,9 @@ using OpenTK.Mathematics;
 using ObjectTK.Logging;
 using ObjectTK.Tools.Cameras;
 using OpenTK.Windowing.Common.Input;
+using ObjectTK.Tools.Mathematics;
+using System.Collections.Generic;
+using ObjectTK.Buffers;
 
 namespace ObjectTK.Tools
 {
@@ -59,6 +62,7 @@ namespace ObjectTK.Tools
         protected override void OnResize(ResizeEventArgs resizeEventArgs)
         {
             base.OnResize(resizeEventArgs);
+            ActiveCamera.AspectRatio = Size.X / (float) Size.Y;
             Logger?.InfoFormat("Window resized to: {0}x{1}", Size.X, Size.Y);
         }
 
@@ -66,15 +70,7 @@ namespace ObjectTK.Tools
         {
             base.OnUpdateFrame(frameEventArgs);
             FrameTimer.Time();
-
         }
-
-		protected override void OnMouseMove(MouseMoveEventArgs e) {
-			base.OnMouseMove(e);
-
-            ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
-
-		}
 
 		protected override void OnLoad() {
             MakeCurrent();

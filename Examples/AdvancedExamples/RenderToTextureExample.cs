@@ -108,11 +108,10 @@ namespace Examples.AdvancedExamples
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.ClearColor(Color.MidnightBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            SetupPerspective();
             
             // render quad with texture
             _textureProgram.Use();
-            _textureProgram.ModelViewProjectionMatrix.Set(ModelView * Projection);
+            _textureProgram.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
             _quadVao.Bind();
             _quadVao.DrawArrays(PrimitiveType.TriangleStrip, 0, _quad.VertexBuffer.ElementCount);
 

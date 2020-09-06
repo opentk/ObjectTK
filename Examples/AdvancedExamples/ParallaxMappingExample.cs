@@ -232,12 +232,11 @@ namespace Examples.AdvancedExamples
             _program.Light_SpecularColor.Set(_lightSpecular);
 
             // set up matrices
-            SetupPerspective();
-            var normalMatrix = new Matrix3(ModelView).Inverted();
+            var normalMatrix = new Matrix3(ActiveCamera.ViewMatrix).Inverted();
             normalMatrix.Transpose();
             _program.NormalMatrix.Set(normalMatrix);
-            _program.ModelViewMatrix.Set(ModelView);
-            _program.ModelViewProjectionMatrix.Set(ModelView * Projection);
+            _program.ModelViewMatrix.Set(ActiveCamera.ViewMatrix);
+            _program.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
 
             // render
             _vao.DrawArrays(PrimitiveType.TriangleStrip, 0, _buffer.ElementCount);
