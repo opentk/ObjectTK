@@ -1,90 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E38997F8-7ECE-4B35-BB94-7E609F68D217}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectTK.Tools</RootNamespace>
-    <AssemblyName>ObjectTK.Tools</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Description>Additional features to complement ObjectTK</Description>
+    <Company>JcBernack</Company>
+    <Copyright>Copyright © 2013-2015</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="log4net" Version="2.0.9" />
+    <PackageReference Include="OpenTK" Version="4.0.0-pre9.4" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Cameras\Camera.cs" />
-    <Compile Include="Cameras\CameraBehavior.cs" />
-    <Compile Include="Cameras\CameraState.cs" />
-    <Compile Include="Cameras\FreeLookAlignedBehavior.cs" />
-    <Compile Include="Cameras\FreeLookBehavior.cs" />
-    <Compile Include="Cameras\GimbalBehavior.cs" />
-    <Compile Include="Cameras\ThirdPersonBehavior.cs" />
-    <Compile Include="DerpWindow.cs" />
-    <Compile Include="FrameTimer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shapes\Circle.cs" />
-    <Compile Include="Shapes\ColorCube.cs" />
-    <Compile Include="Shapes\ColoredShape.cs" />
-    <Compile Include="Shapes\Cube.cs" />
-    <Compile Include="Shapes\IndexedShape.cs" />
-    <Compile Include="Shapes\LayeredQuads.cs" />
-    <Compile Include="Shapes\Quad.cs" />
-    <Compile Include="Shapes\Rect.cs" />
-    <Compile Include="Shapes\Shape.cs" />
-    <Compile Include="Shapes\TexturedCube.cs" />
-    <Compile Include="Shapes\TexturedQuad.cs" />
-    <Compile Include="Shapes\TexturedShape.cs" />
+    <ProjectReference Include="..\ObjectTK\ObjectTK.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ObjectTK\ObjectTK.csproj">
-      <Project>{0EE3347B-1BBE-44CA-8295-22DA13AE914A}</Project>
-      <Name>ObjectTK</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
