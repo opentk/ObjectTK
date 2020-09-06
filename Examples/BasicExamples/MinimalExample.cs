@@ -3,6 +3,7 @@ using System.Drawing;
 using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
+using ObjectTK.Tools.Mathematics;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -67,10 +68,9 @@ namespace Examples.BasicExamples
             GL.Viewport(0, 0, Size.X, Size.Y);
             // clear the back buffer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            SetupPerspective();
 
             // calculate the MVP matrix and set it to the shaders uniform
-            _program.ModelViewProjectionMatrix.Set(ModelView*Projection);
+            _program.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
             // draw the buffer which contains the triangle
             _vao.DrawArrays(PrimitiveType.Triangles, 0, _vbo.ElementCount);
 
