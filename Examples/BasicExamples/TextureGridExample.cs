@@ -40,14 +40,9 @@ namespace Examples.BasicExamples
         const int FieldWidth = 100;
         const int FieldHeight = 100;
 
-        public TextureGridExample()
+        protected override void OnLoad()
         {
-            Load += OnLoad;
-            RenderFrame += OnRenderFrame;
-        }
-
-        protected void OnLoad(object sender, EventArgs e)
-        {
+            base.OnLoad();
             // load textures into array
             for (var i = 0; i < _stateTextures.Length; i++)
             {
@@ -82,8 +77,9 @@ namespace Examples.BasicExamples
             ActiveCamera.Position = new Vector3(0, 5, 15);
         }
 
-        protected void OnRenderFrame(object sender, FrameEventArgs frameEventArgs)
+        protected override void OnRenderFrame(FrameEventArgs frameEventArgs)
         {
+            base.OnRenderFrame(frameEventArgs);
             // setup stuff
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

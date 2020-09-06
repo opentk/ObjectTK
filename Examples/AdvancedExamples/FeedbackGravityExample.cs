@@ -39,8 +39,6 @@ namespace Examples.AdvancedExamples
         public FeedbackGravityExample()
         {
             _random = new Random();
-            RenderFrame += OnRenderFrame;
-            KeyDown += OnKeyDown;
         }
 
         private float Rand(float range)
@@ -50,6 +48,7 @@ namespace Examples.AdvancedExamples
 
         protected override void OnLoad()
         {
+            base.OnLoad();
             // initialize shader (load sources, create/compile/link shader program, error checking)
             // when using the factory method the shader sources are retrieved from the ShaderSourceAttributes
             _program = ProgramFactory.Create<GravityProgram>();
@@ -103,6 +102,7 @@ namespace Examples.AdvancedExamples
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             // set up viewport
             GL.Viewport(0, 0, Size.X, Size.Y);
             // clear the back buffer
@@ -138,6 +138,8 @@ namespace Examples.AdvancedExamples
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
+            base.OnKeyDown(e);
+
             const float up = 1.1f;
             const float down = 0.9f;
             var reinitialize = false;

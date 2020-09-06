@@ -44,16 +44,10 @@ namespace Examples.AdvancedExamples
         //private Vector3 _materialScaleAndBiasAndShininess = new Vector3( 0.07f, 0.0f, 38.0f ); // for Metal tex
         private Vector3 _materialScaleAndBiasAndShininess = new Vector3(0.04f, 0.0f, 92.0f); // for Rock tex
 
-        public ParallaxMappingExample()
+        protected override void OnLoad()
         {
-            Load += OnLoad;
-            Resize += OnResize;
-            UpdateFrame += OnUpdateFrame;
-            RenderFrame += OnRenderFrame;
-        }
+            base.OnLoad();
 
-        protected void OnLoad(object sender, EventArgs eventArgs)
-        {
             VSync = VSyncMode.Off;
 
             // Check for necessary capabilities:
@@ -174,13 +168,15 @@ namespace Examples.AdvancedExamples
             GL.PolygonMode(MaterialFace.Back, PolygonMode.Line);
         }
 
-        protected void OnResize(object sender, EventArgs e)
+        protected override void OnResize(ResizeEventArgs e)
         {
+            base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
         }
 
-        protected void OnUpdateFrame(object sender, FrameEventArgs e)
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            base.OnUpdateFrame(e);
             if (KeyboardState[Key.Space]) Trace.WriteLine("GL: " + GL.GetError());
             var factor = (float)e.Time;
             if (KeyboardState[Key.Q])
@@ -218,8 +214,10 @@ namespace Examples.AdvancedExamples
             _lightPosition.Y = ((Size.Y / 2) - MouseState.Y) / 100f;
         }
 
-        protected void OnRenderFrame(object sender, FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
             // first Material's uniforms

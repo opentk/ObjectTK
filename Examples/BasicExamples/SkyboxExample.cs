@@ -22,6 +22,7 @@ namespace Examples.BasicExamples
         private Cube _cube;
 
 		protected override void OnLoad() {
+            base.OnLoad();
             // initialize shader
             _program = ProgramFactory.Create<SkyboxProgram>();
             // initialize cube shape
@@ -56,14 +57,16 @@ namespace Examples.BasicExamples
             GL.ClearColor(Color.MidnightBlue);
         }
 
-        private void OnUnload(object sender, EventArgs e)
+        protected override void OnUnload()
         {
+            base.OnUnload();
             _cube.VertexBuffer.Dispose();
             _cube.IndexBuffer.Dispose();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             // set up viewport
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

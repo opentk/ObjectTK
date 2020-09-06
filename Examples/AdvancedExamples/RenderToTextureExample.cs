@@ -34,6 +34,8 @@ namespace Examples.AdvancedExamples
 
         protected override void OnLoad()
         {
+            base.OnLoad();
+
             // initialize and bind framebuffer
             _framebuffer = new Framebuffer();
             _framebuffer.Bind(FramebufferTarget.Framebuffer);
@@ -81,6 +83,8 @@ namespace Examples.AdvancedExamples
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
+
             // set up render to texture
             _framebuffer.Bind(FramebufferTarget.Framebuffer);
             GL.Viewport(0, 0, FramebufferWidth, FramebufferHeight);

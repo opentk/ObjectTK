@@ -37,6 +37,7 @@ namespace Examples.BasicExamples
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
+            base.OnKeyDown(e);
             switch (e.Key)
             {
                 case Key.R:
@@ -63,8 +64,9 @@ namespace Examples.BasicExamples
             }
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        protected override void OnLoad()
         {
+            base.OnLoad();
             // load texture from file
             using (var bitmap = new Bitmap("Data/Textures/crate.png"))
             {
@@ -103,6 +105,7 @@ namespace Examples.BasicExamples
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             // set up viewport
             GL.Viewport(0, 0, Size.X, Size.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
