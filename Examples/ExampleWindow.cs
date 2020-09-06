@@ -30,6 +30,7 @@ namespace Examples
 
         protected override void OnLoad()
         {
+            base.OnLoad();
             // maximize window
             WindowState = WindowState.Maximized;
             // remember original title
@@ -37,23 +38,25 @@ namespace Examples
             // set search path for shader files and extension
             ProgramFactory.BasePath = "Data/Shaders/";
             ProgramFactory.Extension = "glsl";
-            MakeCurrent();
         }
 
         protected override void OnUnload()
         {
+            base.OnUnload();
             // release all gl resources on unload
             GLResource.DisposeAll(this);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             // display FPS in the window title
             Title = string.Format("ObjectTK example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
+            base.OnKeyDown(e);
             // close window on escape press
             if (e.Key == Key.Escape) Close();
         }
