@@ -54,7 +54,24 @@ namespace Examples
             Title = string.Format("ObjectTK example: {0} - FPS {1}", OriginalTitle, FrameTimer.FpsBasedOnFramesRendered);
         }
 
-        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+		protected override void OnUpdateFrame(FrameEventArgs frameEventArgs) {
+			base.OnUpdateFrame(frameEventArgs);
+
+
+            {
+                var dir = Vector3.Zero;
+                if (KeyboardState.IsKeyDown(Key.W)) dir += ActiveCamera.Forward;
+                if (KeyboardState.IsKeyDown(Key.S)) dir -= ActiveCamera.Forward;
+                if (KeyboardState.IsKeyDown(Key.D)) dir += ActiveCamera.Right;
+                if (KeyboardState.IsKeyDown(Key.A)) dir -= ActiveCamera.Right;
+                if (KeyboardState.IsKeyDown(Key.Space)) dir += ActiveCamera.Up;
+                if (KeyboardState.IsKeyDown(Key.LControl)) dir -= ActiveCamera.Up;
+                // normalize dir to enforce consistent movement speed, independent of the number of keys pressed
+                if (dir.LengthSquared > 0) ActiveCamera.Position += dir.Normalized() * (float)frameEventArgs.Time;
+            }
+        }
+
+		protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             base.OnKeyDown(e);
             // close window on escape press
