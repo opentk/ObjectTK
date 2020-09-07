@@ -7,18 +7,12 @@
 // of the MIT license. See the LICENSE file for details.
 //
 
-using System;
 using ObjectTK.Tools.Mathematics;
-using OpenTK;
-using OpenTK.Input;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
-using OpenTK.Windowing.Desktop;
 
 namespace ObjectTK.Tools.Cameras {
 	public class Camera {
-		public Vector3 Position { get; set; }
+		public Vector3 Position { get; set; } = Vector3.Zero;
 		public Quaternion Rotation { get; set; } = Quaternion.Identity;
 		public Vector3 Forward => Vector3.Transform(Vector3.UnitZ, Rotation).Normalized();
 		public Vector3 Up => Vector3.UnitY;

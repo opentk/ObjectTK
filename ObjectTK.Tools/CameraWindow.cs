@@ -7,33 +7,37 @@
 // of the MIT license. See the LICENSE file for details.
 //
 
-using System;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
 using ObjectTK.Logging;
 using ObjectTK.Tools.Cameras;
-using OpenTK.Windowing.Common.Input;
-using ObjectTK.Tools.Mathematics;
-using System.Collections.Generic;
-using ObjectTK.Buffers;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
 
-namespace ObjectTK.Tools
-{
-    /// <summary>
-    /// Provides basic functionality to an OpenTK GameWindow such as camera controls,
-    /// ModelView and Projection matrices and improved timing.
-    /// </summary>
-    public abstract class CameraWindow
+namespace ObjectTK.Tools {
+	/// <summary>
+	/// Provides basic functionality to an OpenTK GameWindow such as camera controls,
+	/// ModelView and Projection matrices and improved timing.
+	/// </summary>
+	public abstract class CameraWindow
         : GameWindow
     {
         private static readonly IObjectTKLogger Logger = LogFactory.GetLogger(typeof(CameraWindow));
 
         protected readonly FrameTimer FrameTimer;
-        protected Camera ActiveCamera { get; set; } = new Camera();
+
+
+        private Camera _ActiveCamera = new Camera();
+        protected Camera ActiveCamera { 
+            get {
+                return _ActiveCamera;
+            } 
+            set {
+                _ActiveCamera = value;
+                _ActiveCamera.AspectRatio = Size.X / (float)Size.Y; 
+            } 
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the CameraWindow class.
