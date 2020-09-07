@@ -21,7 +21,7 @@ namespace Examples
         protected string OriginalTitle { get; private set; }
 
         public ExampleWindow()
-            : base(800, 600, "Meow")
+            : base(800, 600, "ExampleWindow")
         {
 
         }
