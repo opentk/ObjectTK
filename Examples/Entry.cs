@@ -33,7 +33,7 @@ namespace Examples {
 		}
 		public static void ConfigureLogging() {
 			var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-			XmlConfigurator.Configure(logRepository, new FileInfo("app.config"));
+			XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 		}
 
 
