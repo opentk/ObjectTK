@@ -9,14 +9,6 @@
     <Copyright>Copyright © 2014-2015</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\ObjectTK.Compiler\ObjectTK.Compiler.csproj" />
     <ProjectReference Include="..\ObjectTK.Tools\ObjectTK.Tools.csproj" />

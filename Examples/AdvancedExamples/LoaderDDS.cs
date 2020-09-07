@@ -40,7 +40,7 @@ namespace Examples.AdvancedExamples
         private static int _Width, _Height, _Depth, _MipMapCount;
         private static int _BytesForMainSurface; // must be handled with care when implementing uncompressed formats!
         private static byte _BytesPerBlock;
-        private static InternalFormat _InternalFormat;
+        private static PixelInternalFormat _PixelInternalFormat;
         #endregion Simplified In-Memory representation of the Image
 
         #region Flag Enums
@@ -200,7 +200,7 @@ namespace Examples.AdvancedExamples
             _MipMapCount = 0;
             _BytesForMainSurface = 0;
             _BytesPerBlock = 0;
-            _InternalFormat = InternalFormat.Rgba8;
+            _PixelInternalFormat = PixelInternalFormat.Rgba8;
             byte[] _RawDataFromFile;
             #endregion
 
@@ -282,19 +282,19 @@ namespace Examples.AdvancedExamples
                     switch ( (eFOURCC) pfFourCC )
                     {
                     case eFOURCC.DXT1:
-                        _InternalFormat = (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbS3tcDxt1Ext;
+                        _PixelInternalFormat = (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbS3tcDxt1Ext;
                         _BytesPerBlock = 8;
                         _IsCompressed = true;
                         break;
                     //case eFOURCC.DXT2:
                     case eFOURCC.DXT3:
-                        _InternalFormat = (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt3Ext;
+                        _PixelInternalFormat = (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt3Ext;
                         _BytesPerBlock = 16;
                         _IsCompressed = true;
                         break;
                     //case eFOURCC.DXT4:
                     case eFOURCC.DXT5:
-                        _InternalFormat = (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt5Ext;
+                        _PixelInternalFormat = (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt5Ext;
                         _BytesPerBlock = 16;
                         _IsCompressed = true;
                         break;
@@ -361,9 +361,9 @@ namespace Examples.AdvancedExamples
                                         int target = ( targetColumn * BlocksPerRow + row ) * _BytesPerBlock;
                                         int source = ( sourceColumn * BlocksPerRow + row ) * _BytesPerBlock + Cursor;
                                         #region Swap Bytes
-                                        switch ( _InternalFormat )
+                                        switch ( _PixelInternalFormat )
                                         {
-                                        case (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbS3tcDxt1Ext:
+                                        case (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbS3tcDxt1Ext:
                                             // Color only
                                             RawDataOfSurface[target + 0] = _RawDataFromFile[source + 0];
                                             RawDataOfSurface[target + 1] = _RawDataFromFile[source + 1];
@@ -374,7 +374,7 @@ namespace Examples.AdvancedExamples
                                             RawDataOfSurface[target + 6] = _RawDataFromFile[source + 5];
                                             RawDataOfSurface[target + 7] = _RawDataFromFile[source + 4];
                                             break;
-                                        case (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt3Ext:
+                                        case (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt3Ext:
                                             // Alpha
                                             RawDataOfSurface[target + 0] = _RawDataFromFile[source + 6];
                                             RawDataOfSurface[target + 1] = _RawDataFromFile[source + 7];
@@ -395,7 +395,7 @@ namespace Examples.AdvancedExamples
                                             RawDataOfSurface[target + 14] = _RawDataFromFile[source + 13];
                                             RawDataOfSurface[target + 15] = _RawDataFromFile[source + 12];
                                             break;
-                                        case (InternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt5Ext:
+                                        case (PixelInternalFormat) ExtTextureCompressionS3tc.CompressedRgbaS3tcDxt5Ext:
                                             // Alpha, the first 2 bytes remain 
                                             RawDataOfSurface[target + 0] = _RawDataFromFile[source + 0];
                                             RawDataOfSurface[target + 1] = _RawDataFromFile[source + 1];
@@ -424,43 +424,35 @@ namespace Examples.AdvancedExamples
                             #endregion Prepare Array for TexImage
 
                             #region Create TexImage
-
-                            unsafe {
-                                fixed (byte* p = RawDataOfSurface) {
-                                    IntPtr ptr = (IntPtr)p;
-
-                                    switch (dimension) {
-                                        case TextureTarget.Texture2D:
-                                            GL.CompressedTexImage2D(TextureTarget.Texture2D,
-                                                                     Level,
-                                                                     _InternalFormat,
-                                                                     Width,
-                                                                     Height,
-                                                                    TextureLoaderParameters.Border,
-                                                                     SurfaceSizeInBytes,
-                                                                     ptr);
-                                            break;
-                                        case TextureTarget.TextureCubeMap:
-                                            GL.CompressedTexImage2D(TextureTarget.TextureCubeMapPositiveX + Slices,
-                                                                     Level,
-                                                                     _InternalFormat,
-                                                                     Width,
-                                                                     Height,
-                                                                     TextureLoaderParameters.Border,
-                                                                     SurfaceSizeInBytes,
-                                                                     ptr);
-                                            break;
-                                        case TextureTarget.Texture1D: // Untested
-                                        case TextureTarget.Texture3D: // Untested
-                                        default:
-                                            throw new ArgumentException("ERROR: Use DXT for 2D Images only. Cannot evaluate " + dimension);
-                                    }
-
-
-                                }
-                            }
-
-							GL.Finish( );
+                            throw new NotImplementedException("AH!");
+                            //switch ( dimension )
+                            //{
+                            //case TextureTarget.Texture2D:
+                            //    GL.CompressedTexImage2D( TextureTarget.Texture2D,
+                            //                             Level,
+                            //                             _PixelInternalFormat,
+                            //                             Width,
+                            //                             Height,
+                            //                            TextureLoaderParameters.Border,
+                            //                             SurfaceSizeInBytes,
+                            //                             RawDataOfSurface );
+                            //    break;
+                            //case TextureTarget.TextureCubeMap:
+                            //    GL.CompressedTexImage2D( TextureTarget.TextureCubeMapPositiveX + Slices,
+                            //                             Level,
+                            //                             _PixelInternalFormat,
+                            //                             Width,
+                            //                             Height,
+                            //                             TextureLoaderParameters.Border,
+                            //                             SurfaceSizeInBytes,
+                            //                             RawDataOfSurface );
+                            //    break;
+                            //case TextureTarget.Texture1D: // Untested
+                            //case TextureTarget.Texture3D: // Untested
+                            //default:
+                            //    throw new ArgumentException( "ERROR: Use DXT for 2D Images only. Cannot evaluate " + dimension );
+                            //}
+                            GL.Finish( );
                             #endregion Create TexImage
 
                             #region Query Success
