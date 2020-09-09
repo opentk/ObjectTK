@@ -9,19 +9,21 @@
 
 using ObjectTK.Tools.Mathematics;
 using OpenTK.Mathematics;
+using System;
 
 namespace ObjectTK.Tools.Cameras {
 	public class Camera {
 		public Vector3 Position { get; set; } = Vector3.Zero;
-		public Quaternion Rotation { get; set; } = Quaternion.Identity;
+		public Quaternion Rotation { get; set; } = Quaternion.FromEulerAngles(new Vector3(0, (float)Math.PI, 0));
 		public Vector3 Forward => Vector3.Transform(Vector3.UnitZ, Rotation).Normalized();
 		public Vector3 Up => Vector3.UnitY;
 		public Vector3 Right => Vector3.Cross(Forward, Up);
-		public float FieldOfView { get; set; } = MathHelper.PiOver3;
-		public float AspectRatio { get; set; } = 1.0f;
+		public float FieldOfView { get; set; } = MathHelper.PiOver2;
+		public float AspectRatio => Viewport.Size.X / (float)Viewport.Size.Y;
 		public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Forward, Up);
 		public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance);
 		public Matrix4 ViewProjectionMatrix => ViewMatrix * ProjectionMatrix;
+		public Box2i Viewport { get; set; }
 
 		public float NearClippingPlaneDistance => 0.1f;
 		public float FarClippingPlaneDistance => 1000.0f;
@@ -41,20 +43,34 @@ namespace ObjectTK.Tools.Cameras {
 			Rotation = Matrix4.LookAt(Position, Point, Up).ExtractRotation();
 		}
 
-		public Ray GetPickingRay(Vector2 normalizedMousePos) {
+		public Ray GetPickingRay(Vector2 MousePosition) {
 
-			Vector4 screenPos = new Vector4(normalizedMousePos.X, normalizedMousePos.Y, -NearClippingPlaneDistance, 1.0f);
+			Matrix4 UnViewProjectionMatrix = Matrix4.Invert(ViewProjectionMatrix);
 
-			Matrix4 Unview = Matrix4.Invert(Matrix4.Transpose(ViewMatrix));
-			Matrix4 Unproject = Matrix4.Invert(Matrix4.Transpose(ProjectionMatrix));
+			Vector3 Near = Vector3.Unproject(
+				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, NearClippingPlaneDistance),
+				Viewport.Min.X,
+				Viewport.Min.Y,
+				Viewport.Size.X,
+				Viewport.Size.Y,
+				NearClippingPlaneDistance,
+				FarClippingPlaneDistance,
+				UnViewProjectionMatrix);
 
-			Vector4 Unprojected = Unproject * screenPos;
-			Unprojected.Z = -1;
-			Unprojected.W = 0;
-			Vector3 direction = (Unview * Unprojected).Xyz;
-			direction.Normalize();
-			
-			return new Ray { Origin = Position, Direction = direction, Length = 1.0f };
+			Vector3 Far = Vector3.Unproject(
+				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, FarClippingPlaneDistance - NearClippingPlaneDistance),
+				Viewport.Min.X,
+				Viewport.Min.Y,
+				Viewport.Size.X,
+				Viewport.Size.Y,
+				NearClippingPlaneDistance,
+				FarClippingPlaneDistance,
+				UnViewProjectionMatrix);
+
+			Vector3 Direction = (Far - Near).Normalized();
+			Console.WriteLine("Output: " + Direction);
+
+			return new Ray { Origin = Position, Direction = Direction + Position, Length = 1.0f };
 		}
 
 	}

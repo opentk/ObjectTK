@@ -33,8 +33,8 @@ namespace ObjectTK.Tools {
                 return _ActiveCamera;
             } 
             set {
-                _ActiveCamera = value;
-                _ActiveCamera.AspectRatio = Size.X / (float)Size.Y; 
+                _ActiveCamera = value; 
+                _ActiveCamera.Viewport = new Box2i(Vector2i.Zero, Size);
             } 
         }
 
@@ -66,7 +66,7 @@ namespace ObjectTK.Tools {
         protected override void OnResize(ResizeEventArgs resizeEventArgs)
         {
             base.OnResize(resizeEventArgs);
-            ActiveCamera.AspectRatio = Size.X / (float) Size.Y;
+            _ActiveCamera.Viewport = new Box2i(Vector2i.Zero, Size);
             Logger?.InfoFormat("Window resized to: {0}x{1}", Size.X, Size.Y);
         }
 

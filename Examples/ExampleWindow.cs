@@ -37,7 +37,6 @@ namespace Examples
             ProgramFactory.BasePath = "Data/Shaders/";
             ProgramFactory.Extension = "glsl";
 
-            ActiveCamera.Rotate(new Vector3(0, 180, 0));
         }
 
         protected override void OnUnload()
@@ -81,7 +80,7 @@ namespace Examples
 
 		protected override void OnMouseMove(MouseMoveEventArgs e) {
 			base.OnMouseMove(e);
-            ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
+            if(MouseState.IsButtonDown(MouseButton.Button2)) ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
         }
 
 	}
