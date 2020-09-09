@@ -68,9 +68,8 @@ namespace ObjectTK.Tools.Cameras {
 				UnViewProjectionMatrix);
 
 			Vector3 Direction = (Far - Near).Normalized();
-			Console.WriteLine("Output: " + Direction);
 
-			return new Ray { Origin = Position, Direction = Direction + Position, Length = 1.0f };
+			return new Ray { Origin = Position, Direction = Direction, Length = 1.0f };
 		}
 
 	}
