@@ -20,6 +20,9 @@ namespace Examples
     {
         protected string OriginalTitle { get; private set; }
 
+        private float CameraPitch = 0;
+        private float CameraYaw = (float)Math.PI;
+
         public ExampleWindow()
             : base(800, 600, "ExampleWindow")
         {
@@ -36,6 +39,8 @@ namespace Examples
             // set search path for shader files and extension
             ProgramFactory.BasePath = "Data/Shaders/";
             ProgramFactory.Extension = "glsl";
+
+            ActiveCamera.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, CameraYaw) * Quaternion.FromAxisAngle(Vector3.UnitX, CameraPitch);
 
         }
 
@@ -78,9 +83,15 @@ namespace Examples
             if (e.Key == Key.Escape) Close();
         }
 
+
 		protected override void OnMouseMove(MouseMoveEventArgs e) {
 			base.OnMouseMove(e);
-            if(MouseState.IsButtonDown(MouseButton.Button2)) ActiveCamera.Rotate(new Vector3(e.DeltaY, e.DeltaX, 0) * 0.005f);
+            if (MouseState.IsButtonDown(MouseButton.Button2)) {
+                CameraPitch -= e.DeltaY * 0.005f;
+                CameraPitch = Math.Clamp(CameraPitch, -MathHelper.PiOver2, MathHelper.PiOver2);
+                CameraYaw += e.DeltaX * 0.005f;
+                ActiveCamera.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, CameraYaw) * Quaternion.FromAxisAngle(Vector3.UnitX, CameraPitch);
+            }
         }
 
 	}

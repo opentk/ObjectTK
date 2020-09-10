@@ -14,34 +14,21 @@ using System;
 namespace ObjectTK.Tools.Cameras {
 	public class Camera {
 		public Vector3 Position { get; set; } = Vector3.Zero;
-		public Quaternion Rotation { get; set; } = Quaternion.FromEulerAngles(new Vector3(0, (float)Math.PI, 0));
+		public Quaternion Rotation { get; set; } = Quaternion.Identity;
 		public Vector3 Forward => Vector3.Transform(Vector3.UnitZ, Rotation).Normalized();
-		public Vector3 Up => Vector3.UnitY;
+		public Vector3 Up => Vector3.Transform(Vector3.UnitY, Rotation).Normalized();
 		public Vector3 Right => Vector3.Cross(Forward, Up);
 		public float FieldOfView { get; set; } = MathHelper.PiOver2;
 		public float AspectRatio => Viewport.Size.X / (float)Viewport.Size.Y;
 		public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Forward, Up);
+
+		//TODO support orthographic
 		public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance);
 		public Matrix4 ViewProjectionMatrix => ViewMatrix * ProjectionMatrix;
 		public Box2i Viewport { get; set; }
 
 		public float NearClippingPlaneDistance => 0.1f;
 		public float FarClippingPlaneDistance => 1000.0f;
-
-		public Matrix4 GetCameraTransform() {
-			// kind of hack: prevent look-at and up directions to be parallel
-			//if (Math.Abs(Vector3.Dot(Up, Forward)) > 0.99999999999) Forward += 0.001f * new Vector3(3, 5, 4);
-			return Matrix4.LookAt(Position, Position + Forward, Up);
-		}
-
-		public void Rotate(Vector3 EulerAngles) {
-			Quaternion Delta = (Matrix4.CreateFromAxisAngle(Right, EulerAngles.X) * Matrix4.CreateFromAxisAngle(Vector3.UnitY, EulerAngles.Y)).ExtractRotation();
-			Rotation = Delta * Rotation;
-		}
-
-		public void LookAt(Vector3 Point) {
-			Rotation = Matrix4.LookAt(Position, Point, Up).ExtractRotation();
-		}
 
 		public Ray GetPickingRay(Vector2 MousePosition) {
 
@@ -58,7 +45,7 @@ namespace ObjectTK.Tools.Cameras {
 				UnViewProjectionMatrix);
 
 			Vector3 Far = Vector3.Unproject(
-				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, FarClippingPlaneDistance - NearClippingPlaneDistance),
+				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, FarClippingPlaneDistance),
 				Viewport.Min.X,
 				Viewport.Min.Y,
 				Viewport.Size.X,
