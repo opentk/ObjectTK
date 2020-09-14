@@ -12,6 +12,7 @@ using OpenTK.Mathematics;
 using System;
 
 namespace ObjectTK.Tools.Cameras {
+
 	public class Camera {
 		public Vector3 Position { get; set; } = Vector3.Zero;
 		public Quaternion Rotation { get; set; } = Quaternion.Identity;
@@ -22,11 +23,17 @@ namespace ObjectTK.Tools.Cameras {
 		public float AspectRatio => Viewport.Size.X / (float)Viewport.Size.Y;
 		public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Forward, Up);
 
-		//TODO support orthographic
-		public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance);
+		public CameraProjectionType CameraProjectionType { get; set; } = CameraProjectionType.Perspective;
+		public Matrix4 ProjectionMatrix => CameraProjectionType switch
+		{
+			CameraProjectionType.Perspective => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance),
+			CameraProjectionType.Orthographic => Matrix4.CreateOrthographic(OrthographicVerticalSize * AspectRatio, OrthographicVerticalSize, NearClippingPlaneDistance, FarClippingPlaneDistance),
+			_ => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance)
+		};
+
 		public Matrix4 ViewProjectionMatrix => ViewMatrix * ProjectionMatrix;
 		public Box2i Viewport { get; set; }
-
+		public float OrthographicVerticalSize { get; set; } = 5.0f;
 		public float NearClippingPlaneDistance => 0.1f;
 		public float FarClippingPlaneDistance => 1000.0f;
 
