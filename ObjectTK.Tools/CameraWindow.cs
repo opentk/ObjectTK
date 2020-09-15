@@ -77,7 +77,6 @@ namespace ObjectTK.Tools {
         }
 
 		protected override void OnLoad() {
-            MakeCurrent();
             base.OnLoad();
             LogGLInfo();
         }

@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.9" />
-    <PackageReference Include="OpenTK" Version="4.0.0-pre9.4" />
+    <PackageReference Include="OpenTK" Version="4.0.0-pre9.6" />
   </ItemGroup>
 
   <ItemGroup>

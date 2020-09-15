@@ -19,23 +19,23 @@ namespace ObjectTK.Tools.Cameras {
 		public Vector3 Forward => Vector3.Transform(Vector3.UnitZ, Rotation).Normalized();
 		public Vector3 Up => Vector3.Transform(Vector3.UnitY, Rotation).Normalized();
 		public Vector3 Right => Vector3.Cross(Forward, Up);
-		public float FieldOfView { get; set; } = MathHelper.PiOver2;
+		public float PerspectiveFieldOfView { get; set; } = MathHelper.PiOver2;
 		public float AspectRatio => Viewport.Size.X / (float)Viewport.Size.Y;
 		public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Forward, Up);
 
 		public CameraProjectionType CameraProjectionType { get; set; } = CameraProjectionType.Perspective;
 		public Matrix4 ProjectionMatrix => CameraProjectionType switch
 		{
-			CameraProjectionType.Perspective => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance),
+			CameraProjectionType.Perspective => Matrix4.CreatePerspectiveFieldOfView(PerspectiveFieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance),
 			CameraProjectionType.Orthographic => Matrix4.CreateOrthographic(OrthographicVerticalSize * AspectRatio, OrthographicVerticalSize, NearClippingPlaneDistance, FarClippingPlaneDistance),
-			_ => Matrix4.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance)
+			_ => Matrix4.CreatePerspectiveFieldOfView(PerspectiveFieldOfView, AspectRatio, NearClippingPlaneDistance, FarClippingPlaneDistance)
 		};
 
 		public Matrix4 ViewProjectionMatrix => ViewMatrix * ProjectionMatrix;
 		public Box2i Viewport { get; set; }
 		public float OrthographicVerticalSize { get; set; } = 5.0f;
-		public float NearClippingPlaneDistance => 0.1f;
-		public float FarClippingPlaneDistance => 1000.0f;
+		public float NearClippingPlaneDistance { get; set; } = 0.1f;
+		public float FarClippingPlaneDistance { get; set; } = 1000.0f;
 
 		public Ray GetPickingRay(Vector2 MousePosition) {
 
