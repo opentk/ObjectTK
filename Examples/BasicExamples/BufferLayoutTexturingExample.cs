@@ -1,16 +1,13 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Runtime.InteropServices;
 using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using ObjectTK.Textures;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Examples.BasicExamples
 {
@@ -53,7 +50,7 @@ namespace Examples.BasicExamples
             base.OnKeyDown(e);
             switch (e.Key)
             {
-                case Key.Space: _enableMipmapping = !_enableMipmapping; break;
+                case Keys.Space: _enableMipmapping = !_enableMipmapping; break;
             }
         }
 

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing;
 using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using ObjectTK.Textures;
 using ObjectTK.Tools.Shapes;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Examples.BasicExamples
 {
@@ -40,25 +37,25 @@ namespace Examples.BasicExamples
             base.OnKeyDown(e);
             switch (e.Key)
             {
-                case Key.R:
+                case Keys.R:
                     _objectView = _baseView = Matrix4.Identity;
                     _rotateIndex = _defaultRotateIndex;
                     _stopwatch.Restart();
                     break;
 
-                case Key.Space:
+                case Keys.Space:
                     _baseView = _objectView;
                     _rotateIndex = (_rotateIndex + 1) % _rotateVectors.Length;
                     _stopwatch.Restart();
                     break;
 
-                case Key.Number0:
-                case Key.Number1:
-                case Key.Number2:
-                case Key.Number3:
-                case Key.Number4:
+                case Keys.KeyPad0:
+                case Keys.KeyPad1:
+                case Keys.KeyPad2:
+                case Keys.KeyPad3:
+                case Keys.KeyPad4:
                     _baseView = _objectView;
-                    _rotateIndex = (e.Key - Key.Number0) % _rotateVectors.Length;
+                    _rotateIndex = (e.Key - Keys.KeyPad0) % _rotateVectors.Length;
                     _stopwatch.Restart();
                     break;
             }

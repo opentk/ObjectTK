@@ -3,8 +3,6 @@ using System.Drawing;
 using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
-using ObjectTK.Tools.Mathematics;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;

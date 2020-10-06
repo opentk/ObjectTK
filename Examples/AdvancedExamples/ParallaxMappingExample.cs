@@ -5,12 +5,10 @@ using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
 using ObjectTK.Textures;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Examples.AdvancedExamples
 {
@@ -177,34 +175,34 @@ namespace Examples.AdvancedExamples
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            if (KeyboardState[Key.Space]) Trace.WriteLine("GL: " + GL.GetError());
+            if (KeyboardState[Keys.Space]) Trace.WriteLine("GL: " + GL.GetError());
             var factor = (float)e.Time;
-            if (KeyboardState[Key.Q])
+            if (KeyboardState[Keys.Q])
             {
                 _materialScaleAndBiasAndShininess.X += factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (KeyboardState[Key.A])
+            if (KeyboardState[Keys.A])
             {
                 _materialScaleAndBiasAndShininess.X -= factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (KeyboardState[Key.W])
+            if (KeyboardState[Keys.W])
             {
                 _materialScaleAndBiasAndShininess.Y += factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (KeyboardState[Key.S])
+            if (KeyboardState[Keys.S])
             {
                 _materialScaleAndBiasAndShininess.Y -= factor;
                 Trace.WriteLine("Scale: " + _materialScaleAndBiasAndShininess.X + " Bias: " + _materialScaleAndBiasAndShininess.Y);
             }
-            if (KeyboardState[Key.E])
+            if (KeyboardState[Keys.E])
             {
                 _materialScaleAndBiasAndShininess.Z += factor*100;
                 Trace.WriteLine("Shininess: " + _materialScaleAndBiasAndShininess.Z);
             }
-            if (KeyboardState[Key.D])
+            if (KeyboardState[Keys.D])
             {
                 _materialScaleAndBiasAndShininess.Z -= factor*100;
                 Trace.WriteLine("Shininess: " + _materialScaleAndBiasAndShininess.Z);

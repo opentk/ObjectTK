@@ -2,13 +2,9 @@
 using ObjectTK;
 using ObjectTK.Shaders;
 using ObjectTK.Tools;
-using ObjectTK.Tools.Cameras;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Input;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Examples
 {
@@ -64,12 +60,12 @@ namespace Examples
 
             {
                 var dir = Vector3.Zero;
-                if (KeyboardState.IsKeyDown(Key.W)) dir += ActiveCamera.Forward;
-                if (KeyboardState.IsKeyDown(Key.S)) dir -= ActiveCamera.Forward;
-                if (KeyboardState.IsKeyDown(Key.D)) dir += ActiveCamera.Right;
-                if (KeyboardState.IsKeyDown(Key.A)) dir -= ActiveCamera.Right;
-                if (KeyboardState.IsKeyDown(Key.Space)) dir += ActiveCamera.Up;
-                if (KeyboardState.IsKeyDown(Key.LControl)) dir -= ActiveCamera.Up;
+                if (KeyboardState.IsKeyDown(Keys.W)) dir += ActiveCamera.Forward;
+                if (KeyboardState.IsKeyDown(Keys.S)) dir -= ActiveCamera.Forward;
+                if (KeyboardState.IsKeyDown(Keys.D)) dir += ActiveCamera.Right;
+                if (KeyboardState.IsKeyDown(Keys.A)) dir -= ActiveCamera.Right;
+                if (KeyboardState.IsKeyDown(Keys.Space)) dir += ActiveCamera.Up;
+                if (KeyboardState.IsKeyDown(Keys.LeftControl)) dir -= ActiveCamera.Up;
                 // normalize dir to enforce consistent movement speed, independent of the number of keys pressed
                 if (dir.LengthSquared > 0) ActiveCamera.Position += dir.Normalized() * (float)frameEventArgs.Time;
 
@@ -80,7 +76,7 @@ namespace Examples
         {
             base.OnKeyDown(e);
             // close window on escape press
-            if (e.Key == Key.Escape) Close();
+            if (e.Key == Keys.Escape) Close();
         }
 
 

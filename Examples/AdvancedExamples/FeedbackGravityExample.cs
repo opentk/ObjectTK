@@ -4,12 +4,10 @@ using System.Runtime.InteropServices;
 using Examples.Shaders;
 using ObjectTK.Buffers;
 using ObjectTK.Shaders;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Examples.AdvancedExamples
 {
@@ -144,13 +142,13 @@ namespace Examples.AdvancedExamples
             var reinitialize = false;
             switch (e.Key)
             {
-                case Key.Up: _centerMass *= up; break;
-                case Key.Down: _centerMass *= down; break;
-                case Key.Space:
-                case Key.Right:
-                case Key.Left:
-                    if (e.Key == Key.Right) _particleCount = (int)(_particleCount * up);
-                    if (e.Key == Key.Left) _particleCount = (int)(_particleCount * down);
+                case Keys.Up: _centerMass *= up; break;
+                case Keys.Down: _centerMass *= down; break;
+                case Keys.Space:
+                case Keys.Right:
+                case Keys.Left:
+                    if (e.Key == Keys.Right) _particleCount = (int)(_particleCount * up);
+                    if (e.Key == Keys.Left) _particleCount = (int)(_particleCount * down);
                     reinitialize = true;
                     break;
             }
