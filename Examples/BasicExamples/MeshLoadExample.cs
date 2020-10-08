@@ -48,6 +48,9 @@ namespace Examples.BasicExamples {
 			Buffer<Vector3> VertBuffer = new Buffer<Vector3>();
 			VertBuffer.Init(BufferTarget.ArrayBuffer, Enumerable.Range(0, meshData.Vertices.Count / 3).Select(a => new Vector3(meshData.Vertices[a * 3], meshData.Vertices[a * 3 + 1], meshData.Vertices[a * 3 + 2])).ToArray());
 
+			//a bit of a hack, i wanted the mesh to have some visual depth. 
+			//the only reason this works is I just happen to know the Z coordinate for the mesh is in a certain range
+			//other meshes will either look stupid or just throw exceptions because the color values are out of range
 			Buffer<uint> ColorBuffer = new Buffer<uint>();
 			ColorBuffer.Init(BufferTarget.ArrayBuffer, VertBuffer.Content.Select(vertex => (uint)Color.FromArgb((int)(vertex.Z * 500) + 100, (int)(vertex.Z * 500) + 100, (int)(vertex.Z * 500) + 100).ToArgb()).ToArray());
 			
