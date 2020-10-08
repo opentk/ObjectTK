@@ -26,11 +26,9 @@ namespace Examples.AdvancedExamples
         private SimpleColorProgram _colorProgram;
         private SimpleTextureProgram _textureProgram;
         
-        private ColorCube _cube;
-        private TexturedQuad _quad;
+        private Shape _cube;
+        private Shape _quad;
 
-        private VertexArray _cubeVao;
-        private VertexArray _quadVao;
 
         protected override void OnLoad()
         {
@@ -51,28 +49,13 @@ namespace Examples.AdvancedExamples
             _framebuffer.Attach(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, _texture);
             Framebuffer.Unbind(FramebufferTarget.Framebuffer);
 
-            // initialize demonstration geometry
-            _cube = new ColorCube();
-            _cube.UpdateBuffers();
-            _quad = new TexturedQuad();
-            _quad.UpdateBuffers();
-
             // initialize shaders
             _colorProgram = ProgramFactory.Create<SimpleColorProgram>();
             _textureProgram = ProgramFactory.Create<SimpleTextureProgram>();
 
-            // set up vertex attributes for the cube
-            _cubeVao = new VertexArray();
-            _cubeVao.Bind();
-            _cubeVao.BindAttribute(_colorProgram.InPosition, _cube.VertexBuffer);
-            _cubeVao.BindAttribute(_colorProgram.InColor, _cube.ColorBuffer);
-            _cubeVao.BindElementBuffer(_cube.IndexBuffer);
-
-            // set up vertex attributes for the quad
-            _quadVao = new VertexArray();
-            _quadVao.Bind();
-            _quadVao.BindAttribute(_textureProgram.InPosition, _quad.VertexBuffer);
-            _quadVao.BindAttribute(_textureProgram.InTexCoord, _quad.TexCoordBuffer);
+            // initialize demonstration geometry
+            _cube = ShapeBuilder.CreateColoredCube(_colorProgram.InPosition, _colorProgram.InColor);
+            _quad = ShapeBuilder.CreateTexturedQuad(_textureProgram.InPosition, _textureProgram.InTexCoord);
 
             // set camera position
             ActiveCamera.Position = new Vector3(0,0,3);
@@ -98,8 +81,8 @@ namespace Examples.AdvancedExamples
                 * Matrix4.CreateRotationY((float) FrameTimer.TimeRunning/1000)
                 * Matrix4.CreateTranslation(0,0,-5)
                 * Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, FramebufferWidth/(float)FramebufferHeight, 0.1f, 100));
-            _cubeVao.Bind();
-            _cubeVao.DrawElements(PrimitiveType.Triangles, _cube.IndexBuffer.ElementCount);
+
+            _cube.Draw();
 
             // reset to default framebuffer
             Framebuffer.Unbind(FramebufferTarget.Framebuffer);
@@ -112,8 +95,8 @@ namespace Examples.AdvancedExamples
             // render quad with texture
             _textureProgram.Use();
             _textureProgram.ModelViewProjectionMatrix.Set(ActiveCamera.ViewProjectionMatrix);
-            _quadVao.Bind();
-            _quadVao.DrawArrays(PrimitiveType.TriangleStrip, 0, _quad.VertexBuffer.ElementCount);
+            
+            _quad.Draw();
 
             // swap buffers
             SwapBuffers();

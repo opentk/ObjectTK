@@ -18,21 +18,15 @@ namespace Examples.BasicExamples
     {
         private SkyboxProgram _program;
         private TextureCubemap _skybox;
-        private VertexArray _vao;
-        private Cube _cube;
+        private Shape _cube;
 
 		protected override void OnLoad() {
             base.OnLoad();
             // initialize shader
             _program = ProgramFactory.Create<SkyboxProgram>();
             // initialize cube shape
-            _cube = new Cube();
-            _cube.UpdateBuffers();
-            // initialize vertex array and attributes
-            _vao = new VertexArray();
-            _vao.Bind();
-            _vao.BindAttribute(_program.InPosition, _cube.VertexBuffer);
-            _vao.BindElementBuffer(_cube.IndexBuffer);
+            _cube = ShapeBuilder.CreateCube(_program.InPosition);
+
             // create cubemap texture and load all faces
             for (var i = 0; i < 6; i++)
             {
@@ -60,8 +54,9 @@ namespace Examples.BasicExamples
         protected override void OnUnload()
         {
             base.OnUnload();
-            _cube.VertexBuffer.Dispose();
-            _cube.IndexBuffer.Dispose();
+
+            _cube.Dispose();
+
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -74,8 +69,8 @@ namespace Examples.BasicExamples
             // note: normally you want to clear the translation part of the ModelView matrix to prevent the user from leaving the cube
             // to do that you can use ModelView.ClearTranslation() instead of the unmodified ModelView matrix
             _program.ModelViewProjectionMatrix.Set(Matrix4.CreateScale(10) * ActiveCamera.ViewProjectionMatrix);
-            // draw cube
-            _vao.DrawElements(_cube.DefaultMode, _cube.IndexBuffer.ElementCount);
+
+            _cube.Draw();
 
             // swap buffers
             SwapBuffers();

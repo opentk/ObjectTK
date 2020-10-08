@@ -57,7 +57,6 @@ namespace Examples
 		protected override void OnUpdateFrame(FrameEventArgs frameEventArgs) {
 			base.OnUpdateFrame(frameEventArgs);
 
-
             {
                 var dir = Vector3.Zero;
                 if (KeyboardState.IsKeyDown(Keys.W)) dir += ActiveCamera.Forward;

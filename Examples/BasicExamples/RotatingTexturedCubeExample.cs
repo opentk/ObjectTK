@@ -20,8 +20,7 @@ namespace Examples.BasicExamples
 
         private SimpleTextureProgram _textureProgram;
 
-        private TexturedCube _cube;
-        private VertexArray _cubeVao;
+        private Shape _cube;
 
         private Matrix4 _baseView;
         private Matrix4 _objectView;
@@ -78,14 +77,7 @@ namespace Examples.BasicExamples
             _objectView = _baseView = Matrix4.Identity;
 
             // initialize demonstration geometry
-            _cube = new TexturedCube();
-            _cube.UpdateBuffers();
-
-            // set up vertex attributes for the quad
-            _cubeVao = new VertexArray();
-            _cubeVao.Bind();
-            _cubeVao.BindAttribute(_textureProgram.InPosition, _cube.VertexBuffer);
-            _cubeVao.BindAttribute(_textureProgram.InTexCoord, _cube.TexCoordBuffer);
+            _cube = ShapeBuilder.CreateTexturedCube(_textureProgram.InPosition, _textureProgram.InTexCoord);
 
             // Enable culling, our cube vertices are defined inside out, so we flip them
             GL.Enable(EnableCap.CullFace);
@@ -117,9 +109,7 @@ namespace Examples.BasicExamples
             _textureProgram.Use();
             _textureProgram.ModelViewProjectionMatrix.Set(_objectView * ActiveCamera.ViewProjectionMatrix);
 
-            // render cube with texture
-            _cubeVao.Bind();
-            _cubeVao.DrawArrays(_cube.DefaultMode, 0, _cube.VertexBuffer.ElementCount);
+            _cube.Draw();
 
             // swap buffers
             SwapBuffers();
