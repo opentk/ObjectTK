@@ -31,13 +31,30 @@ namespace ObjectTK.Tools.Shapes {
 			return this;
 		}
 
+		/// <summary>
+		/// Specifying a dispose function will *append* to any existing dispose function that is on this shape.
+		/// </summary>
+		/// <see cref="ShapeBuilder.CreateBasicCube(VertexAttrib)"/>
+		/// <see cref="ShapeBuilder.CreateColoredCube(VertexAttrib, VertexAttrib)"/>
+		/// <remarks>
+		/// In the 2 functions listed above you can
+		/// see that the ColoredCube only needs to dispose the color buffer
+		/// because the other buffers are handled by the BasicCube function.
+		/// </remarks>
+		/// <param name="Action">The draw function</param>
+		/// <returns></returns>
 		public DynamicShape WithDisposeFunction(Action Action) {
 			DisposeFunction += Action;
 			return this;
 		}
 
-		public DynamicShape WithDrawFunction(Action<VertexArray> Action) {
-			DrawFunction += Action;
+		/// <summary>
+		/// Specifying a draw function will overwrite any existing draw function currently on this shape
+		/// </summary>
+		/// <param name="Action">The draw function</param>
+		/// <returns></returns>
+		public DynamicShape SetDrawFunction(Action<VertexArray> Action) {
+			DrawFunction = Action;
 			return this;
 		}
 

@@ -64,7 +64,7 @@ namespace Examples.BasicExamples {
 					IndexBuffer?.Dispose();
 					ColorBuffer?.Dispose();
 				})
-				.WithDrawFunction((VAO) => {
+				.SetDrawFunction((VAO) => {
 					VAO.DrawElements(PrimitiveType.Triangles, IndexBuffer.ElementCount);
 				});
 

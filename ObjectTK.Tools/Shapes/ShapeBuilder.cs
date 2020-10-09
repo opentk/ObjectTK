@@ -53,7 +53,7 @@ namespace ObjectTK.Tools.Shapes {
 					VertexBuffer?.Dispose();
 					IndexBuffer?.Dispose();
 				})
-				.WithDrawFunction((VertexArray VAO) => {
+				.SetDrawFunction((VertexArray VAO) => {
 					VAO.DrawElements(PrimitiveType.Triangles, IndexBuffer.ElementCount);
 				});
 
@@ -145,7 +145,7 @@ namespace ObjectTK.Tools.Shapes {
 					VertexBuffer?.Dispose();
 					TexCoordBuffer?.Dispose();
 				})
-				.WithDrawFunction((VertexArray VAO) => {
+				.SetDrawFunction((VertexArray VAO) => {
 					VAO.DrawArrays(PrimitiveType.Triangles, 0, VertexBuffer.ElementCount);
 				});
 
@@ -169,7 +169,7 @@ namespace ObjectTK.Tools.Shapes {
 				.WithDisposeFunction(() => {
 					VertexBuffer?.Dispose();
 				})
-				.WithDrawFunction((VertexArray VAO) => {
+				.SetDrawFunction((VertexArray VAO) => {
 					VAO.DrawArrays(PrimitiveType.TriangleStrip, 0, VertexBuffer.ElementCount);
 				});
 		}
@@ -218,7 +218,7 @@ namespace ObjectTK.Tools.Shapes {
 				.WithDisposeFunction(() => {
 					VertexBuffer?.Dispose();
 				})
-				.WithDrawFunction((VertexArray VAO) => {
+				.SetDrawFunction((VertexArray VAO) => {
 					VAO.DrawArrays(PrimitiveType.TriangleFan, 0, VertexBuffer.ElementCount);
 				});
 		}
