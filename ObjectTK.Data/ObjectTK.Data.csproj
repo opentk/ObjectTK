@@ -8,4 +8,8 @@
     <PackageReference Include="OpenTK" Version="4.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uniforms\" />
+  </ItemGroup>
+
 </Project>
