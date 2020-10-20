@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.Data", "ObjectTK.Data\ObjectTK.Data.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Data", "ObjectTK.Data\ObjectTK.Data.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.Tools", "ObjectTK.Tools\ObjectTK.Tools.csproj", "{B5DCB84E-3E09-4F37-B06E-68565756624F}"
 EndProject
@@ -17,6 +20,10 @@ Global
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5DCB84E-3E09-4F37-B06E-68565756624F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5DCB84E-3E09-4F37-B06E-68565756624F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5DCB84E-3E09-4F37-B06E-68565756624F}.Release|Any CPU.ActiveCfg = Release|Any CPU
