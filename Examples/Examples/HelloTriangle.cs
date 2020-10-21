@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Examples.Examples.Programs;
 using ObjectTK.Data.Buffers;
@@ -62,7 +63,7 @@ namespace Examples.Examples {
 			GL.GetActiveUniform(ProgramHandle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
 			UniformInfo UI_InPosition = new UniformInfo(ProgramHandle, "ModelViewProjectionMatrix", UniformLocation, UniformSize, UniformType, UniformLocation > -1);
 
-			ShaderProgram = new Program(ProgramHandle, VertexShader, FragmentShader, new UniformInfo[] { UI_InPosition }, new VertexAttributeInfo[] { });
+			ShaderProgram = new Program(ProgramHandle, VertexShader, FragmentShader, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
 
 			GL.DetachShader(ProgramHandle, VertexShader.Handle);
 			GL.DetachShader(ProgramHandle, FragmentShader.Handle);
@@ -102,7 +103,7 @@ namespace Examples.Examples {
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 			Matrix4 MVPMatrix = ActiveCamera.ViewProjectionMatrix;
-			GL.UniformMatrix4(ShaderProgram.ProgramVariableInfoCollection.Uniforms[0].Location, false, ref MVPMatrix);
+			GL.UniformMatrix4(ShaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref MVPMatrix);
 
 			GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
 
@@ -133,8 +134,8 @@ namespace Examples.Examples {
 
 			VAO = new VertexArray(GL.GenVertexArray());
 			GL.BindVertexArray(VAO.Handle);
-			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-			GL.EnableVertexAttribArray(0);
+			GL.VertexAttribPointer(ShaderProgram.Variables.InPosition.Index, VBO.ElementCount, VertexAttribPointerType.Float, false, VBO.ElementSize, 0);
+			GL.EnableVertexAttribArray(ShaderProgram.Variables.InPosition.Index);
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
 
 			ActiveCamera.Position = new Vector3(0, 0, 3);
@@ -156,8 +157,7 @@ namespace Examples.Examples {
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 			Matrix4 MVPMatrix = ActiveCamera.ViewProjectionMatrix;
-
-			GL.UniformMatrix4(ShaderProgram.ProgramVariableInfoCollection.ModelViewProjectionMatrix.Location, false, ref MVPMatrix);
+			GL.UniformMatrix4(ShaderProgram.Variables.ModelViewProjectionMatrix.Location, false, ref MVPMatrix);
 
 			GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
 

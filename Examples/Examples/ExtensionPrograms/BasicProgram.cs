@@ -7,8 +7,8 @@ namespace Examples.Examples.Programs {
 
 	[VertexShaderSource("BasicShader.Vertex")]
 	[FragmentShaderSource("BasicShader.Fragment")]
-	public class BasicProgram : ProgramVariableInfoCollection {
-		public VertexAttributeInfo<Vector3> InPosition { get; }
-		public UniformInfo<Matrix4> ModelViewProjectionMatrix { get; }
+	public class BasicProgram {
+		public VertexAttributeInfo<Vector3> InPosition { get; set; }
+		public UniformInfo<Matrix4> ModelViewProjectionMatrix { get; set; }
 	}
 }

@@ -8,7 +8,7 @@ namespace ObjectTK.Extensions.Variables {
 	}
 
     public class VertexAttributeInfo<T> : VertexAttributeInfo {
-        public VertexAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, VertexAttribPointerType Type, bool Normalized) :
+        public VertexAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, ActiveAttribType Type, bool Normalized) :
             base(ProgramHandle, Name, Active, Index, Components, Type, Normalized) {
         }
     }
