@@ -3,8 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.Data", "ObjectTK.Data\ObjectTK.Data.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Data", "ObjectTK.Data\ObjectTK.Data.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Extensions", "ObjectTK.Extensions\ObjectTK.Extensions.csproj", "{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}"
 EndProject
@@ -20,6 +21,10 @@ Global
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{163450BD-24E0-4C3E-A310-3AEBD709E065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}.Release|Any CPU.ActiveCfg = Release|Any CPU

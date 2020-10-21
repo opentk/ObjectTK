@@ -11,4 +11,10 @@
     <ProjectReference Include="..\ObjectTK.Tools\ObjectTK.Tools.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\Shaders\BasicShader.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
