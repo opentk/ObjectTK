@@ -1,5 +1,6 @@
 ﻿using ObjectTK.Data.Variables;
 using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace ObjectTK.Extensions.Variables {
 	public static class VertexAttributeInfoExtensions {
@@ -7,9 +8,24 @@ namespace ObjectTK.Extensions.Variables {
 
 	}
 
-    public class VertexAttributeInfo<T> : VertexAttributeInfo {
-        public VertexAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, ActiveAttribType Type, bool Normalized) :
-            base(ProgramHandle, Name, Active, Index, Components, Type, Normalized) {
-        }
-    }
+	public class VertexAttributeInfo<T> : VertexAttributeInfo {
+		public VertexAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, ActiveAttribType ActiveAttribType, VertexAttribPointerType VertexAttribPointerType, bool Normalized) :
+			base(ProgramHandle, Name, Active, Index, Components, ActiveAttribType, VertexAttribPointerType, Normalized) {
+		}
+	}
+
+	[AttributeUsage(AttributeTargets.Property)]
+	public class VertexAttribAttribute : Attribute {
+		public VertexAttribPointerType VertexAttribPointerType { get; protected set; }
+		public bool Normalized { get; protected set; }
+
+		/// <summary>
+		/// Defines some metadata for VertexAttributeInfo objects that cannot be gathered from OpenGL.
+		/// </summary>
+		public VertexAttribAttribute(VertexAttribPointerType VertexAttribPointerType = VertexAttribPointerType.Float, bool Normalized = false) {
+			this.VertexAttribPointerType = VertexAttribPointerType;
+			this.Normalized = Normalized;
+		}
+	}
+
 }

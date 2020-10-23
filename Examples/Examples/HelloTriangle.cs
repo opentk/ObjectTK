@@ -6,7 +6,9 @@ using Examples.Examples.Programs;
 using ObjectTK.Data.Buffers;
 using ObjectTK.Data.Shaders;
 using ObjectTK.Data.Variables;
+using ObjectTK.Extensions.Buffers;
 using ObjectTK.Extensions.Shaders;
+using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -74,7 +76,8 @@ namespace Examples.Examples {
 
 			var Vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
 
-			VBO = new Buffer<Vector3>(GL.GenBuffer(), Vertices);
+			VBO = new Buffer<Vector3>(GL.GenBuffer());
+			VBO.ElementCount = 3;
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
 			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, Vertices, BufferUsageHint.StaticDraw);
 
@@ -111,10 +114,9 @@ namespace Examples.Examples {
 		}
 	}
 	
-	
 	[ExampleProject("Hello Triangle with extensions")]
 	public class HelloTriangleWithExtensions : ExampleWindow {
-
+		
 		private Program<BasicProgram> ShaderProgram;
 		private Buffer<Vector3> VBO;
 		private VertexArray VAO;
@@ -123,20 +125,15 @@ namespace Examples.Examples {
 			base.OnLoad();
 
 			ShaderProgram = new ProgramFactory() { BaseDirectory = "./Data/Shaders/" }.CreateProgram<BasicProgram>();
-
-			GL.UseProgram(ShaderProgram.Handle);
+			ShaderProgram.Use();
 
 			var Vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
 
-			VBO = new Buffer<Vector3>(GL.GenBuffer(), Vertices);
-			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
-			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, Vertices, BufferUsageHint.StaticDraw);
+			VBO = new Buffer<Vector3>(GL.GenBuffer());
+			VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
 
 			VAO = new VertexArray(GL.GenVertexArray());
-			GL.BindVertexArray(VAO.Handle);
-			GL.VertexAttribPointer(ShaderProgram.Variables.InPosition.Index, VBO.ElementCount, VertexAttribPointerType.Float, false, VBO.ElementSize, 0);
-			GL.EnableVertexAttribArray(ShaderProgram.Variables.InPosition.Index);
-			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
+			VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
 
 			ActiveCamera.Position = new Vector3(0, 0, 3);
 
@@ -156,10 +153,17 @@ namespace Examples.Examples {
 			GL.Viewport(0, 0, Size.X, Size.Y);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			Matrix4 MVPMatrix = ActiveCamera.ViewProjectionMatrix;
-			GL.UniformMatrix4(ShaderProgram.Variables.ModelViewProjectionMatrix.Location, false, ref MVPMatrix);
+			for (int X = 0; X < 20; X++) {
+				for (int Y = 0; Y < 20; Y++) {
+					for (int Z = 0; Z < 20; Z++) {
 
-			GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
+						Matrix4 MVP = Matrix4.CreateTranslation(new Vector3(X * 2, Y * 2, Z * 2)) * ActiveCamera.ViewProjectionMatrix;
+						ShaderProgram.Variables.ModelViewProjectionMatrix.Set(MVP);
+						GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
+
+					}
+				}
+			}
 
 			SwapBuffers();
 		}

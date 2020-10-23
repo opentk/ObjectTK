@@ -23,10 +23,8 @@ namespace ObjectTK.Data.Buffers {
 	}
 
 	public class Buffer<T> : Buffer where T : struct {
-		public T[] Elements { get; set; }
-		public override int ElementCount { get => Elements.Length; set { } }
-		public Buffer(int Handle, T[] Elements) : base(Handle, Marshal.SizeOf(typeof(T)), 0) {
-			this.Elements = Elements;
+		public Buffer(int Handle) : base(Handle, Marshal.SizeOf(typeof(T)), 0) {
+
 		}
 	}
 }
