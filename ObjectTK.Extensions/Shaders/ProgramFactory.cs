@@ -32,10 +32,10 @@ namespace ObjectTK.Extensions.Shaders {
 
 				switch (Attribute.Type) {
 					case ShaderType.FragmentShader:
-						Shaders.Add(new FragmentShaderStage(ShaderHandle, Source));
+						Shaders.Add(new ShaderStage(ShaderType.FragmentShader, ShaderHandle, Source));
 						break;
 					case ShaderType.VertexShader:
-						Shaders.Add(new VertexShaderStage(ShaderHandle, Source));
+						Shaders.Add(new ShaderStage(ShaderType.VertexShader, ShaderHandle, Source));
 						break;
 					default:
 						break;
@@ -49,7 +49,7 @@ namespace ObjectTK.Extensions.Shaders {
 				GL.DeleteShader(Shader.Handle);
 			}
 
-			ShaderProgram<T> ShaderProgram = new ShaderProgram<T>(ProgramHandle, null, null, new Dictionary<string, UniformInfo>(), new Dictionary<string, VertexAttributeInfo>());
+			ShaderProgram<T> ShaderProgram = new ShaderProgram<T>(ProgramHandle, null, new Dictionary<string, ShaderUniformInfo>(), new Dictionary<string, ShaderAttributeInfo>());
 			InitializeProgramVariables(ShaderProgram);
 
 			return ShaderProgram;
@@ -113,13 +113,13 @@ namespace ObjectTK.Extensions.Shaders {
 			shaderProgram.Variables = new T();
 
 			PropertyInfo[] Properties = typeof(T).GetProperties();
-			shaderProgram.UniformInfoProperties = Properties.Where(Prop => typeof(UniformInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
-			shaderProgram.VertexAttributeInfoProperties = Properties.Where(Prop => typeof(VertexAttributeInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
+			shaderProgram.UniformInfoProperties = Properties.Where(Prop => typeof(ShaderUniformInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
+			shaderProgram.VertexAttributeInfoProperties = Properties.Where(Prop => typeof(ShaderAttributeInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
 
 			foreach (PropertyInfo Prop in shaderProgram.UniformInfoProperties) {
 				int UniformLocation = GL.GetUniformLocation(shaderProgram.Handle, Prop.Name);
 				GL.GetActiveUniform(shaderProgram.Handle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
-				UniformInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, UniformLocation, UniformSize, UniformType, UniformLocation > -1) as UniformInfo;
+				ShaderUniformInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, UniformLocation, UniformSize, UniformType, UniformLocation > -1) as ShaderUniformInfo;
 				Prop.SetValue(shaderProgram.Variables, Value);
 				shaderProgram.Uniforms.Add(Prop.Name, Value);
 			}
@@ -132,9 +132,9 @@ namespace ObjectTK.Extensions.Shaders {
 					throw new Exception($"VertexAttributeInfo {typeof(T).FullName}.{Prop.Name} is not decorated with the 'VertexAttrib' Attribute, which is necessary for some metadata as it cannot be determined by the shader itself.");
 				}
 				VertexAttribPointerType VertexAttribPointerType = Attribute.VertexAttribPointerType;
-				VertexAttributeInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, AttribIndex > -1, AttribIndex, Size, AttribType, VertexAttribPointerType, false) as VertexAttributeInfo;
+				ShaderAttributeInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, AttribIndex > -1, AttribIndex, Size, AttribType, VertexAttribPointerType, false) as ShaderAttributeInfo;
 				Prop.SetValue(shaderProgram.Variables, Value);
-				shaderProgram.VertexAttributes.Add(Prop.Name, Value);
+				shaderProgram.Attributes.Add(Prop.Name, Value);
 			}
 
 		}

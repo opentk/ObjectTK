@@ -1,4 +1,5 @@
-﻿using ObjectTK.Extensions.Shaders;
+﻿using ObjectTK.Data.Variables;
+using ObjectTK.Extensions.Shaders;
 using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -9,7 +10,7 @@ namespace Examples.Examples.Programs {
 	[FragmentShaderSource("BasicShader.Fragment")]
 	public class BasicProgram {
 		[VertexAttrib(VertexAttribPointerType.Float)]
-		public VertexAttributeInfo<Vector3> InPosition { get; set; }
-		public UniformInfo<Matrix4> ModelViewProjectionMatrix { get; set; }
+		public ShaderAttributeInfo InPosition { get; set; }
+		public ShaderUniformInfo<Matrix4> ModelViewProjectionMatrix { get; set; }
 	}
 }

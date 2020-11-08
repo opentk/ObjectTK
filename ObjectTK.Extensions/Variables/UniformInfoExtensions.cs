@@ -8,17 +8,17 @@ using System.Drawing;
 namespace ObjectTK.Extensions.Variables {
 	public static class UniformInfoExtensions {
 
-		public static void Set<T>(this UniformInfo<T> Uniform, T Value) {
-			Uniform.SetAction?.Invoke(Uniform.Location, Value);
+		public static void Set<T>(this ShaderUniformInfo<T> shaderUniform, T Value) {
+			shaderUniform.SetAction?.Invoke(shaderUniform.Location, Value);
 		}
 	}
 
-	public class UniformInfo<T> : UniformInfo {
+	public class ShaderUniformInfo<T> : ShaderUniformInfo {
 
 		internal Action<int, T> SetAction;
 
-		public UniformInfo(int ProgramHandle, string Name, int Location, int UniformSize, ActiveUniformType UniformType, bool Active) :
-			base(ProgramHandle, Name, Location, UniformSize, UniformType, Active) {
+		public ShaderUniformInfo(int ProgramHandle, string Name, int Location, int UniformSize, ActiveUniformType UniformType, bool Active) :
+			base(Name, Location, UniformSize, UniformType) {
 			SetAction = UniformSetAction.FindAction<T>();
 		}
 

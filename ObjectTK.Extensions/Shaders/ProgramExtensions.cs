@@ -2,7 +2,6 @@
 using ObjectTK.Data.Variables;
 using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -20,28 +19,10 @@ namespace ObjectTK.Extensions.Shaders {
 		internal List<PropertyInfo> UniformInfoProperties { get; set; }
 		internal List<PropertyInfo> VertexAttributeInfoProperties { get; set; }
 
-		public ShaderProgram(int Handle, VertexShaderStage vertexShaderStage, FragmentShaderStage fragmentShaderStage, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) :
-			base(Handle, vertexShaderStage, fragmentShaderStage, Uniforms, VertexAttributes) {
+		public ShaderProgram(int handle, ShaderStage[] stages,
+			Dictionary<string, ShaderUniformInfo> uniforms,
+			Dictionary<string, ShaderAttributeInfo> attributes) :
+			base(handle, stages, uniforms, attributes) {
 		}
 	}
-
-	public class Material<T> where T : class, new() {
-		public ShaderProgram<T> ShaderProgram { get; set; }
-		public T Variables { get; set; }
-
-		public Material() {
-
-			foreach (PropertyInfo Prop in ShaderProgram.UniformInfoProperties) {
-				Type UniformType = Prop.PropertyType.GetGenericArguments()[0];
-				object DefaultValue = Activator.CreateInstance(UniformType);
-				UniformInfo PropValue = Prop.GetValue(ShaderProgram.Variables) as UniformInfo;
-			}
-		}
-
-		public void Use() {
-			ShaderProgram.Use();
-		}
-
-	}
-
 }

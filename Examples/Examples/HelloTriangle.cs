@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Examples.Examples.Programs;
 using ObjectTK.Data.Buffers;
 using ObjectTK.Data.Shaders;
 using ObjectTK.Data.Variables;
-using ObjectTK.Extensions.Buffers;
-using ObjectTK.Extensions.Shaders;
-using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -46,40 +42,16 @@ namespace Examples.Examples {
 		protected override void OnLoad() {
 			base.OnLoad();
 
-			VertexShaderStage vertexShaderStage = new VertexShaderStage(GL.CreateShader(ShaderType.VertexShader), null);
-			FragmentShaderStage fragmentShaderStage = new FragmentShaderStage(GL.CreateShader(ShaderType.FragmentShader), null);
+			var shaderProgram = ShaderCompiler.VertexFrag("Solid Color", VertSource, FragSource);
+			GL.UseProgram(shaderProgram.Handle);
+			ShaderProgram = shaderProgram;
 
-			GL.ShaderSource(vertexShaderStage.Handle, VertSource);
-			GL.ShaderSource(fragmentShaderStage.Handle, FragSource);
-			GL.CompileShader(vertexShaderStage.Handle);
-			GL.CompileShader(fragmentShaderStage.Handle);
+			var vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
 
-			int ProgramHandle = GL.CreateProgram();
-
-			GL.AttachShader(ProgramHandle, vertexShaderStage.Handle);
-			GL.AttachShader(ProgramHandle, fragmentShaderStage.Handle);
-
-			GL.LinkProgram(ProgramHandle);
-
-			int UniformLocation = GL.GetUniformLocation(ProgramHandle, "ModelViewProjectionMatrix");
-			GL.GetActiveUniform(ProgramHandle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
-			UniformInfo UI_InPosition = new UniformInfo(ProgramHandle, "ModelViewProjectionMatrix", UniformLocation, UniformSize, UniformType, UniformLocation > -1);
-
-			ShaderProgram = new ShaderProgram(ProgramHandle, vertexShaderStage, fragmentShaderStage, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
-
-			GL.DetachShader(ProgramHandle, vertexShaderStage.Handle);
-			GL.DetachShader(ProgramHandle, fragmentShaderStage.Handle);
-			GL.DeleteShader(vertexShaderStage.Handle);
-			GL.DeleteShader(fragmentShaderStage.Handle);
-
-			GL.UseProgram(ProgramHandle);
-
-			var Vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
-
-			VBO = new Buffer<Vector3>(GL.GenBuffer());
+			VBO = new Buffer<Vector3>(GL.GenBuffer(), 0);
 			VBO.ElementCount = 3;
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
-			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, Vertices, BufferUsageHint.StaticDraw);
+			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, vertices, BufferUsageHint.StaticDraw);
 
 			VAO = new VertexArrayObject(GL.GenVertexArray());
 			GL.BindVertexArray(VAO.Handle);
@@ -109,61 +81,6 @@ namespace Examples.Examples {
 			GL.UniformMatrix4(ShaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref MVPMatrix);
 
 			GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
-
-			SwapBuffers();
-		}
-	}
-	
-	[ExampleProject("Hello Triangle with extensions")]
-	public class HelloTriangleWithExtensions : ExampleWindow {
-		
-		private ShaderProgram<BasicProgram> ShaderProgram;
-		private Buffer<Vector3> VBO;
-		private VertexArrayObject VAO;
-
-		protected override void OnLoad() {
-			base.OnLoad();
-
-			ShaderProgram = new ProgramFactory() { BaseDirectory = "./Data/Shaders/" }.CreateProgram<BasicProgram>();
-			ShaderProgram.Use();
-
-			var Vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
-
-			VBO = new Buffer<Vector3>(GL.GenBuffer());
-			VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
-
-			VAO = new VertexArrayObject(GL.GenVertexArray());
-			VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
-
-			ActiveCamera.Position = new Vector3(0, 0, 3);
-
-			GL.ClearColor(Color.MidnightBlue);
-		}
-
-		private void OnUnload(object sender, EventArgs e) {
-			base.OnUnload();
-
-			GL.DeleteProgram(ShaderProgram.Handle);
-			GL.DeleteVertexArray(VAO.Handle);
-			GL.DeleteBuffer(VBO.Handle);
-		}
-
-		protected override void OnRenderFrame(FrameEventArgs e) {
-			base.OnRenderFrame(e);
-			GL.Viewport(0, 0, Size.X, Size.Y);
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			for (int X = 0; X < 20; X++) {
-				for (int Y = 0; Y < 20; Y++) {
-					for (int Z = 0; Z < 20; Z++) {
-
-						Matrix4 MVP = Matrix4.CreateTranslation(new Vector3(X * 2, Y * 2, Z * 2)) * ActiveCamera.ViewProjectionMatrix;
-						ShaderProgram.Variables.ModelViewProjectionMatrix.Set(MVP);
-						GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
-
-					}
-				}
-			}
 
 			SwapBuffers();
 		}

@@ -4,17 +4,17 @@ using OpenTK.Graphics.OpenGL;
 namespace ObjectTK.Extensions.Shaders {
 
 	public static class ShaderFactory {
-		public static VertexShaderStage CreateVertexShader(string Source) {
-			int Handle = GL.CreateShader(ShaderType.VertexShader);
-			GL.ShaderSource(Handle, Source);
-			GL.CompileShader(Handle);
-			return new VertexShaderStage(Handle, Source);
+		public static ShaderStage CreateVertexShader(string Source) {
+			int handle = GL.CreateShader(ShaderType.VertexShader);
+			GL.ShaderSource(handle, Source);
+			GL.CompileShader(handle);
+			return new ShaderStage(ShaderType.VertexShader, handle, Source);
 		}
-		public static FragmentShaderStage CreateFragmentShader(string Source) {
-			int Handle = GL.CreateShader(ShaderType.FragmentShader);
-			GL.ShaderSource(Handle, Source);
-			GL.CompileShader(Handle);
-			return new FragmentShaderStage(Handle, Source);
+		public static ShaderStage CreateFragmentShader(string Source) {
+			int handle = GL.CreateShader(ShaderType.FragmentShader);
+			GL.ShaderSource(handle, Source);
+			GL.CompileShader(handle);
+			return new ShaderStage(ShaderType.FragmentShader, handle, Source);
 		}
 	}
 

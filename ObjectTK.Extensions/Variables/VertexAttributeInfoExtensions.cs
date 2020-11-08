@@ -7,12 +7,12 @@ namespace ObjectTK.Extensions.Variables {
 
 
 	}
-
-	public class VertexAttributeInfo<T> : VertexAttributeInfo {
-		public VertexAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, ActiveAttribType ActiveAttribType, VertexAttribPointerType VertexAttribPointerType, bool Normalized) :
-			base(ProgramHandle, Name, Active, Index, Components, ActiveAttribType, VertexAttribPointerType, Normalized) {
-		}
-	}
+	//
+	// public class ShaderAttributeInfo<T> : ShaderAttributeInfo {
+	// 	public ShaderAttributeInfo(int ProgramHandle, string Name, bool Active, int Index, int Components, ActiveAttribType ActiveAttribType, VertexAttribPointerType VertexAttribPointerType, bool Normalized) :
+	// 		base(Name, Active, Index, Components, ActiveAttribType, VertexAttribPointerType, Normalized) {
+	// 	}
+	// }
 
 	[AttributeUsage(AttributeTargets.Property)]
 	public class VertexAttribAttribute : Attribute {

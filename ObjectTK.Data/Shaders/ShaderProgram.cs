@@ -1,22 +1,27 @@
 ﻿using ObjectTK.Data.Variables;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 
 namespace ObjectTK.Data.Shaders {
 
+	/// See: https://www.khronos.org/opengl/wiki/Shader
 	public class ShaderProgram {
+		/// The OpenGL Handle
 		public int Handle { get; }
-		public VertexShaderStage VertexShaderStage { get; }
-		public FragmentShaderStage FragmentShaderStage { get; }
-		public Dictionary<string, UniformInfo> Uniforms { get; set; }
-		public Dictionary<string, VertexAttributeInfo> VertexAttributes { get; set; }
+		/// The individual stages making up this program in the order they are used.
+		public ShaderStage[] Stages { get; set; }
+		/// The uniforms on this shader.
+		public Dictionary<string, ShaderUniformInfo> Uniforms { get; set; }
+		/// The vertex attributes on this shader.
+		public Dictionary<string, ShaderAttributeInfo> Attributes { get; set; }
 
-		public ShaderProgram(int Handle, VertexShaderStage vertexShaderStage, FragmentShaderStage fragmentShaderStage, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) {
-			this.Handle = Handle;
-			this.VertexShaderStage = vertexShaderStage;
-			this.FragmentShaderStage = fragmentShaderStage;
-			this.Uniforms = Uniforms;
-			this.VertexAttributes = VertexAttributes;
+		public ShaderProgram(int handle,
+			ShaderStage[] stages,
+			Dictionary<string, ShaderUniformInfo> uniforms,
+			Dictionary<string, ShaderAttributeInfo> attributes) {
+			Handle = handle;
+			Stages = stages;
+			Uniforms = uniforms;
+			Attributes = attributes;
 		}
 	}
 }

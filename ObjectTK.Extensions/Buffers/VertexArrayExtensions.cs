@@ -1,5 +1,4 @@
-﻿using Buffer = ObjectTK.Data.Buffers.Buffer;
-using ObjectTK.Data.Buffers;
+﻿using ObjectTK.Data.Buffers;
 using OpenTK.Graphics.OpenGL;
 using ObjectTK.Data.Variables;
 
@@ -10,10 +9,10 @@ namespace ObjectTK.Extensions.Buffers {
 			GL.BindVertexArray(vertexArrayObject.Handle);
 		}
 
-		public static void BindVertexAttribute(this VertexArrayObject vertexArrayObject, VertexAttributeInfo VertexAttributeInfo, Buffer Buffer) {
+		public static void BindVertexAttribute<T>(this VertexArrayObject vertexArrayObject, ShaderAttributeInfo shaderAttributeInfo, Buffer<T> Buffer) where T : unmanaged {
 			vertexArrayObject.Bind();
-			GL.VertexAttribPointer(VertexAttributeInfo.Index, Buffer.ElementCount, VertexAttribPointerType.Float, false, Buffer.ElementSize, 0);
-			GL.EnableVertexAttribArray(VertexAttributeInfo.Index);
+			GL.VertexAttribPointer(shaderAttributeInfo.Location, Buffer.ElementCount, VertexAttribPointerType.Float, false, Buffer.ElementSize, 0);
+			GL.EnableVertexAttribArray(shaderAttributeInfo.Location);
 			GL.BindBuffer(BufferTarget.ArrayBuffer, Buffer.Handle);
 		}
 

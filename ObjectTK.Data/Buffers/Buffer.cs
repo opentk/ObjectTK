@@ -1,5 +1,9 @@
-﻿namespace ObjectTK.Data.Buffers {
+﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using GL = OpenTK.Graphics.ES11.GL;
 
+namespace ObjectTK.Data.Buffers {
+	
 	/// Corresponds to an OpenGL Buffer.
 	/// Typically this is a vertex/index/whatever buffer.
 	public class Buffer<T> where T : unmanaged {
