@@ -1,30 +1,20 @@
-﻿using System.Runtime.InteropServices;
+﻿namespace ObjectTK.Data.Buffers {
 
-namespace ObjectTK.Data.Buffers {
-
-	public class Buffer {
+	/// Corresponds to an OpenGL Buffer.
+	/// Typically this is a vertex/index/whatever buffer.
+	public class Buffer<T> where T : unmanaged {
+		
+		/// The OpenGL Handle for this.
 		public int Handle { get; }
+		/// Size in bytes of each element in the buffer.
 		public int ElementSize { get; }
-		private int _ElementCount { get; set; }
-		public virtual int ElementCount {
-			get {
-				return _ElementCount;
-			}
-			set {
-				_ElementCount = value;
-			}
-		}
+		/// The number of elements in this buffer.
+		public int ElementCount { get; set; }
 
-		public Buffer(int Handle, int ElementSize, int ElementCount) {
-			this.Handle = Handle;
-			this.ElementSize = ElementSize;
-			this.ElementCount = ElementCount;
-		}
-	}
-
-	public class Buffer<T> : Buffer where T : struct {
-		public Buffer(int Handle) : base(Handle, Marshal.SizeOf(typeof(T)), 0) {
-
+		public unsafe Buffer(int handle, int elementCount) {
+			Handle = handle;
+			ElementSize = sizeof(T);
+			ElementCount = elementCount;
 		}
 	}
 }

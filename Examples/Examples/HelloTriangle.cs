@@ -20,7 +20,7 @@ namespace Examples.Examples {
 
 		private Program ShaderProgram;
 		private Buffer<Vector3> VBO;
-		private VertexArray VAO;
+		private VertexArrayObject VAO;
 
 		private readonly string VertSource = @"
 				#version 330 core
@@ -81,7 +81,7 @@ namespace Examples.Examples {
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
 			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, Vertices, BufferUsageHint.StaticDraw);
 
-			VAO = new VertexArray(GL.GenVertexArray());
+			VAO = new VertexArrayObject(GL.GenVertexArray());
 			GL.BindVertexArray(VAO.Handle);
 			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
 			GL.EnableVertexAttribArray(0);
@@ -119,7 +119,7 @@ namespace Examples.Examples {
 		
 		private Program<BasicProgram> ShaderProgram;
 		private Buffer<Vector3> VBO;
-		private VertexArray VAO;
+		private VertexArrayObject VAO;
 
 		protected override void OnLoad() {
 			base.OnLoad();
@@ -132,7 +132,7 @@ namespace Examples.Examples {
 			VBO = new Buffer<Vector3>(GL.GenBuffer());
 			VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
 
-			VAO = new VertexArray(GL.GenVertexArray());
+			VAO = new VertexArrayObject(GL.GenVertexArray());
 			VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
 
 			ActiveCamera.Position = new Vector3(0, 0, 3);
