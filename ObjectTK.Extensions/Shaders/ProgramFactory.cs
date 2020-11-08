@@ -15,7 +15,7 @@ namespace ObjectTK.Extensions.Shaders {
 		public string BaseDirectory { get; set; } = "./";
 		public string ShaderExtension { get; set; } = "glsl";
 
-		public Program<T> CreateProgram<T>() where T : class, new() {
+		public ShaderProgram<T> CreateProgram<T>() where T : class, new() {
 
 			List<ShaderSourceAttribute> Attributes = typeof(T).GetCustomAttributes<ShaderSourceAttribute>(true).ToList();
 			List<Shader> Shaders = new List<Shader>();
@@ -49,7 +49,7 @@ namespace ObjectTK.Extensions.Shaders {
 				GL.DeleteShader(Shader.Handle);
 			}
 
-			Program<T> ShaderProgram = new Program<T>(ProgramHandle, null, null, new Dictionary<string, UniformInfo>(), new Dictionary<string, VertexAttributeInfo>());
+			ShaderProgram<T> ShaderProgram = new ShaderProgram<T>(ProgramHandle, null, null, new Dictionary<string, UniformInfo>(), new Dictionary<string, VertexAttributeInfo>());
 			InitializeProgramVariables(ShaderProgram);
 
 			return ShaderProgram;
@@ -108,33 +108,33 @@ namespace ObjectTK.Extensions.Shaders {
 			}
 		}
 
-		private void InitializeProgramVariables<T>(Program<T> Program) where T : class, new() {
+		private void InitializeProgramVariables<T>(ShaderProgram<T> shaderProgram) where T : class, new() {
 
-			Program.Variables = new T();
+			shaderProgram.Variables = new T();
 
 			PropertyInfo[] Properties = typeof(T).GetProperties();
-			Program.UniformInfoProperties = Properties.Where(Prop => typeof(UniformInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
-			Program.VertexAttributeInfoProperties = Properties.Where(Prop => typeof(VertexAttributeInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
+			shaderProgram.UniformInfoProperties = Properties.Where(Prop => typeof(UniformInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
+			shaderProgram.VertexAttributeInfoProperties = Properties.Where(Prop => typeof(VertexAttributeInfo).IsAssignableFrom(Prop.PropertyType)).ToList();
 
-			foreach (PropertyInfo Prop in Program.UniformInfoProperties) {
-				int UniformLocation = GL.GetUniformLocation(Program.Handle, Prop.Name);
-				GL.GetActiveUniform(Program.Handle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
-				UniformInfo Value = Activator.CreateInstance(Prop.PropertyType, Program.Handle, Prop.Name, UniformLocation, UniformSize, UniformType, UniformLocation > -1) as UniformInfo;
-				Prop.SetValue(Program.Variables, Value);
-				Program.Uniforms.Add(Prop.Name, Value);
+			foreach (PropertyInfo Prop in shaderProgram.UniformInfoProperties) {
+				int UniformLocation = GL.GetUniformLocation(shaderProgram.Handle, Prop.Name);
+				GL.GetActiveUniform(shaderProgram.Handle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
+				UniformInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, UniformLocation, UniformSize, UniformType, UniformLocation > -1) as UniformInfo;
+				Prop.SetValue(shaderProgram.Variables, Value);
+				shaderProgram.Uniforms.Add(Prop.Name, Value);
 			}
 
-			foreach (PropertyInfo Prop in Program.VertexAttributeInfoProperties) {
-				int AttribIndex = GL.GetAttribLocation(Program.Handle, Prop.Name);
-				GL.GetActiveAttrib(Program.Handle, AttribIndex, out int Size, out ActiveAttribType AttribType);
+			foreach (PropertyInfo Prop in shaderProgram.VertexAttributeInfoProperties) {
+				int AttribIndex = GL.GetAttribLocation(shaderProgram.Handle, Prop.Name);
+				GL.GetActiveAttrib(shaderProgram.Handle, AttribIndex, out int Size, out ActiveAttribType AttribType);
 				VertexAttribAttribute Attribute = Prop.GetCustomAttribute<VertexAttribAttribute>();
 				if(Attribute == null) {
 					throw new Exception($"VertexAttributeInfo {typeof(T).FullName}.{Prop.Name} is not decorated with the 'VertexAttrib' Attribute, which is necessary for some metadata as it cannot be determined by the shader itself.");
 				}
 				VertexAttribPointerType VertexAttribPointerType = Attribute.VertexAttribPointerType;
-				VertexAttributeInfo Value = Activator.CreateInstance(Prop.PropertyType, Program.Handle, Prop.Name, AttribIndex > -1, AttribIndex, Size, AttribType, VertexAttribPointerType, false) as VertexAttributeInfo;
-				Prop.SetValue(Program.Variables, Value);
-				Program.VertexAttributes.Add(Prop.Name, Value);
+				VertexAttributeInfo Value = Activator.CreateInstance(Prop.PropertyType, shaderProgram.Handle, Prop.Name, AttribIndex > -1, AttribIndex, Size, AttribType, VertexAttribPointerType, false) as VertexAttributeInfo;
+				Prop.SetValue(shaderProgram.Variables, Value);
+				shaderProgram.VertexAttributes.Add(Prop.Name, Value);
 			}
 
 		}

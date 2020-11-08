@@ -18,7 +18,7 @@ namespace Examples.Examples {
 	[ExampleProject("Hello Triangle")]
 	public class HelloTriangle : ExampleWindow {
 
-		private Program ShaderProgram;
+		private ShaderProgram ShaderProgram;
 		private Buffer<Vector3> VBO;
 		private VertexArrayObject VAO;
 
@@ -65,7 +65,7 @@ namespace Examples.Examples {
 			GL.GetActiveUniform(ProgramHandle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
 			UniformInfo UI_InPosition = new UniformInfo(ProgramHandle, "ModelViewProjectionMatrix", UniformLocation, UniformSize, UniformType, UniformLocation > -1);
 
-			ShaderProgram = new Program(ProgramHandle, VertexShader, FragmentShader, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
+			ShaderProgram = new ShaderProgram(ProgramHandle, VertexShader, FragmentShader, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
 
 			GL.DetachShader(ProgramHandle, VertexShader.Handle);
 			GL.DetachShader(ProgramHandle, FragmentShader.Handle);
@@ -117,7 +117,7 @@ namespace Examples.Examples {
 	[ExampleProject("Hello Triangle with extensions")]
 	public class HelloTriangleWithExtensions : ExampleWindow {
 		
-		private Program<BasicProgram> ShaderProgram;
+		private ShaderProgram<BasicProgram> ShaderProgram;
 		private Buffer<Vector3> VBO;
 		private VertexArrayObject VAO;
 
