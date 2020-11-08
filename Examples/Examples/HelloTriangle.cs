@@ -46,18 +46,18 @@ namespace Examples.Examples {
 		protected override void OnLoad() {
 			base.OnLoad();
 
-			VertexShader VertexShader = new VertexShader(GL.CreateShader(ShaderType.VertexShader), null);
-			FragmentShader FragmentShader = new FragmentShader(GL.CreateShader(ShaderType.FragmentShader), null);
+			VertexShaderStage vertexShaderStage = new VertexShaderStage(GL.CreateShader(ShaderType.VertexShader), null);
+			FragmentShaderStage fragmentShaderStage = new FragmentShaderStage(GL.CreateShader(ShaderType.FragmentShader), null);
 
-			GL.ShaderSource(VertexShader.Handle, VertSource);
-			GL.ShaderSource(FragmentShader.Handle, FragSource);
-			GL.CompileShader(VertexShader.Handle);
-			GL.CompileShader(FragmentShader.Handle);
+			GL.ShaderSource(vertexShaderStage.Handle, VertSource);
+			GL.ShaderSource(fragmentShaderStage.Handle, FragSource);
+			GL.CompileShader(vertexShaderStage.Handle);
+			GL.CompileShader(fragmentShaderStage.Handle);
 
 			int ProgramHandle = GL.CreateProgram();
 
-			GL.AttachShader(ProgramHandle, VertexShader.Handle);
-			GL.AttachShader(ProgramHandle, FragmentShader.Handle);
+			GL.AttachShader(ProgramHandle, vertexShaderStage.Handle);
+			GL.AttachShader(ProgramHandle, fragmentShaderStage.Handle);
 
 			GL.LinkProgram(ProgramHandle);
 
@@ -65,12 +65,12 @@ namespace Examples.Examples {
 			GL.GetActiveUniform(ProgramHandle, UniformLocation, out int UniformSize, out ActiveUniformType UniformType);
 			UniformInfo UI_InPosition = new UniformInfo(ProgramHandle, "ModelViewProjectionMatrix", UniformLocation, UniformSize, UniformType, UniformLocation > -1);
 
-			ShaderProgram = new ShaderProgram(ProgramHandle, VertexShader, FragmentShader, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
+			ShaderProgram = new ShaderProgram(ProgramHandle, vertexShaderStage, fragmentShaderStage, new Dictionary<string, UniformInfo> { { "ModelViewProjectionMatrix", UI_InPosition } }, new Dictionary<string, VertexAttributeInfo> { });
 
-			GL.DetachShader(ProgramHandle, VertexShader.Handle);
-			GL.DetachShader(ProgramHandle, FragmentShader.Handle);
-			GL.DeleteShader(VertexShader.Handle);
-			GL.DeleteShader(FragmentShader.Handle);
+			GL.DetachShader(ProgramHandle, vertexShaderStage.Handle);
+			GL.DetachShader(ProgramHandle, fragmentShaderStage.Handle);
+			GL.DeleteShader(vertexShaderStage.Handle);
+			GL.DeleteShader(fragmentShaderStage.Handle);
 
 			GL.UseProgram(ProgramHandle);
 

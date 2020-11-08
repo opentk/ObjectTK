@@ -6,15 +6,15 @@ namespace ObjectTK.Data.Shaders {
 
 	public class ShaderProgram {
 		public int Handle { get; }
-		public VertexShader VertexShader { get; }
-		public FragmentShader FragmentShader { get; }
+		public VertexShaderStage VertexShaderStage { get; }
+		public FragmentShaderStage FragmentShaderStage { get; }
 		public Dictionary<string, UniformInfo> Uniforms { get; set; }
 		public Dictionary<string, VertexAttributeInfo> VertexAttributes { get; set; }
 
-		public ShaderProgram(int Handle, VertexShader VertexShader, FragmentShader FragmentShader, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) {
+		public ShaderProgram(int Handle, VertexShaderStage vertexShaderStage, FragmentShaderStage fragmentShaderStage, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) {
 			this.Handle = Handle;
-			this.VertexShader = VertexShader;
-			this.FragmentShader = FragmentShader;
+			this.VertexShaderStage = vertexShaderStage;
+			this.FragmentShaderStage = fragmentShaderStage;
 			this.Uniforms = Uniforms;
 			this.VertexAttributes = VertexAttributes;
 		}

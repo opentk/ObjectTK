@@ -20,8 +20,8 @@ namespace ObjectTK.Extensions.Shaders {
 		internal List<PropertyInfo> UniformInfoProperties { get; set; }
 		internal List<PropertyInfo> VertexAttributeInfoProperties { get; set; }
 
-		public ShaderProgram(int Handle, VertexShader VertexShader, FragmentShader FragmentShader, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) :
-			base(Handle, VertexShader, FragmentShader, Uniforms, VertexAttributes) {
+		public ShaderProgram(int Handle, VertexShaderStage vertexShaderStage, FragmentShaderStage fragmentShaderStage, Dictionary<string, UniformInfo> Uniforms, Dictionary<string, VertexAttributeInfo> VertexAttributes) :
+			base(Handle, vertexShaderStage, fragmentShaderStage, Uniforms, VertexAttributes) {
 		}
 	}
 

@@ -18,7 +18,7 @@ namespace ObjectTK.Extensions.Shaders {
 		public ShaderProgram<T> CreateProgram<T>() where T : class, new() {
 
 			List<ShaderSourceAttribute> Attributes = typeof(T).GetCustomAttributes<ShaderSourceAttribute>(true).ToList();
-			List<Shader> Shaders = new List<Shader>();
+			List<ShaderStage> Shaders = new List<ShaderStage>();
 
 			int ProgramHandle = GL.CreateProgram();
 
@@ -32,10 +32,10 @@ namespace ObjectTK.Extensions.Shaders {
 
 				switch (Attribute.Type) {
 					case ShaderType.FragmentShader:
-						Shaders.Add(new FragmentShader(ShaderHandle, Source));
+						Shaders.Add(new FragmentShaderStage(ShaderHandle, Source));
 						break;
 					case ShaderType.VertexShader:
-						Shaders.Add(new VertexShader(ShaderHandle, Source));
+						Shaders.Add(new VertexShaderStage(ShaderHandle, Source));
 						break;
 					default:
 						break;
@@ -44,7 +44,7 @@ namespace ObjectTK.Extensions.Shaders {
 
 			GL.LinkProgram(ProgramHandle);
 
-			foreach (Shader Shader in Shaders) {
+			foreach (ShaderStage Shader in Shaders) {
 				GL.DetachShader(ProgramHandle, Shader.Handle);
 				GL.DeleteShader(Shader.Handle);
 			}
