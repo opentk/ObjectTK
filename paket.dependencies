@@ -1,0 +1,7 @@
+framework: netcoreapp3.1
+
+source https://api.nuget.org/v3/index.json
+
+// open packages
+nuget FAKE ~> 4.62
+nuget OpenTK >= 4.1

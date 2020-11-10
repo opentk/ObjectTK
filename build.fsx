@@ -91,19 +91,10 @@ let testDir = binDir </> "test"
 // Projects & Assemblies
 // ---------
 
-let toolProjects =
-    !! "src/Generators/**/*.??proj"
 
 let releaseProjects =
-    !! "src/**/*.??proj"
-    -- "src/Generator/**"
-    -- "src/Generator.Bind/**"
-    -- "src/Generator.Converter/**"
-    -- "src/Generator.Rewrite/**"
-    -- "src/SpecificationOpenGL/**"
-    -- "src/OpenAL/OpenALGenerator/**"
-    -- "src/OpenAL/OpenALTest/**"
-    -- "src/OpenAL/OpenTK.OpenAL.Extensions/**"
+    !! "src/ObjectTK.Core/*.??proj"
+    ++ "src/ObjectTK.2D/*.??proj"
 
 
 // Absolutely all test projects.

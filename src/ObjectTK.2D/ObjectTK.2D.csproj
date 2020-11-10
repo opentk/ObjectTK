@@ -5,6 +5,10 @@
         <RootNamespace>ObjectTK._2D</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\ObjectTK.2D.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
         <PackageReference Include="OpenTK" Version="4.1.0" />

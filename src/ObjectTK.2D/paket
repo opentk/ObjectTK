@@ -1,0 +1,8 @@
+type file
+id ObjectTK.2D
+description
+    Holds 2D specific parts of ObjectTK.
+files
+    bin\Release\netcoreapp3.1\ObjectTK.2D.dll ==> lib\netcoreapp3.1
+    bin\Release\netcoreapp3.1\ObjectTK.2D.xml ==> lib\netcoreapp3.1
+    bin\Release\netcoreapp3.1\ObjectTK.2D.pdb ==> lib\netcoreapp3.1
