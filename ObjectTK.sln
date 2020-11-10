@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Core", "ObjectTK.Core\ObjectTK.Core.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Core", "src\ObjectTK.Core\ObjectTK.Core.csproj", "{163450BD-24E0-4C3E-A310-3AEBD709E065}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Extensions", "ObjectTK.Extensions\ObjectTK.Extensions.csproj", "{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectTK.Extensions", "src\ObjectTK.Extensions\ObjectTK.Extensions.csproj", "{DE7D5895-068B-42CF-B69A-D5E3AAE7E43B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "src\Examples\Examples.csproj", "{AF523BFF-E1A2-45CF-B9CE-F14F3A16536E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.Tools", "ObjectTK.Tools\ObjectTK.Tools.csproj", "{B5DCB84E-3E09-4F37-B06E-68565756624F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.Tools", "src\ObjectTK.Tools\ObjectTK.Tools.csproj", "{B5DCB84E-3E09-4F37-B06E-68565756624F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.2D", "ObjectTK.2D\ObjectTK.2D.csproj", "{77B6C529-5DD8-4A76-8577-E50F0F06F7F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectTK.2D", "src\ObjectTK.2D\ObjectTK.2D.csproj", "{77B6C529-5DD8-4A76-8577-E50F0F06F7F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
