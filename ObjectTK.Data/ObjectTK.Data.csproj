@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>ObjectTK</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
