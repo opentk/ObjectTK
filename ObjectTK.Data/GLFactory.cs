@@ -92,7 +92,7 @@ namespace ObjectTK.Data {
 
             [NotNull]
             [MustUseReturnValue]
-            public Buffer<Vector3> ArrayBuffer<T>(string name, [NotNull] T[] vertices, BufferUsageHint usageHint = BufferUsageHint.StaticDraw) where T: unmanaged {
+            public Buffer<T> ArrayBuffer<T>(string name, [NotNull] T[] vertices, BufferUsageHint usageHint = BufferUsageHint.StaticDraw) where T: unmanaged {
                 var vbo = GL.GenBuffer();
                 var label = $"Buffer: {name}";
                 GL.ObjectLabel(ObjectLabelIdentifier.Buffer, vbo,label.Length, label);
@@ -103,7 +103,7 @@ namespace ObjectTK.Data {
                 }
                 GL.BufferData(BufferTarget.ArrayBuffer, elemSize * vertices.Length, vertices, usageHint);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-                return new Buffer<Vector3>(name, vbo, vertices.Length);
+                return new Buffer<T>(name, vbo, vertices.Length);
             }
         }
     
@@ -175,7 +175,6 @@ namespace ObjectTK.Data {
                 
                 return new VertexArrayObject(name, vao, length);
             }
-
 
         }
 

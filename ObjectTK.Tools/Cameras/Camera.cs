@@ -27,8 +27,7 @@ namespace ObjectTK.Tools.Cameras {
 		public float FarClippingPlaneDistance { get; set; } = 1000.0f;
 
 		public Ray GetPickingRay(Vector2 MousePosition) {
-
-			Matrix4 UnViewProjectionMatrix = Matrix4.Invert(ViewProjectionMatrix);
+			Matrix4 unViewProjectionMatrix = Matrix4.Invert(ViewProjectionMatrix);
 
 			Vector3 Near = Vector3.Unproject(
 				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, NearClippingPlaneDistance),
@@ -38,7 +37,7 @@ namespace ObjectTK.Tools.Cameras {
 				Viewport.Size.Y,
 				NearClippingPlaneDistance,
 				FarClippingPlaneDistance,
-				UnViewProjectionMatrix);
+				unViewProjectionMatrix);
 
 			Vector3 Far = Vector3.Unproject(
 				new Vector3(MousePosition.X, Viewport.Size.Y - MousePosition.Y, FarClippingPlaneDistance),
@@ -48,7 +47,7 @@ namespace ObjectTK.Tools.Cameras {
 				Viewport.Size.Y,
 				NearClippingPlaneDistance,
 				FarClippingPlaneDistance,
-				UnViewProjectionMatrix);
+				unViewProjectionMatrix);
 
 			Vector3 Direction = (Far - Near).Normalized();
 

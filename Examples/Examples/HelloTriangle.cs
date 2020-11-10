@@ -1,83 +1,103 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using ObjectTK.Data;
 using ObjectTK.Data.Buffers;
 using ObjectTK.Data.Shaders;
-using ObjectTK.Data.Variables;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
 
 namespace Examples.Examples {
-
-	[ExampleProject("Hello Triangle")]
-	public sealed class HelloTriangle : ExampleWindow {
-
-		private ShaderProgram _shaderProgram;
-		private Buffer<Vector3> _vbo;
-		private VertexArrayObject _vao;
-
-		private const string VertSource = @"
+    internal static class ShaderSource {
+        public const string Vertex = @"
 				#version 330 core
 
 				uniform mat4 ModelViewProjectionMatrix;
+
 				layout(location = 0) in vec3 InPosition;
+				layout(location = 1) in vec4 InColor;
+
+
+				out vec4 VColor;
 
 				void main(void) {
 					gl_Position = ModelViewProjectionMatrix * vec4(InPosition, 1.0);
+					VColor = InColor;
 				}
 			";
 
-		private const string FragSource = @"
-				#version 330	
+        public const string Fragment = @"
+				#version 330
+	
+				in vec4 VColor;
 
 				out vec4 FragColor;
 
 				void main()
 				{
-					FragColor = vec4(1);
+					FragColor = VColor;
 				}
 			";
+    }
+    
+    [ExampleProject("Hello Triangle")]
+    public sealed class HelloTriangle : GameWindow {
 
-		protected override void OnLoad() {
-			base.OnLoad();
+        private ShaderProgram _shaderProgram;
+        private VertexArrayObject _vao;
+        private Buffer<Vector3> _positionsVbo;
+        private Buffer<Color4> _colorsVbo;
+        private readonly Camera2D _camera = new Camera2D();
 
-			var shaderProgram = GLFactory.Shader.VertexFrag("Solid Color", VertSource, FragSource);
-			_shaderProgram = shaderProgram;
-			GL.UseProgram(shaderProgram.Handle);
-			
-			
-			var vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
-			_vbo = GLFactory.Buffer.ArrayBuffer("Positions", vertices);
-			_vao = GLFactory.VAO.FromBuffers("Triangle", _vbo);
-			
-			ActiveCamera.Position = new Vector3(0, 0, 3);
+        public HelloTriangle()
+            : base(new GameWindowSettings(), new NativeWindowSettings {Size = new Vector2i(800, 600), Title = "Hello Triangle (Basic)"}) { }
 
-			GL.ClearColor(Color.MidnightBlue);
-		}
+        protected override void OnLoad() {
+            base.OnLoad();
 
-		protected override void OnRenderFrame(FrameEventArgs e) {
-			base.OnRenderFrame(e);
-			GL.Viewport(0, 0, Size.X, Size.Y);
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            // create the shader program
+            _shaderProgram = GLFactory.Shader.VertexFrag("Vertex Color", ShaderSource.Vertex, ShaderSource.Fragment);
+            
+            // create the triangle to draw
+            var positions = new[] {new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0)};
+            var colors = new[] {Color4.Cornsilk, Color4.OrangeRed, Color4.DarkOliveGreen};
+            _positionsVbo = GLFactory.Buffer.ArrayBuffer("Positions", positions);
+            _colorsVbo = GLFactory.Buffer.ArrayBuffer("Colors", colors);
+            _vao = GLFactory.VAO.FromBuffers("Triangle", _positionsVbo, _colorsVbo);
+        }
 
-			var mvpMatrix = ActiveCamera.ViewProjectionMatrix;
-			GL.UniformMatrix4(_shaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref mvpMatrix);
+        protected override void OnRenderFrame(FrameEventArgs e) {
+            base.OnRenderFrame(e);
+            // set up the viewport and camera (if the screen size has changed).
+            GL.Viewport(0, 0, Size.X, Size.Y);
+            _camera.AspectRatio = (float) Size.X / Size.Y;
+            
+            // clear the screen
+            GL.ClearColor(Color.MidnightBlue);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            
+            
+            // set up the shader and the uniforms
+            GL.UseProgram(_shaderProgram.Handle);
+            var mvpMatrix = _camera.ViewProjection;
+            GL.UniformMatrix4(_shaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref mvpMatrix);
 
-			GL.BindVertexArray(_vao.Handle);
-			GL.DrawArrays(PrimitiveType.Triangles, 0, _vao.ElementCount);
-			GL.BindVertexArray(0);
-			SwapBuffers();
-		}
-		
-		protected override void OnUnload() {
-			base.OnUnload();
+            // draw the triangle
+            GL.BindVertexArray(_vao.Handle);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, _vao.ElementCount);
+            GL.BindVertexArray(0);
+            
+            // swap to display on the screen
+            SwapBuffers();
+        }
 
-			GL.DeleteProgram(_shaderProgram.Handle);
-			GL.DeleteVertexArray(_vao.Handle);
-			GL.DeleteBuffer(_vbo.Handle);
-		}
-	}
+        protected override void OnUnload() {
+            base.OnUnload();
+
+            GL.DeleteProgram(_shaderProgram.Handle);
+            GL.DeleteVertexArray(_vao.Handle);
+            GL.DeleteBuffer(_positionsVbo.Handle);
+        }
+    }
 }
+	
