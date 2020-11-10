@@ -1,4 +1,4 @@
-﻿using ObjectTK.Data.Buffers;
+﻿using ObjectTK.GLObjects;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Extensions.Buffers {

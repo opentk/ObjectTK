@@ -4,7 +4,7 @@ using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
-namespace ObjectTK.Data.Buffers {
+namespace ObjectTK.GLObjects {
 
 	/// Corresponds to an OpenGL Buffer.
 	/// Typically this is a vertex/index/whatever buffer.

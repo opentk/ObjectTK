@@ -1,14 +1,13 @@
 using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
-using ObjectTK.Data.Buffers;
-using ObjectTK.Data.Internal;
-using ObjectTK.Data.Shaders;
+using ObjectTK.GLObjects;
+using ObjectTK.Internal;
+using ObjectTK.Shaders;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Mathematics;
-using Buffer = ObjectTK.Data.Buffers.Buffer;
+using Buffer = ObjectTK.GLObjects.Buffer;
 
-namespace ObjectTK.Data {
+namespace ObjectTK {
 
     namespace Internal {
         
@@ -145,7 +144,7 @@ namespace ObjectTK.Data {
 
             [NotNull]
             [MustUseReturnValue]
-            public VertexArrayObject FromBuffers([NotNull] string name, [NotNull] params Buffer[] buffers) {
+            public VertexArray FromBuffers([NotNull] string name, [NotNull] params Buffer[] buffers) {
                 var length = buffers[0].ElementCount;
                 #if DEBUG
                 for (int i = 0; i < buffers.Length; i++) {
@@ -173,7 +172,7 @@ namespace ObjectTK.Data {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                 GL.BindVertexArray(0);
                 
-                return new VertexArrayObject(name, vao, length);
+                return new VertexArray(name, vao, length);
             }
 
         }

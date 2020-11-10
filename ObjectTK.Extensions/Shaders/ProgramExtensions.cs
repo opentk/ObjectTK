@@ -1,9 +1,9 @@
-﻿using ObjectTK.Data.Shaders;
-using ObjectTK.Data.Variables;
-using ObjectTK.Extensions.Variables;
+﻿using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
 using System.Collections.Generic;
 using System.Reflection;
+using ObjectTK.GLObjects;
+using ObjectTK.Shaders;
 
 namespace ObjectTK.Extensions.Shaders {
 

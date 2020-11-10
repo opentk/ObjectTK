@@ -1,6 +1,6 @@
 using OpenTK.Mathematics;
 
-namespace ObjectTK.Data {
+namespace ObjectTK._2D {
     public class Camera2D {
         public Transform2D Transform { get; } = new Transform2D();
 

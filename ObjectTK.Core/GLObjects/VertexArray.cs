@@ -1,7 +1,7 @@
-﻿namespace ObjectTK.Data.Buffers {
+﻿namespace ObjectTK.GLObjects {
 	
 	/// An OpenGL Vertex array object.
-	public class VertexArrayObject {
+	public class VertexArray {
 		
 		/// The name of this object.
 		public string Name { get; }
@@ -10,7 +10,7 @@
 		/// The number of elements in this VAO.
 		public int ElementCount { get; }
 
-		public VertexArrayObject(string name, int handle, int elementCount) {
+		public VertexArray(string name, int handle, int elementCount) {
 			Name = name;
 			Handle = handle;
 			ElementCount = elementCount;

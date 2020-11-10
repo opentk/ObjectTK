@@ -1,6 +1,6 @@
-﻿using ObjectTK.Data.Variables;
-using ObjectTK.Extensions.Shaders;
+﻿using ObjectTK.Extensions.Shaders;
 using ObjectTK.Extensions.Variables;
+using ObjectTK.GLObjects;
 using OpenTK.Mathematics;
 
 namespace Examples.Examples.Programs {

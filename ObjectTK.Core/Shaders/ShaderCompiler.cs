@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using ObjectTK.Data.Variables;
+using ObjectTK.GLObjects;
 using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Data.Shaders {
+namespace ObjectTK.Shaders {
     
     public static class ShaderCompiler {
         

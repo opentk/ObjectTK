@@ -4,7 +4,7 @@ using AAT = OpenTK.Graphics.OpenGL.ActiveAttribType;
 using VAPT = OpenTK.Graphics.OpenGL.VertexAttribPointerType;
 
 
-namespace ObjectTK.Data {
+namespace ObjectTK {
     public static class AttributeExtensions {
 
         public static VAPT ToVertexAttribPointerType(this AAT attrib) {

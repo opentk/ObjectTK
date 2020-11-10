@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Data.Textures {
+namespace ObjectTK.GLObjects {
 	public interface ITexture {
 		int Handle { get; }
 		string Name { get; set; }

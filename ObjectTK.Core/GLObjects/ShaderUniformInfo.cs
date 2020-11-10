@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Data.Variables {
+namespace ObjectTK.GLObjects {
 	public class ShaderUniformInfo {
 		//TODO FIXME: Name[] for array uniform variables can be challenging.
 		/// The name of this uniform in the array

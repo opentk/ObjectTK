@@ -1,4 +1,5 @@
-﻿using ObjectTK.Data.Shaders;
+﻿using ObjectTK.GLObjects;
+using ObjectTK.Shaders;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Extensions.Shaders {

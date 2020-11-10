@@ -20,7 +20,7 @@
 
 using System;
 using System.Reflection;
-using ObjectTK.Data.Variables;
+using ObjectTK.GLObjects;
 
 namespace ObjectTK.Extensions.Shaders {
     public class Material<T> where T : class, new() {

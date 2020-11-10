@@ -1,5 +1,4 @@
-﻿using ObjectTK.Data.Variables;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace ObjectTK.Extensions.Variables {

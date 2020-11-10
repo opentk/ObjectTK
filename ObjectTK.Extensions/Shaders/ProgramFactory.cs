@@ -1,6 +1,4 @@
-﻿using ObjectTK.Data.Shaders;
-using ObjectTK.Data.Variables;
-using ObjectTK.Extensions.Variables;
+﻿using ObjectTK.Extensions.Variables;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ObjectTK.GLObjects;
+using ObjectTK.Shaders;
 
 namespace ObjectTK.Extensions.Shaders {
 	public class ProgramFactory {

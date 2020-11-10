@@ -1,9 +1,9 @@
-﻿using ObjectTK.Data.Variables;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using ObjectTK.GLObjects;
 
 namespace ObjectTK.Extensions.Variables {
 	public static class UniformInfoExtensions {

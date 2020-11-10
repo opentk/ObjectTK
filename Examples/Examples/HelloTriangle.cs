@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using ObjectTK.Data;
-using ObjectTK.Data.Buffers;
-using ObjectTK.Data.Shaders;
+using ObjectTK;
+using ObjectTK.GLObjects;
+using ObjectTK.Shaders;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -44,7 +44,7 @@ namespace Examples.Examples {
     public sealed class HelloTriangle : GameWindow {
 
         private ShaderProgram _shaderProgram;
-        private VertexArrayObject _vao;
+        private VertexArray _vao;
         private Buffer<Vector3> _positionsVbo;
         private Buffer<Color4> _colorsVbo;
         private readonly Camera2D _camera = new Camera2D();

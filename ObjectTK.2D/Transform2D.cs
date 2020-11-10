@@ -1,6 +1,6 @@
 using OpenTK.Mathematics;
 
-namespace ObjectTK.Data {
+namespace ObjectTK._2D {
     public class Transform2D {
         
         /// The position of this object on the X/Y plane.

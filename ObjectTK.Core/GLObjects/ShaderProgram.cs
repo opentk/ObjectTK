@@ -1,7 +1,7 @@
-﻿using ObjectTK.Data.Variables;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ObjectTK.Shaders;
 
-namespace ObjectTK.Data.Shaders {
+namespace ObjectTK.GLObjects {
 
 	/// See: https://www.khronos.org/opengl/wiki/Shader
 	public class ShaderProgram {

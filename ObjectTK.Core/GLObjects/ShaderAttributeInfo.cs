@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Data.Variables {
+namespace ObjectTK.GLObjects {
 	public class ShaderAttributeInfo {
 		public string Name { get; set; }
 		public int Location { get; set; }

@@ -1,10 +1,11 @@
 using System;
 using System.Drawing;
 using Examples.Examples.Programs;
-using ObjectTK.Data.Buffers;
+using ObjectTK;
 using ObjectTK.Extensions.Buffers;
 using ObjectTK.Extensions.Shaders;
 using ObjectTK.Extensions.Variables;
+using ObjectTK.GLObjects;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -15,7 +16,7 @@ namespace Examples.Examples {
 		
         private ShaderProgram<BasicProgram> ShaderProgram;
         private Buffer<Vector3> VBO;
-        private VertexArrayObject VAO;
+        private VertexArray VAO;
 
         protected override void OnLoad() {
             base.OnLoad();
@@ -28,7 +29,7 @@ namespace Examples.Examples {
             VBO = new Buffer<Vector3>("Positions", GL.GenBuffer(), 0);
             VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
 
-            VAO = new VertexArrayObject("Triangle", GL.GenVertexArray(), Vertices.Length);
+            VAO = new VertexArray("Triangle", GL.GenVertexArray(), Vertices.Length);
             VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
 
             ActiveCamera.Position = new Vector3(0, 0, 3);

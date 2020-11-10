@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace ObjectTK.Data.Shaders {
+namespace ObjectTK.GLObjects {
 	/// https://www.khronos.org/opengl/wiki/Shader#Stages
 	public class ShaderStage {
 		
