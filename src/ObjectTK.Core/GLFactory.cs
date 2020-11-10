@@ -189,7 +189,7 @@ namespace ObjectTK {
         public static readonly GLVertexArrayObjectFactory VertexArrayObject = GLVertexArrayObjectFactory.Instance;
         /// Alias for VertexArrayObject
         // ReSharper disable once InconsistentNaming
-        public static readonly GLVertexArrayObjectFactory VAO = VertexArrayObject;
+        public static readonly GLVertexArrayObjectFactory VertexArray = VertexArrayObject;
 
     }
     

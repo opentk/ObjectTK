@@ -27,22 +27,28 @@ namespace Examples.Examples {
 			";
 
         public const string Fragment = @"
-				#version 330
-	
-				in vec4 VColor;
+			#version 330
 
-				out vec4 FragColor;
+			in vec4 VColor;
 
-				void main()
-				{
-					FragColor = VColor;
-				}
-			";
+			out vec4 FragColor;
+
+			void main()
+			{
+				FragColor = VColor;
+			}
+		";
     }
     
     [ExampleProject("Hello Triangle")]
     public sealed class HelloTriangle : GameWindow {
 
+	    private static readonly NativeWindowSettings WindowSettings = new NativeWindowSettings {
+		    Size = new Vector2i(800, 600),
+		    Title = "Hello Triangle (Basic)",
+	    };
+	    private static readonly GameWindowSettings GameWindowSettings = new GameWindowSettings();
+	    
         private ShaderProgram _shaderProgram;
         private VertexArray _vao;
         private Buffer<Vector3> _positionsVbo;
@@ -50,11 +56,12 @@ namespace Examples.Examples {
         private readonly Camera2D _camera = new Camera2D();
 
         public HelloTriangle()
-            : base(new GameWindowSettings(), new NativeWindowSettings {Size = new Vector2i(800, 600), Title = "Hello Triangle (Basic)"}) { }
+            : base(GameWindowSettings, WindowSettings) {
+        }
 
         protected override void OnLoad() {
             base.OnLoad();
-
+            
             // create the shader program
             _shaderProgram = GLFactory.Shader.VertexFrag("Vertex Color", ShaderSource.Vertex, ShaderSource.Fragment);
             
@@ -63,7 +70,8 @@ namespace Examples.Examples {
             var colors = new[] {Color4.Cornsilk, Color4.OrangeRed, Color4.DarkOliveGreen};
             _positionsVbo = GLFactory.Buffer.ArrayBuffer("Positions", positions);
             _colorsVbo = GLFactory.Buffer.ArrayBuffer("Colors", colors);
-            _vao = GLFactory.VAO.FromBuffers("Triangle", _positionsVbo, _colorsVbo);
+            _vao = GLFactory.VertexArray.FromBuffers("Triangle", _positionsVbo, _colorsVbo);
+
         }
 
         protected override void OnRenderFrame(FrameEventArgs e) {
