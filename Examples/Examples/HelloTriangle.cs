@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using ObjectTK.Data;
 using ObjectTK.Data.Buffers;
 using ObjectTK.Data.Shaders;
 using ObjectTK.Data.Variables;
@@ -12,13 +13,13 @@ using OpenTK.Windowing.Common;
 namespace Examples.Examples {
 
 	[ExampleProject("Hello Triangle")]
-	public class HelloTriangle : ExampleWindow {
+	public sealed class HelloTriangle : ExampleWindow {
 
-		private ShaderProgram ShaderProgram;
-		private Buffer<Vector3> VBO;
-		private VertexArrayObject VAO;
+		private ShaderProgram _shaderProgram;
+		private Buffer<Vector3> _vbo;
+		private VertexArrayObject _vao;
 
-		private readonly string VertSource = @"
+		private const string VertSource = @"
 				#version 330 core
 
 				uniform mat4 ModelViewProjectionMatrix;
@@ -28,7 +29,8 @@ namespace Examples.Examples {
 					gl_Position = ModelViewProjectionMatrix * vec4(InPosition, 1.0);
 				}
 			";
-		private readonly string FragSource = @"
+
+		private const string FragSource = @"
 				#version 330	
 
 				out vec4 FragColor;
@@ -42,34 +44,18 @@ namespace Examples.Examples {
 		protected override void OnLoad() {
 			base.OnLoad();
 
-			var shaderProgram = ShaderCompiler.VertexFrag("Solid Color", VertSource, FragSource);
+			var shaderProgram = GLFactory.Shader.VertexFrag("Solid Color", VertSource, FragSource);
+			_shaderProgram = shaderProgram;
 			GL.UseProgram(shaderProgram.Handle);
-			ShaderProgram = shaderProgram;
-
+			
+			
 			var vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
-
-			VBO = new Buffer<Vector3>(GL.GenBuffer(), 0);
-			VBO.ElementCount = 3;
-			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
-			GL.BufferData(BufferTarget.ArrayBuffer, VBO.ElementSize * VBO.ElementCount, vertices, BufferUsageHint.StaticDraw);
-
-			VAO = new VertexArrayObject(GL.GenVertexArray());
-			GL.BindVertexArray(VAO.Handle);
-			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-			GL.EnableVertexAttribArray(0);
-			GL.BindBuffer(BufferTarget.ArrayBuffer, VBO.Handle);
-
+			_vbo = GLFactory.Buffer.ArrayBuffer("Positions", vertices);
+			_vao = GLFactory.VAO.FromBuffers("Triangle", _vbo);
+			
 			ActiveCamera.Position = new Vector3(0, 0, 3);
 
 			GL.ClearColor(Color.MidnightBlue);
-		}
-
-		private void OnUnload(object sender, EventArgs e) {
-			base.OnUnload();
-
-			GL.DeleteProgram(ShaderProgram.Handle);
-			GL.DeleteVertexArray(VAO.Handle);
-			GL.DeleteBuffer(VBO.Handle);
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs e) {
@@ -77,12 +63,21 @@ namespace Examples.Examples {
 			GL.Viewport(0, 0, Size.X, Size.Y);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			Matrix4 MVPMatrix = ActiveCamera.ViewProjectionMatrix;
-			GL.UniformMatrix4(ShaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref MVPMatrix);
+			var mvpMatrix = ActiveCamera.ViewProjectionMatrix;
+			GL.UniformMatrix4(_shaderProgram.Uniforms["ModelViewProjectionMatrix"].Location, false, ref mvpMatrix);
 
-			GL.DrawArrays(PrimitiveType.Triangles, 0, VBO.ElementCount);
-
+			GL.BindVertexArray(_vao.Handle);
+			GL.DrawArrays(PrimitiveType.Triangles, 0, _vao.ElementCount);
+			GL.BindVertexArray(0);
 			SwapBuffers();
+		}
+		
+		protected override void OnUnload() {
+			base.OnUnload();
+
+			GL.DeleteProgram(_shaderProgram.Handle);
+			GL.DeleteVertexArray(_vao.Handle);
+			GL.DeleteBuffer(_vbo.Handle);
 		}
 	}
 }

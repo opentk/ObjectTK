@@ -8,7 +8,6 @@ namespace ObjectTK.Data.Shaders {
     
     public static class ShaderCompiler {
         
-        
         /// Helper method that compiles a shader stage (part of a ShaderProgram) or throws an exception if failure occurs.
         [MustUseReturnValue]
         [NotNull]
@@ -30,8 +29,6 @@ namespace ObjectTK.Data.Shaders {
             return new ShaderStage(shaderType, handle, source);
         }
         
-        
-        /// Shader Handle (int) -> ShaderProgram class.
         [NotNull]
         [MustUseReturnValue]
         public static ShaderProgram Introspect(int prog, ShaderStage[] stages) {

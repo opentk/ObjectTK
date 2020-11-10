@@ -25,10 +25,10 @@ namespace Examples.Examples {
 
             var Vertices = new[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0) };
 
-            VBO = new Buffer<Vector3>(GL.GenBuffer(), 0);
+            VBO = new Buffer<Vector3>("Positions", GL.GenBuffer(), 0);
             VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
 
-            VAO = new VertexArrayObject(GL.GenVertexArray());
+            VAO = new VertexArrayObject("Triangle", GL.GenVertexArray(), Vertices.Length);
             VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
 
             ActiveCamera.Position = new Vector3(0, 0, 3);
