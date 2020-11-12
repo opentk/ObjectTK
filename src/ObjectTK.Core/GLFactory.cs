@@ -108,9 +108,9 @@ namespace ObjectTK {
     
     
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public sealed class GLVertexArrayObjectFactory {
-            public static GLVertexArrayObjectFactory Instance { get; } = new GLVertexArrayObjectFactory();
-            private GLVertexArrayObjectFactory() { }
+        public sealed class GLVertexArrayFactory {
+            public static GLVertexArrayFactory Instance { get; } = new GLVertexArrayFactory();
+            private GLVertexArrayFactory() { }
             
             // Hide the default members of this object for a cleaner API.
             
@@ -186,10 +186,7 @@ namespace ObjectTK {
 
         public static readonly GLShaderFactory Shader = GLShaderFactory.Instance;
         public static readonly GLBufferFactory Buffer = GLBufferFactory.Instance;
-        public static readonly GLVertexArrayObjectFactory VertexArrayObject = GLVertexArrayObjectFactory.Instance;
-        /// Alias for VertexArrayObject
-        // ReSharper disable once InconsistentNaming
-        public static readonly GLVertexArrayObjectFactory VertexArray = VertexArrayObject;
+        public static readonly GLVertexArrayFactory VertexArray = GLVertexArrayFactory.Instance;
 
     }
     

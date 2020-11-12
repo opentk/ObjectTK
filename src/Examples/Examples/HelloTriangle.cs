@@ -68,10 +68,10 @@ namespace Examples.Examples {
             // create the triangle to draw
             var positions = new[] {new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(0, 1, 0)};
             var colors = new[] {Color4.Cornsilk, Color4.OrangeRed, Color4.DarkOliveGreen};
+            
             _positionsVbo = GLFactory.Buffer.ArrayBuffer("Positions", positions);
             _colorsVbo = GLFactory.Buffer.ArrayBuffer("Colors", colors);
             _vao = GLFactory.VertexArray.FromBuffers("Triangle", _positionsVbo, _colorsVbo);
-
         }
 
         protected override void OnRenderFrame(FrameEventArgs e) {
