@@ -13,7 +13,7 @@
 		/// If this vertex array has an element array buffer (i.e. should be displayed using indexed drawing).
 		public bool HasElementArrayBuffer { get; set; }
 
-		public VertexArray(string name, int handle, int elementCount, int hasElementArrayBuffer) {
+		public VertexArray(string name, int handle, int elementCount, bool hasElementArrayBuffer) {
 			Name = name;
 			Handle = handle;
 			ElementCount = elementCount;

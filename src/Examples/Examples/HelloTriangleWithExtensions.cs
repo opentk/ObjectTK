@@ -29,7 +29,7 @@ namespace Examples.Examples {
             VBO = new Buffer<Vector3>("Positions", GL.GenBuffer(), 0);
             VBO.BufferData(BufferTarget.ArrayBuffer, Vertices);
 
-            VAO = new VertexArray("Triangle", GL.GenVertexArray(), Vertices.Length);
+            VAO = new VertexArray("Triangle", GL.GenVertexArray(), Vertices.Length,false);
             VAO.BindVertexAttribute(ShaderProgram.Variables.InPosition, VBO);
 
             ActiveCamera.Position = new Vector3(0, 0, 3);
