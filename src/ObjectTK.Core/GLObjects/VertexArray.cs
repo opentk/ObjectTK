@@ -9,11 +9,15 @@
 		public int Handle { get; }
 		/// The number of elements in this VAO.
 		public int ElementCount { get; set; }
+		
+		/// If this vertex array has an element array buffer (i.e. should be displayed using indexed drawing).
+		public bool HasElementArrayBuffer { get; set; }
 
-		public VertexArray(string name, int handle, int elementCount) {
+		public VertexArray(string name, int handle, int elementCount, int hasElementArrayBuffer) {
 			Name = name;
 			Handle = handle;
 			ElementCount = elementCount;
+			HasElementArrayBuffer = hasElementArrayBuffer;
 		}
 	}
 }

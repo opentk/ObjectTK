@@ -173,11 +173,10 @@ namespace ObjectTK {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                 GL.BindVertexArray(0);
                 
-                return new VertexArray(name, vao, length);
+                return new VertexArray(name, vao, length, false);
             }
             
-            
-            /// Loads a vertex and fragment shader from an embedded resource in the executing assembly.
+            /// Creates a vertex array from the 
             [Pure]
             [NotNull]
             public VertexArray IndexAndVertexBuffers([NotNull] string name, Buffer<int> indexBuffer, params Buffer[] vertexBuffers) {
@@ -186,6 +185,7 @@ namespace ObjectTK {
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer.Handle);
                 GL.BindVertexArray(0);
                 b.ElementCount = indexBuffer.ElementCount;
+                b.HasElementArrayBuffer = true;
                 return b;
             }
         }
