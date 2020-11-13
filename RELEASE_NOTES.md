@@ -1,3 +1,5 @@
+### 2.0.0-pre.3
+    * Fix labelling error.
 ### 2.0.0-pre.2
     * Fix error in shader compiler.
     * Add support for indexed vertex arrays.
