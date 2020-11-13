@@ -1,7 +1,7 @@
 type file
-id ObjectTK.2D
+id ObjectTK.Core
 description
-    Holds 2D specific parts of ObjectTK.
+    Holds fundamental abstractions of OpenGL and core components of ObjectTK.
 files
     bin\Release\netcoreapp3.1\ObjectTK.Core.dll ==> lib\netcoreapp3.1
     bin\Release\netcoreapp3.1\ObjectTK.Core.xml ==> lib\netcoreapp3.1
