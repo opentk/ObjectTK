@@ -94,8 +94,8 @@ namespace ObjectTK {
             public Buffer<T> ArrayBuffer<T>(string name, [NotNull] T[] vertices, BufferUsageHint usageHint = BufferUsageHint.StaticDraw) where T: unmanaged {
                 var vbo = GL.GenBuffer();
                 var label = $"Buffer: {name}";
-                GL.ObjectLabel(ObjectLabelIdentifier.Buffer, vbo,label.Length, label);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+                GL.ObjectLabel(ObjectLabelIdentifier.Buffer, vbo,label.Length, label);
                 int elemSize;
                 unsafe {
                     elemSize = sizeof(T);
@@ -161,8 +161,8 @@ namespace ObjectTK {
                 
                 var vao = GL.GenVertexArray();
                 var label = $"VertexArray: {name}";
-                GL.ObjectLabel(ObjectLabelIdentifier.VertexArray,vao, name.Length, label);
                 GL.BindVertexArray(vao);
+                GL.ObjectLabel(ObjectLabelIdentifier.VertexArray,vao, name.Length, label);
                 for (int i = 0; i < buffers.Length; i++) {
                     var buffer = buffers[i];
                     GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
