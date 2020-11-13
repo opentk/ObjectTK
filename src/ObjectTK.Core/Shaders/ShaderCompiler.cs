@@ -46,7 +46,6 @@ namespace ObjectTK.Shaders {
                     Size = count,
                     ActiveAttribType = attrType,
                 };
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             }
             
             // inspect the uniforms
