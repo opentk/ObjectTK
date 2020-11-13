@@ -46,9 +46,8 @@ namespace ObjectTK.GLObjects {
 		private static readonly Dictionary<Type, TypeToGLInfoCache> InfoCache = new Dictionary<Type, TypeToGLInfoCache>();
 
 		private static void Add<T2>(VertexAttribPointerType vapt, int componentCount) {
-			InfoCache[typeof(T2)] = new TypeToGLInfoCache(VertexAttribPointerType.Float, 3);
+			InfoCache[typeof(T2)] = new TypeToGLInfoCache(vapt, componentCount);
 		}
-		
 		
 		static BufferHelper() {
 			Add<byte>(VertexAttribPointerType.Byte, 1);
