@@ -8,7 +8,7 @@
 		/// The OpenGL handle. Use this to interact with OpenGL.
 		public int Handle { get; }
 		/// The number of elements in this VAO.
-		public int ElementCount { get; }
+		public int ElementCount { get; set; }
 
 		public VertexArray(string name, int handle, int elementCount) {
 			Name = name;

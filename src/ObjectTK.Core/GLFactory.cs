@@ -104,6 +104,7 @@ namespace ObjectTK {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                 return new Buffer<T>(name, vbo, vertices.Length);
             }
+            
         }
     
     
@@ -174,9 +175,20 @@ namespace ObjectTK {
                 
                 return new VertexArray(name, vao, length);
             }
-
+            
+            
+            /// Loads a vertex and fragment shader from an embedded resource in the executing assembly.
+            [Pure]
+            [NotNull]
+            public VertexArray IndexAndVertexBuffers([NotNull] string name, Buffer<int> indexBuffer, params Buffer[] vertexBuffers) {
+                var b = FromBuffers(name, vertexBuffers);
+                GL.BindVertexArray(b.Handle);
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer.Handle);
+                GL.BindVertexArray(0);
+                b.ElementCount = indexBuffer.ElementCount;
+                return b;
+            }
         }
-
     }
 
     /// Top-level class responsible for creating all OpenGL objects.
