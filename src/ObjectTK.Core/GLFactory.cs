@@ -63,11 +63,12 @@ namespace ObjectTK {
             [MustUseReturnValue]
             public Texture2D Create2D(string name, [NotNull] TextureConfig cfg, int width, int height, IntPtr data) {
                 var t = GL.GenTexture();
+                var label = $"Texture2D: {name}";
                 GL.BindTexture(TextureTarget.Texture2D, t);
                 GL.TexImage2D(TextureTarget.Texture2D, 0,cfg.InternalFormat, width, height, 0, cfg.PixelFormat, cfg.PixelType, data);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) cfg.MagFilter);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) cfg.MinFilter);
-                GL.ObjectLabel(ObjectLabelIdentifier.Texture, t, name.Length, name);
+                GL.ObjectLabel(ObjectLabelIdentifier.Texture, t, label.Length, label);
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 return new Texture2D(t, name, cfg.InternalFormat, width, height);
             }
