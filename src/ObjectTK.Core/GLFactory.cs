@@ -23,7 +23,6 @@ namespace ObjectTK {
             }
             
             // Hide the default members of this object for a cleaner API.
-            
             [EditorBrowsable(EditorBrowsableState.Never)]
             public override bool Equals(object obj)
             {
@@ -50,7 +49,56 @@ namespace ObjectTK {
             public new Type GetType() {
                 return base.GetType();
             }
+        }
+        
+        
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public sealed class GLTextureFactory {
+            public static GLTextureFactory Instance { get; } = new GLTextureFactory();
+            private GLTextureFactory() { }
+            
+            /// Creates a texture from a raw pointer.
+            /// This is typically used for creation from a bitmap.
+            [NotNull]
+            [MustUseReturnValue]
+            public Texture2D Create2D(string name, [NotNull] TextureConfig cfg, int width, int height, IntPtr data) {
+                var t = GL.GenTexture();
+                GL.BindTexture(TextureTarget.Texture2D, t);
+                GL.TexImage2D(TextureTarget.Texture2D, 0,cfg.InternalFormat, width, height, 0, cfg.PixelFormat, cfg.PixelType, data);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) cfg.MagFilter);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) cfg.MinFilter);
+                GL.ObjectLabel(ObjectLabelIdentifier.Texture, t, name.Length, name);
+                GL.BindTexture(TextureTarget.Texture2D, 0);
+                return new Texture2D(t, name, cfg.InternalFormat, width, height);
+            }
 
+            // Hide the default members of this object for a cleaner API.
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public override bool Equals(object obj)
+            {
+                // ReSharper disable once BaseObjectEqualsIsObjectEquals
+                return base.Equals(obj);
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            public override int GetHashCode()
+            {
+                // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+                return base.GetHashCode();
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            // ReSharper disable once AnnotateCanBeNullTypeMember
+            public override string ToString()
+            {
+                return base.ToString();
+            }
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            [NotNull]
+            public new Type GetType() {
+                return base.GetType();
+            }
         }
         
         [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -104,9 +152,7 @@ namespace ObjectTK {
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                 return new Buffer<T>(name, vbo, vertices.Length);
             }
-            
         }
-    
     
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public sealed class GLVertexArrayFactory {
@@ -157,8 +203,6 @@ namespace ObjectTK {
                 }
                 #endif
                 
-                
-                
                 var vao = GL.GenVertexArray();
                 var label = $"VertexArray: {name}";
                 GL.BindVertexArray(vao);
@@ -199,8 +243,7 @@ namespace ObjectTK {
         public static readonly GLShaderFactory Shader = GLShaderFactory.Instance;
         public static readonly GLBufferFactory Buffer = GLBufferFactory.Instance;
         public static readonly GLVertexArrayFactory VertexArray = GLVertexArrayFactory.Instance;
-
+        public static readonly GLTextureFactory Texture = GLTextureFactory.Instance;
     }
-    
     
 }
