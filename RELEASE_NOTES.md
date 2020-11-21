@@ -1,3 +1,8 @@
+### 2.0.0-pre.5
+    * Add textures to GLFactory + TextureConfig
+    * Add Zoom functionality to Camera2D
+
+
 ### 2.0.0-pre.4
     * Fix component count error in buffers.
 
