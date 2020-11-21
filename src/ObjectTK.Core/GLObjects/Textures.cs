@@ -32,6 +32,10 @@ namespace ObjectTK.GLObjects {
 		public PixelInternalFormat InternalFormat { get; set; }
 		public int Width { get; set; }
 		public int Height { get; set; }
+		
+		/// The ratio of Width/Height
+		public float AspectRatio => (float) Width / Height;
+		
 		public Texture2D(int handle, string name, PixelInternalFormat internalFormat, int width, int height) {
 			Handle = handle;
 			Name = name;
