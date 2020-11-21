@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using OpenTK.Mathematics;
 
 namespace ObjectTK._2D {
@@ -37,5 +38,13 @@ namespace ObjectTK._2D {
         public Matrix4 View => Matrix4.CreateRotationZ(Rotation) * Matrix4.CreateTranslation(Position.X, Position.Y, -10);
 
         public Matrix4 ViewProjection => View * Projection;
+        
+        /// 'Zooms in' the camera by a percentage by manipulating the VerticalSize relative to its current value.
+        /// Zoom delta is expressed in percent:
+        /// 1.0 = 1%.
+        /// 100.0 = 100% Zoom.
+        public void ZoomIn([NotNull] float zoomDelta) {            
+            VerticalSize += zoomDelta * VerticalSize / 100.0f;
+        }
     }
 }
