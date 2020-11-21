@@ -1,3 +1,6 @@
+### 2.0.0-pre.7
+    * Fix texture labelling
+
 ### 2.0.0-pre.6
     * Add texture config default object + copy method.
 
