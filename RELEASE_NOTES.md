@@ -1,3 +1,6 @@
+### 2.0.0-pre.6
+    * Add texture config default object + copy method.
+
 ### 2.0.0-pre.5
     * Add textures to GLFactory + TextureConfig
     * Add Zoom functionality to Camera2D
