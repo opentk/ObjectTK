@@ -19,7 +19,8 @@ namespace ObjectTK {
         /// The data type of each pixel's channel used to create this texture.
         public PixelType PixelType { get; set; } = PixelType.UnsignedByte;
 
-        /// If mipmaps should be generated for this texture (if applicable).
+        /// If mipmaps should be generated for this texture.
+        /// You almost certainly want this to be on.
         public bool GenerateMipmaps { get; set; } = true;
 
         /// The default texture configuration. Should be good for most cases.

@@ -69,6 +69,10 @@ namespace ObjectTK {
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) cfg.MagFilter);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) cfg.MinFilter);
                 GL.ObjectLabel(ObjectLabelIdentifier.Texture, t, label.Length, label);
+                if (cfg.GenerateMipmaps) {
+                    GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+                }
+                
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 return new Texture2D(t, name, cfg.InternalFormat, width, height);
             }
