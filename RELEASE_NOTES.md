@@ -1,3 +1,6 @@
+### 2.0.0-pre.8
+    * Fix mipmap generation
+
 ### 2.0.0-pre.7
     * Fix texture labelling
 
