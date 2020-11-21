@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK {
 
-    public class TextureConfig {
+    public sealed class TextureConfig {
 
         public TextureMagFilter MagFilter { get; set; } = TextureMagFilter.Linear;
         public TextureMinFilter MinFilter { get; set; } = TextureMinFilter.LinearMipmapNearest;
@@ -21,6 +21,24 @@ namespace ObjectTK {
 
         /// If mipmaps should be generated for this texture (if applicable).
         public bool GenerateMipmaps { get; set; } = true;
+
+        /// The default texture configuration. Should be good for most cases.
+        [NotNull]
+        public static TextureConfig Default => new TextureConfig();
+
+        /// Creates a copy of this <see cref="TextureConfig"/>
+        [Pure]
+        [NotNull]
+        public TextureConfig Copy() {
+            return new TextureConfig {
+                GenerateMipmaps = GenerateMipmaps,
+                InternalFormat = InternalFormat,
+                MagFilter = MagFilter,
+                MinFilter = MinFilter,
+                PixelFormat = PixelFormat,
+                PixelType = PixelType
+            };
+        }
         
         // Hide the default members of this object for a cleaner API.
         [EditorBrowsable(EditorBrowsableState.Never)]
