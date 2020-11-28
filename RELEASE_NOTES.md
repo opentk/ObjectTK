@@ -1,3 +1,7 @@
+### 2.0.0-pre.9
+    * Vertex buffer improvements
+    * New fast GLFactory.Buffer methods on lists.
+
 ### 2.0.0-pre.8
     * Fix mipmap generation
 
