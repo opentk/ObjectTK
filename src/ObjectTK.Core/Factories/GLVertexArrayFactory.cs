@@ -70,10 +70,10 @@ namespace ObjectTK {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
             
-            return new VertexArray(name, vao, length, false);
+            return new VertexArray(name, vao, buffers, null);
         }
         
-        /// Creates a vertex array from the 
+        /// Creates a vertex array from the provided index and vertex buffers.
         [Pure]
         [NotNull]
         public VertexArray IndexAndVertexBuffers([NotNull] string name, Buffer<int> indexBuffer, params Buffer[] vertexBuffers) {
@@ -81,8 +81,7 @@ namespace ObjectTK {
             GL.BindVertexArray(b.Handle);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer.Handle);
             GL.BindVertexArray(0);
-            b.ElementCount = indexBuffer.ElementCount;
-            b.HasElementArrayBuffer = true;
+            b.IndexBuffer = indexBuffer;
             return b;
         }
     }
