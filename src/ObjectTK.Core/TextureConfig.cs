@@ -10,6 +10,10 @@ namespace ObjectTK {
         public TextureMagFilter MagFilter { get; set; } = TextureMagFilter.Linear;
         public TextureMinFilter MinFilter { get; set; } = TextureMinFilter.LinearMipmapNearest;
 
+        public TextureWrapMode WrapS { get; set; } = TextureWrapMode.Repeat;
+        public TextureWrapMode WrapT { get; set; } = TextureWrapMode.Repeat;
+        public TextureWrapMode WrapR { get; set; } = TextureWrapMode.Repeat;
+
         /// The format the OpenGL stores this texture data in, internally.
         /// By default, this is an RGBA 8BPP (8 bits per pixel) format.
         public PixelInternalFormat InternalFormat { get; set; } = PixelInternalFormat.Rgba;

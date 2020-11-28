@@ -8,24 +8,23 @@ namespace ObjectTK.GLObjects {
 		PixelInternalFormat InternalFormat { get; set; }
 	}
 
-	public sealed class Texture1D : ITexture {
+	public class Texture1D : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
 		public TextureTarget TextureTarget => TextureTarget.Texture1D;
 		public int Width { get; set; }
 		public int MipLevels { get; set; }
-		public Texture1D(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.MipLevels = MipLevels;
+		public Texture1D(int handle, string name, PixelInternalFormat internalFormat, int width, int mipLevels) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			MipLevels = mipLevels;
 		}
-
 	}
 
-	public sealed class Texture2D : ITexture {
+	public class Texture2D : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public TextureTarget TextureTarget => TextureTarget.Texture2D;
@@ -45,7 +44,7 @@ namespace ObjectTK.GLObjects {
 		}
 	}
 
-	public sealed class Texture1DArray : ITexture {
+	public class Texture1DArray : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
@@ -53,17 +52,17 @@ namespace ObjectTK.GLObjects {
 		public int Width { get; set; }
 		public int Layers { get; set; }
 		public int MipLevels { get; set; }
-		public Texture1DArray(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Layers, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Layers = Layers;
-			this.MipLevels = MipLevels;
+		public Texture1DArray(int handle, string name, PixelInternalFormat internalFormat, int width, int layers, int mipLevels) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			Layers = layers;
+			MipLevels = mipLevels;
 		}
 	}
 
-	public sealed class Texture2DArray : ITexture {
+	public class Texture2DArray : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
@@ -72,18 +71,18 @@ namespace ObjectTK.GLObjects {
 		public int Height { get; set; }
 		public int Layers { get; set; }
 		public int MipLevels { get; set; }
-		public Texture2DArray(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Height, int Layers, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Height = Height;
-			this.Layers = Layers;
-			this.MipLevels = MipLevels;
+		public Texture2DArray(int handle, string name, PixelInternalFormat internalFormat, int width, int height, int layers, int mipLevels) {
+			this.Handle = handle;
+			this.Name = name;
+			this.InternalFormat = internalFormat;
+			this.Width = width;
+			this.Height = height;
+			this.Layers = layers;
+			this.MipLevels = mipLevels;
 		}
 	}
 
-	public sealed class Texture2DMultisample : ITexture {
+	public class Texture2DMultisample : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
@@ -92,18 +91,18 @@ namespace ObjectTK.GLObjects {
 		public int Height { get; set; }
 		public int Samples { get; set; }
 		public bool FixedSampleLocations { get; set; }
-		public Texture2DMultisample(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Height, int Samples, bool FixedSampleLocations) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Height = Height;
-			this.Samples = Samples;
-			this.FixedSampleLocations = FixedSampleLocations;
+		public Texture2DMultisample(int handle, string name, PixelInternalFormat internalFormat, int width, int height, int samples, bool fixedSampleLocations) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			Height = height;
+			Samples = samples;
+			FixedSampleLocations = fixedSampleLocations;
 		}
 	}
 
-	public sealed class Texture2DMultisampleArray : ITexture {
+	public class Texture2DMultisampleArray : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
@@ -113,47 +112,47 @@ namespace ObjectTK.GLObjects {
 		public int Samples { get; set; }
 		public bool FixedSampleLocations { get; set; }
 		public int Layers { get; set; }
-		public Texture2DMultisampleArray(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Height, int Layers, int Samples, bool FixedSampleLocations) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Height = Height;
-			this.Layers = Layers;
-			this.Samples = Samples;
-			this.FixedSampleLocations = FixedSampleLocations;
+		public Texture2DMultisampleArray(int handle, string name, PixelInternalFormat internalFormat, int width, int height, int layers, int samples, bool fixedSampleLocations) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			Height = height;
+			Layers = layers;
+			Samples = samples;
+			FixedSampleLocations = fixedSampleLocations;
 		}
 	}
 
-	public sealed class TextureRectangle : ITexture {
+	public class TextureRectangle : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
 		public TextureTarget TextureTarget => TextureTarget.TextureRectangle;
 		public int Width { get; set; }
 		public int Height { get; set; }
-		public TextureRectangle(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Height) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Height = Height;
+		public TextureRectangle(int handle, string name, PixelInternalFormat internalFormat, int width, int height) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			Height = height;
 		}
 	}
 
-	public sealed class TextureCubeMap : ITexture {
+	public class TextureCubeMap : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
 		public TextureTarget TextureTarget => TextureTarget.TextureCubeMap;
 		public int Size { get; set; }
 		public int MipLevels { get; set; }
-		public TextureCubeMap(int Handle, string Name, PixelInternalFormat InternalFormat, int Size, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Size = Size;
-			this.MipLevels = MipLevels;
+		public TextureCubeMap(int handle, string name, PixelInternalFormat internalFormat, int size, int mipLevels) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Size = size;
+			MipLevels = mipLevels;
 		}
 	}
 
@@ -165,29 +164,29 @@ namespace ObjectTK.GLObjects {
 		public int Size { get; set; }
 		public int Layers { get; set; }
 		public int MipLevels { get; set; }
-		public TextureCubeMapArray(int Handle, string Name, PixelInternalFormat InternalFormat, int Size, int Layers, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Size = Size;
-			this.Layers = Layers;
-			this.MipLevels = MipLevels;
+		public TextureCubeMapArray(int handle, string name, PixelInternalFormat internalFormat, int size, int layers, int mipLevels) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Size = size;
+			Layers = layers;
+			MipLevels = mipLevels;
 		}
 	}
 
-	public sealed class TextureBuffer : ITexture {
+	public class TextureBuffer : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
 		public TextureTarget TextureTarget => TextureTarget.TextureBuffer;
 		//TODO: I don't know much about this texture type
-		public TextureBuffer(int Handle, string Name, PixelInternalFormat InternalFormat) {
-			this.Handle = Handle;
-			this.InternalFormat = InternalFormat;
+		public TextureBuffer(int handle, string name, PixelInternalFormat internalFormat) {
+			Handle = handle;
+			InternalFormat = internalFormat;
 		}
 	}
 
-	public sealed class Texture3D : ITexture {
+	public class Texture3D : ITexture {
 		public int Handle { get; }
 		public string Name { get; set; }
 		public PixelInternalFormat InternalFormat { get; set; }
@@ -196,14 +195,14 @@ namespace ObjectTK.GLObjects {
 		public int Height { get; set; }
 		public int Layers { get; set; }
 		public int MipLevels { get; set; }
-		public Texture3D(int Handle, string Name, PixelInternalFormat InternalFormat, int Width, int Height, int Layers, int MipLevels) {
-			this.Handle = Handle;
-			this.Name = Name;
-			this.InternalFormat = InternalFormat;
-			this.Width = Width;
-			this.Height = Height;
-			this.Layers = Layers;
-			this.MipLevels = MipLevels;
+		public Texture3D(int handle, string name, PixelInternalFormat internalFormat, int width, int height, int layers, int mipLevels) {
+			Handle = handle;
+			Name = name;
+			InternalFormat = internalFormat;
+			Width = width;
+			Height = height;
+			Layers = layers;
+			MipLevels = mipLevels;
 		}
 	}
 }

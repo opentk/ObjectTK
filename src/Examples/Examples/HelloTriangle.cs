@@ -72,6 +72,7 @@ namespace Examples.Examples {
             _positionsVbo = GLFactory.Buffer.ArrayBuffer("Positions", positions);
             _colorsVbo = GLFactory.Buffer.ArrayBuffer("Colors", colors);
             _vao = GLFactory.VertexArray.FromBuffers("Triangle", _positionsVbo, _colorsVbo);
+            
         }
 
         protected override void OnRenderFrame(FrameEventArgs e) {

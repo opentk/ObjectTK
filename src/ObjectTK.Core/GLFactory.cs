@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using JetBrains.Annotations;
 using ObjectTK.GLObjects;
 using ObjectTK.Internal;
@@ -65,9 +67,11 @@ namespace ObjectTK {
                 var t = GL.GenTexture();
                 var label = $"Texture2D: {name}";
                 GL.BindTexture(TextureTarget.Texture2D, t);
-                GL.TexImage2D(TextureTarget.Texture2D, 0,cfg.InternalFormat, width, height, 0, cfg.PixelFormat, cfg.PixelType, data);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, cfg.InternalFormat, width, height, 0, cfg.PixelFormat, cfg.PixelType, data);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) cfg.MagFilter);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) cfg.MinFilter);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) cfg.WrapS);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) cfg.WrapS);
                 GL.ObjectLabel(ObjectLabelIdentifier.Texture, t, label.Length, label);
                 if (cfg.GenerateMipmaps) {
                     GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
@@ -76,6 +80,16 @@ namespace ObjectTK {
                 GL.BindTexture(TextureTarget.Texture2D, 0);
                 return new Texture2D(t, name, cfg.InternalFormat, width, height);
             }
+            
+            /// Creates a 2D texture from a bitmap.
+            [NotNull]
+            [MustUseReturnValue]
+            public Texture2D FromBitmap([NotNull] string name, [NotNull] TextureConfig cfg, [NotNull] Bitmap bmp) {
+                var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                var bitmapData = bmp.LockBits(rect, ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                return Create2D(name, cfg, bmp.Width, bmp.Height, bitmapData.Scan0);
+            }
+
 
             // Hide the default members of this object for a cleaner API.
             [EditorBrowsable(EditorBrowsableState.Never)]

@@ -1,11 +1,17 @@
-﻿using ObjectTK.GLObjects;
+﻿using JetBrains.Annotations;
+using ObjectTK.GLObjects;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectTK.Extensions.Buffers {
 	public static class VertexArrayExtensions {
-
-		public static void Bind(this VertexArray vertexArray) {
+		
+		
+		public static void Bind([NotNull] this VertexArray vertexArray) {
 			GL.BindVertexArray(vertexArray.Handle);
+		}
+		
+		public static void Unbind([NotNull] this VertexArray vertexArray) {
+			GL.BindVertexArray(0);
 		}
 
 		public static void BindVertexAttribute<T>(this VertexArray vertexArray, ShaderAttributeInfo shaderAttributeInfo, Buffer<T> Buffer) where T : unmanaged {
